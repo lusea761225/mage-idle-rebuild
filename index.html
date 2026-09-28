@@ -129,12 +129,12 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 
-/* SHATTER EFFECT */
+/* REACTION TEXT */
 
 .reaction{
   position:absolute;
   transform:translate(-50%,-50%);
-  z-index:30;
+  z-index:35;
   pointer-events:none;
   text-align:center;
   font-weight:900;
@@ -162,6 +162,51 @@ h1{margin:6px 0 2px;font-size:25px}
   }
   100%{
     transform:translate(-50%,-130%) scale(1);
+    opacity:0
+  }
+}
+
+
+/* STORM AOE */
+
+.storm-ring{
+  position:absolute;
+
+  width:120px;
+  height:120px;
+
+  border-radius:50%;
+
+  border:4px solid rgba(255,245,157,.95);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.30),
+      rgba(130,170,255,.18) 45%,
+      transparent 70%
+    );
+
+  box-shadow:
+    0 0 18px #fff59d,
+    inset 0 0 18px rgba(130,170,255,.8);
+
+  transform:translate(-50%,-50%) scale(.25);
+
+  z-index:25;
+
+  pointer-events:none;
+
+  animation:stormExpand .65s ease-out forwards
+}
+
+@keyframes stormExpand{
+  0%{
+    transform:translate(-50%,-50%) scale(.2);
+    opacity:1
+  }
+  100%{
+    transform:translate(-50%,-50%) scale(1.25);
     opacity:0
   }
 }
@@ -208,7 +253,7 @@ h1{margin:6px 0 2px;font-size:25px}
 /* LOG */
 
 #log{
-  height:175px;overflow-y:auto;
+  height:185px;overflow-y:auto;
   font-size:13px;line-height:1.55;color:#c9d1d9
 }
 
@@ -221,6 +266,11 @@ h1{margin:6px 0 2px;font-size:25px}
 .reactionText{
   color:#f2ccff;
   font-weight:800
+}
+
+.stormText{
+  color:#fff59d;
+  font-weight:900
 }
 
 
@@ -254,7 +304,7 @@ button.secondary{background:#30363d}
 <h1>🧙 Mage Idle</h1>
 
 <div class="version">
-Rebuild V0.3A — Reaction Engine
+Rebuild V0.3B — Elemental Reactions
 </div>
 
 
@@ -315,7 +365,7 @@ Rebuild V0.3A — Reaction Engine
       Lightning
       <div class="skillInfo">
         DMG 10<br>
-        45% Chain
+        ❄️ → 🌩️ Storm
       </div>
     </div>
 
@@ -324,7 +374,7 @@ Rebuild V0.3A — Reaction Engine
       Ice
       <div class="skillInfo">
         DMG 7<br>
-        Burning → 💥 Shatter
+        🔥 → 💥 Shatter
       </div>
     </div>
 
@@ -357,7 +407,8 @@ Rebuild V0.3A — Reaction Engine
 <div class="anchor">
 🔒 V0.1 Combat Engine<br>
 🔒 V0.2 Spell Engine<br>
-🧪 V0.3A Reaction Engine：SHATTER
+🔒 V0.3A SHATTER<br>
+🧪 V0.3B STORM
 </div>
 
 </div>
@@ -366,14 +417,15 @@ Rebuild V0.3A — Reaction Engine
 <script>
 
 /* =====================================================
-   MAGE IDLE V0.3A
+   MAGE IDLE V0.3B
 
-   V0.1 = Combat Engine
-   V0.2 = Spell Engine
-   V0.3A = Reaction Engine
+   Reactions:
 
-   First Reaction:
-   Burning + Ice = SHATTER
+   Burning + Ice
+   = SHATTER
+
+   Frostbite + Lightning
+   = STORM
 ===================================================== */
 
 
@@ -405,7 +457,11 @@ const CONFIG={
 
   CHAIN_DAMAGE_MULTIPLIER:0.70,
 
-  SHATTER_DAMAGE:12
+  SHATTER_DAMAGE:12,
+
+  STORM_DAMAGE:10,
+
+  STORM_RANGE:25
 
 };
 
@@ -420,8 +476,7 @@ const SKILLS=[
     icon:"🔥",
     damage:10,
     range:20,
-    cooldown:1000,
-    className:"fireText"
+    cooldown:1000
   },
 
   {
@@ -430,8 +485,7 @@ const SKILLS=[
     icon:"⚡",
     damage:10,
     range:20,
-    cooldown:1000,
-    className:"lightningText"
+    cooldown:1000
   },
 
   {
@@ -440,8 +494,7 @@ const SKILLS=[
     icon:"❄️",
     damage:7,
     range:9,
-    cooldown:650,
-    className:"iceText"
+    cooldown:650
   }
 
 ];
@@ -539,7 +592,7 @@ function addLog(text,className=""){
 
   logEl.appendChild(line);
 
-  while(logEl.children.length>40){
+  while(logEl.children.length>45){
     logEl.removeChild(logEl.firstChild);
   }
 
@@ -554,8 +607,6 @@ function createMonster(id){
   const monster={
 
     id,
-
-    name:"Slime",
 
     x:random(10,90),
     y:random(12,88),
@@ -619,7 +670,11 @@ function getTarget(){
       continue;
     }
 
-    const d=distance(game.player,monster);
+    const d=
+      distance(
+        game.player,
+        monster
+      );
 
     if(d<bestDistance){
 
@@ -648,7 +703,8 @@ function moveToward(target,deltaSeconds){
   }
 
   const move=
-    CONFIG.PLAYER_SPEED*deltaSeconds;
+    CONFIG.PLAYER_SPEED*
+    deltaSeconds;
 
   const amount=
     Math.min(move,d);
@@ -656,23 +712,30 @@ function moveToward(target,deltaSeconds){
   player.x+=dx/d*amount;
   player.y+=dy/d*amount;
 
-  player.x=clamp(player.x,3,97);
-  player.y=clamp(player.y,4,96);
+  player.x=
+    clamp(player.x,3,97);
+
+  player.y=
+    clamp(player.y,4,96);
 }
 
 
-/* EFFECT */
+/* BASIC EFFECT */
 
 function createEffect(monster,icon){
 
-  const effect=document.createElement("div");
+  const effect=
+    document.createElement("div");
 
   effect.className="effect";
 
   effect.textContent=icon;
 
-  effect.style.left=monster.x+"%";
-  effect.style.top=monster.y+"%";
+  effect.style.left=
+    monster.x+"%";
+
+  effect.style.top=
+    monster.y+"%";
 
   worldEl.appendChild(effect);
 
@@ -683,21 +746,29 @@ function createEffect(monster,icon){
 }
 
 
-/* REACTION VISUAL */
+/* REACTION LABEL */
 
-function createReactionEffect(monster){
+function createReactionEffect(
+  monster,
+  icon,
+  text
+){
 
-  const effect=document.createElement("div");
+  const effect=
+    document.createElement("div");
 
   effect.className="reaction";
 
   effect.innerHTML=`
-    <span class="reactionIcon">💥</span>
-    SHATTER!
+    <span class="reactionIcon">${icon}</span>
+    ${text}
   `;
 
-  effect.style.left=monster.x+"%";
-  effect.style.top=monster.y+"%";
+  effect.style.left=
+    monster.x+"%";
+
+  effect.style.top=
+    monster.y+"%";
 
   worldEl.appendChild(effect);
 
@@ -708,24 +779,48 @@ function createReactionEffect(monster){
 }
 
 
+/* STORM VISUAL */
+
+function createStormEffect(monster){
+
+  const ring=
+    document.createElement("div");
+
+  ring.className="storm-ring";
+
+  ring.style.left=
+    monster.x+"%";
+
+  ring.style.top=
+    monster.y+"%";
+
+  worldEl.appendChild(ring);
+
+  setTimeout(
+    ()=>ring.remove(),
+    700
+  );
+}
+
+
 /* LIGHTNING LINE */
 
 function createLightningLine(from,to){
 
-  const worldRect=
+  const rect=
     worldEl.getBoundingClientRect();
 
   const x1=
-    from.x/100*worldRect.width;
+    from.x/100*rect.width;
 
   const y1=
-    from.y/100*worldRect.height;
+    from.y/100*rect.height;
 
   const x2=
-    to.x/100*worldRect.width;
+    to.x/100*rect.width;
 
   const y2=
-    to.y/100*worldRect.height;
+    to.y/100*rect.height;
 
   const dx=x2-x1;
   const dy=y2-y1;
@@ -734,7 +829,8 @@ function createLightningLine(from,to){
     Math.sqrt(dx*dx+dy*dy);
 
   const angle=
-    Math.atan2(dy,dx)*180/Math.PI;
+    Math.atan2(dy,dx)*
+    180/Math.PI;
 
   const line=
     document.createElement("div");
@@ -742,9 +838,14 @@ function createLightningLine(from,to){
   line.className=
     "lightning-line";
 
-  line.style.left=x1+"px";
-  line.style.top=y1+"px";
-  line.style.width=length+"px";
+  line.style.left=
+    x1+"px";
+
+  line.style.top=
+    y1+"px";
+
+  line.style.width=
+    length+"px";
 
   line.style.transform=
     `rotate(${angle}deg)`;
@@ -760,16 +861,25 @@ function createLightningLine(from,to){
 
 /* DAMAGE */
 
-function damageMonster(monster,amount){
+function damageMonster(
+  monster,
+  amount
+){
 
-  if(!monster || !monster.alive){
+  if(
+    !monster ||
+    !monster.alive
+  ){
     return false;
   }
 
   monster.hp-=amount;
 
   monster.hp=
-    Math.max(0,monster.hp);
+    Math.max(
+      0,
+      monster.hp
+    );
 
   if(monster.hp<=0){
 
@@ -783,43 +893,146 @@ function damageMonster(monster,amount){
 
 
 /* =====================================================
+   SHATTER
+===================================================== */
+
+function triggerShatter(monster){
+
+  monster.burningUntil=0;
+  monster.nextBurnTick=0;
+
+  createReactionEffect(
+    monster,
+    "💥",
+    "SHATTER!"
+  );
+
+  addLog(
+    `💥 SHATTER！額外傷害 -${CONFIG.SHATTER_DAMAGE}`,
+    "reactionText"
+  );
+
+  damageMonster(
+    monster,
+    CONFIG.SHATTER_DAMAGE
+  );
+}
+
+
+/* =====================================================
+   STORM
+===================================================== */
+
+function triggerStorm(monster){
+
+  /* Consume Frostbite */
+
+  monster.frostUntil=0;
+
+
+  createReactionEffect(
+    monster,
+    "🌩️",
+    "STORM!"
+  );
+
+  createStormEffect(
+    monster
+  );
+
+
+  addLog(
+    `🌩️ STORM！範圍傷害 -${CONFIG.STORM_DAMAGE}`,
+    "stormText"
+  );
+
+
+  /*
+    Snapshot targets first.
+    This avoids mutation problems when
+    several monsters die during the AoE.
+  */
+
+  const victims=
+    game.monsters.filter(
+      candidate=>
+        candidate.alive &&
+        distance(
+          monster,
+          candidate
+        )<=
+        CONFIG.STORM_RANGE
+    );
+
+
+  for(
+    const victim
+    of victims
+  ){
+
+    createEffect(
+      victim,
+      "⚡"
+    );
+
+    damageMonster(
+      victim,
+      CONFIG.STORM_DAMAGE
+    );
+  }
+}
+
+
+/* =====================================================
    REACTION ENGINE
 ===================================================== */
 
-function tryReaction(monster,incomingElement){
+function tryReaction(
+  monster,
+  incomingElement
+){
 
-  if(!monster || !monster.alive){
+  if(
+    !monster ||
+    !monster.alive
+  ){
     return false;
   }
 
 
-  /* Burning + Ice = Shatter */
+  /*
+    Burning + Ice
+    = Shatter
+  */
 
   if(
     incomingElement==="ice" &&
-    monster.burningUntil>game.time
+    monster.burningUntil>
+    game.time
   ){
 
-    /* consume Burning */
-
-    monster.burningUntil=0;
-    monster.nextBurnTick=0;
-
-
-    createReactionEffect(monster);
-
-
-    addLog(
-      `💥 SHATTER！額外傷害 -${CONFIG.SHATTER_DAMAGE}`,
-      "reactionText"
+    triggerShatter(
+      monster
     );
 
+    return true;
+  }
 
-    damageMonster(
-      monster,
-      CONFIG.SHATTER_DAMAGE
+
+  /*
+    Frostbite + Lightning
+    = Storm
+  */
+
+  if(
+    incomingElement==="lightning" &&
+    monster.frostUntil>
+    game.time
+  ){
+
+    triggerStorm(
+      monster
     );
-
 
     return true;
   }
@@ -831,9 +1044,15 @@ function tryReaction(monster,incomingElement){
 
 /* FIRE */
 
-function castFire(monster,skill){
+function castFire(
+  monster,
+  skill
+){
 
-  createEffect(monster,"🔥");
+  createEffect(
+    monster,
+    "🔥"
+  );
 
   damageMonster(
     monster,
@@ -856,7 +1075,6 @@ function castFire(monster,skill){
       game.time+
       CONFIG.BURN_TICK_MS;
 
-
     addLog(
       "🔥 Slime 進入 Burning",
       "burnText"
@@ -867,16 +1085,20 @@ function castFire(monster,skill){
 
 /* ICE */
 
-function castIce(monster,skill){
+function castIce(
+  monster,
+  skill
+){
 
-  createEffect(monster,"❄️");
-
+  createEffect(
+    monster,
+    "❄️"
+  );
 
   damageMonster(
     monster,
     skill.damage
   );
-
 
   addLog(
     `❄️ Ice → Slime -${skill.damage}`,
@@ -888,11 +1110,6 @@ function castIce(monster,skill){
     return;
   }
 
-
-  /*
-    Reaction check happens
-    BEFORE applying Frostbite.
-  */
 
   tryReaction(
     monster,
@@ -919,22 +1136,50 @@ function castIce(monster,skill){
 
 /* LIGHTNING */
 
-function castLightning(monster,skill){
+function castLightning(
+  monster,
+  skill
+){
 
-  createEffect(monster,"⚡");
-
+  createEffect(
+    monster,
+    "⚡"
+  );
 
   damageMonster(
     monster,
     skill.damage
   );
 
-
   addLog(
     `⚡ Lightning → Slime -${skill.damage}`,
     "lightningText"
   );
 
+
+  if(!monster.alive){
+    return;
+  }
+
+
+  /*
+    Check Storm BEFORE Chain.
+  */
+
+  tryReaction(
+    monster,
+    "lightning"
+  );
+
+
+  if(!monster.alive){
+    return;
+  }
+
+
+  /*
+    Normal Chain Lightning
+  */
 
   if(
     Math.random()>
@@ -944,12 +1189,15 @@ function castLightning(monster,skill){
   }
 
 
-  let current=monster;
+  let current=
+    monster;
 
   const hitIds=
     new Set();
 
-  hitIds.add(monster.id);
+  hitIds.add(
+    monster.id
+  );
 
   let jumps=1;
 
@@ -975,7 +1223,9 @@ function castLightning(monster,skill){
       }
 
       if(
-        hitIds.has(candidate.id)
+        hitIds.has(
+          candidate.id
+        )
       ){
         continue;
       }
@@ -989,12 +1239,17 @@ function castLightning(monster,skill){
 
 
       if(
-        d<=CONFIG.CHAIN_RANGE &&
-        d<bestDistance
+        d<=
+        CONFIG.CHAIN_RANGE &&
+        d<
+        bestDistance
       ){
 
-        next=candidate;
-        bestDistance=d;
+        next=
+          candidate;
+
+        bestDistance=
+          d;
       }
     }
 
@@ -1038,9 +1293,14 @@ function castLightning(monster,skill){
     );
 
 
-    hitIds.add(next.id);
+    hitIds.add(
+      next.id
+    );
 
-    current=next;
+
+    current=
+      next;
+
 
     jumps++;
   }
@@ -1049,9 +1309,15 @@ function castLightning(monster,skill){
 
 /* SPELL ROUTER */
 
-function castSkill(monster,skill){
+function castSkill(
+  monster,
+  skill
+){
 
-  if(!monster || !monster.alive){
+  if(
+    !monster ||
+    !monster.alive
+  ){
     return;
   }
 
@@ -1063,25 +1329,28 @@ function castSkill(monster,skill){
       skill
     );
 
-  }else if(skill.id==="lightning"){
+  }else if(
+    skill.id==="lightning"
+  ){
 
     castLightning(
       monster,
       skill
     );
 
-  }else if(skill.id==="ice"){
+  }else if(
+    skill.id==="ice"
+  ){
 
     castIce(
       monster,
       skill
     );
-
   }
 }
 
 
-/* STATUS UPDATE */
+/* STATUS */
 
 function updateStatuses(){
 
@@ -1136,7 +1405,7 @@ function updateStatuses(){
     }
 
 
-    /* Frost expiration */
+    /* Frost */
 
     if(
       monster.frostUntil<=
@@ -1179,7 +1448,6 @@ function killMonster(monster){
     game.player.targetId===
     monster.id
   ){
-
     game.player.targetId=null;
   }
 
@@ -1198,7 +1466,8 @@ function killMonster(monster){
 
 function checkLevelUp(){
 
-  const player=game.player;
+  const player=
+    game.player;
 
   while(
     player.exp>=
@@ -1277,7 +1546,9 @@ function updateGame(deltaMs){
     return;
   }
 
-  game.time+=deltaMs;
+  game.time+=
+    deltaMs;
+
 
   updateRespawns();
 
@@ -1295,7 +1566,8 @@ function updateGame(deltaMs){
 
   if(!target){
 
-    target=getTarget();
+    target=
+      getTarget();
 
     game.player.targetId=
       target?
@@ -1322,7 +1594,10 @@ function updateGame(deltaMs){
     );
 
 
-  if(d>skill.range){
+  if(
+    d>
+    skill.range
+  ){
 
     moveToward(
       target,
@@ -1362,7 +1637,9 @@ function updateGame(deltaMs){
 
 function render(){
 
-  const player=game.player;
+  const player=
+    game.player;
+
 
   playerEl.style.left=
     player.x+"%";
@@ -1486,7 +1763,8 @@ function mainLoop(now){
 
   lastTime=now;
 
-  accumulator+=frameDelta;
+  accumulator+=
+    frameDelta;
 
 
   while(
@@ -1504,6 +1782,7 @@ function mainLoop(now){
 
 
   render();
+
 
   requestAnimationFrame(
     mainLoop
@@ -1573,11 +1852,15 @@ function resetGame(){
 
 
   addLog(
-    "🧙 Mage Idle V0.3A 開始"
+    "🧙 Mage Idle V0.3B 開始"
   );
 
   addLog(
-    "🔥 Burning + ❄️ Ice = 💥 SHATTER"
+    "💥 Burning + Ice → SHATTER"
+  );
+
+  addLog(
+    "🌩️ Frostbite + Lightning → STORM"
   );
 }
 
@@ -1618,16 +1901,21 @@ for(
   i<CONFIG.SLIME_COUNT;
   i++
 ){
+
   createMonster(i);
 }
 
 
 addLog(
-  "🧙 Mage Idle V0.3A Reaction Engine 啟動"
+  "🧙 Mage Idle V0.3B 啟動"
 );
 
 addLog(
-  "💥 第一反應：Burning + Ice → SHATTER"
+  "💥 SHATTER 已啟用"
+);
+
+addLog(
+  "🌩️ STORM 已啟用"
 );
 
 
