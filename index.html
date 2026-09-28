@@ -2,371 +2,247 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>Mage Idle Rebuild</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
 body{
-  margin:0;
-  background:#0d1117;
-  color:#f0f6fc;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  margin:0;background:#0d1117;color:#f0f6fc;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
 
-#app{
-  width:100%;
-  max-width:760px;
-  margin:auto;
-  padding:14px;
-}
-
-h1{
-  margin:6px 0 2px;
-  font-size:25px;
-}
-
-.version{
-  color:#8b949e;
-  margin-bottom:12px;
-}
+#app{width:100%;max-width:760px;margin:auto;padding:14px}
+h1{margin:6px 0 2px;font-size:25px}
+.version{color:#8b949e;margin-bottom:12px}
 
 .panel{
-  background:#161b22;
-  border:1px solid #30363d;
-  border-radius:14px;
-  padding:12px;
-  margin-bottom:12px;
+  background:#161b22;border:1px solid #30363d;
+  border-radius:14px;padding:12px;margin-bottom:12px
 }
 
 .row{
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-  font-size:14px;
-  margin-bottom:7px;
+  display:flex;justify-content:space-between;
+  gap:8px;font-size:14px;margin-bottom:7px
 }
 
 .bar{
-  height:10px;
-  background:#30363d;
-  border-radius:20px;
-  overflow:hidden;
-  margin-bottom:8px;
+  height:10px;background:#30363d;
+  border-radius:20px;overflow:hidden;margin-bottom:8px
 }
 
-.fill{
-  height:100%;
-  transition:width .15s linear;
-}
-
-.hp{ background:#3fb950; }
-.mp{ background:#58a6ff; }
-.exp{ background:#a371f7; }
+.fill{height:100%;transition:width .15s linear}
+.hp{background:#3fb950}
+.mp{background:#58a6ff}
+.exp{background:#a371f7}
 
 
-/* =========================
-   WORLD
-========================= */
+/* WORLD */
 
 #world{
-  position:relative;
-  width:100%;
-  height:470px;
-
+  position:relative;width:100%;height:470px;
   background:
     radial-gradient(circle at 20% 25%,rgba(255,255,255,.06) 0 3px,transparent 4px),
     radial-gradient(circle at 70% 70%,rgba(255,255,255,.05) 0 4px,transparent 5px),
     linear-gradient(#679c59,#48783f);
-
   border:3px solid #31552b;
-  border-radius:18px;
-
-  overflow:hidden;
-  margin-bottom:12px;
+  border-radius:18px;overflow:hidden;margin-bottom:12px
 }
-
-
-/* =========================
-   PLAYER
-========================= */
 
 .entity{
   position:absolute;
-  transform:translate(-50%,-50%);
+  transform:translate(-50%,-50%)
 }
 
+
+/* PLAYER */
+
 #player{
-  width:44px;
-  height:44px;
-
-  border-radius:50%;
-  background:#9b59ff;
-  border:3px solid #d9b8ff;
-
+  width:44px;height:44px;border-radius:50%;
+  background:#9b59ff;border:3px solid #d9b8ff;
   box-shadow:
     0 0 0 3px rgba(0,0,0,.25),
     0 0 16px rgba(155,89,255,.7);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:22px;
-  z-index:10;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;z-index:10
 }
 
 
-/* =========================
-   SLIME
-========================= */
+/* SLIME */
 
 .slime{
-  width:38px;
-  height:32px;
-
+  width:38px;height:32px;
   border-radius:50% 50% 42% 42%;
-
-  background:#42c96b;
-  border:2px solid #1e7d3d;
-
+  background:#42c96b;border:2px solid #1e7d3d;
   box-shadow:0 4px 0 rgba(0,0,0,.18);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:17px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px
 }
 
-.slime.dead{
-  opacity:0;
-  pointer-events:none;
-}
+.slime.dead{opacity:0;pointer-events:none}
 
 .target{
   outline:3px solid #ffd866;
-  outline-offset:5px;
+  outline-offset:5px
 }
 
 
-/* =========================
-   MONSTER HP
-========================= */
+/* MONSTER HP */
 
 .mob-hp{
-  position:absolute;
-
-  width:42px;
-  height:5px;
-
+  position:absolute;width:42px;height:5px;
   background:rgba(0,0,0,.55);
-
-  top:-11px;
-  left:-4px;
-
-  border-radius:10px;
-  overflow:hidden;
+  top:-11px;left:-4px;
+  border-radius:10px;overflow:hidden
 }
 
-.mob-hp-fill{
-  height:100%;
-  background:#ff6b6b;
-}
+.mob-hp-fill{height:100%;background:#ff6b6b}
 
 
-/* =========================
-   STATUS ICONS
-========================= */
+/* STATUS */
 
 .statuses{
   position:absolute;
-
-  top:-31px;
-  left:50%;
-
+  top:-32px;left:50%;
   transform:translateX(-50%);
-
-  min-width:55px;
-
-  text-align:center;
-
-  font-size:15px;
-
-  white-space:nowrap;
-
-  pointer-events:none;
+  min-width:55px;text-align:center;
+  font-size:15px;white-space:nowrap;
+  pointer-events:none
 }
 
 
-/* =========================
-   EFFECTS
-========================= */
+/* NORMAL EFFECT */
 
 .effect{
   position:absolute;
-
   transform:translate(-50%,-50%);
-
-  font-size:28px;
-
-  z-index:20;
-
+  font-size:28px;z-index:20;
   pointer-events:none;
-
-  animation:pop .55s ease-out forwards;
+  animation:pop .55s ease-out forwards
 }
 
 @keyframes pop{
-
-  0%{
-    transform:translate(-50%,-50%) scale(.5);
-    opacity:0;
-  }
-
-  25%{
-    opacity:1;
-  }
-
-  100%{
-    transform:translate(-50%,-95%) scale(1.5);
-    opacity:0;
-  }
-
+  0%{transform:translate(-50%,-50%) scale(.5);opacity:0}
+  25%{opacity:1}
+  100%{transform:translate(-50%,-95%) scale(1.5);opacity:0}
 }
 
 
-/* Lightning jump */
+/* SHATTER EFFECT */
+
+.reaction{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  z-index:30;
+  pointer-events:none;
+  text-align:center;
+  font-weight:900;
+  font-size:18px;
+  white-space:nowrap;
+  text-shadow:
+    0 2px 2px #000,
+    0 0 10px #fff;
+  animation:reactionPop .9s ease-out forwards
+}
+
+.reactionIcon{
+  display:block;
+  font-size:34px
+}
+
+@keyframes reactionPop{
+  0%{
+    transform:translate(-50%,-40%) scale(.4);
+    opacity:0
+  }
+  20%{
+    transform:translate(-50%,-55%) scale(1.25);
+    opacity:1
+  }
+  100%{
+    transform:translate(-50%,-130%) scale(1);
+    opacity:0
+  }
+}
+
+
+/* LIGHTNING */
 
 .lightning-line{
-  position:absolute;
-
-  height:4px;
-
+  position:absolute;height:4px;
   background:#fff59d;
-
   transform-origin:left center;
-
-  z-index:18;
-
-  pointer-events:none;
-
-  box-shadow:
-    0 0 7px #fff,
-    0 0 13px #ffd54f;
-
-  animation:flashLine .28s ease-out forwards;
+  z-index:18;pointer-events:none;
+  box-shadow:0 0 7px #fff,0 0 13px #ffd54f;
+  animation:flashLine .28s ease-out forwards
 }
 
 @keyframes flashLine{
-
-  0%{
-    opacity:1;
-  }
-
-  100%{
-    opacity:0;
-  }
-
+  0%{opacity:1}
+  100%{opacity:0}
 }
 
 
-/* =========================
-   SKILLS
-========================= */
+/* SKILLS */
 
 .skills{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:8px;
+  gap:8px
 }
 
 .skill{
-  background:#21262d;
-
-  border:1px solid #30363d;
-  border-radius:12px;
-
-  padding:10px 4px;
-
-  text-align:center;
-
-  font-size:13px;
+  background:#21262d;border:1px solid #30363d;
+  border-radius:12px;padding:10px 4px;
+  text-align:center;font-size:13px
 }
 
-.skillIcon{
-  font-size:25px;
-}
+.skillIcon{font-size:25px}
 
 .skillInfo{
-  color:#8b949e;
-  font-size:11px;
-  margin-top:4px;
+  color:#8b949e;font-size:11px;margin-top:4px
 }
 
 
-/* =========================
-   LOG
-========================= */
+/* LOG */
 
 #log{
-  height:165px;
-
-  overflow-y:auto;
-
-  font-size:13px;
-  line-height:1.55;
-
-  color:#c9d1d9;
+  height:175px;overflow-y:auto;
+  font-size:13px;line-height:1.55;color:#c9d1d9
 }
 
-.good{ color:#7ee787; }
-.fireText{ color:#ff9b71; }
-.lightningText{ color:#ffd866; }
-.iceText{ color:#79cfff; }
-.burnText{ color:#ff7b54; }
+.good{color:#7ee787}
+.fireText{color:#ff9b71}
+.lightningText{color:#ffd866}
+.iceText{color:#79cfff}
+.burnText{color:#ff7b54}
+
+.reactionText{
+  color:#f2ccff;
+  font-weight:800
+}
 
 
-/* =========================
-   CONTROLS
-========================= */
+/* CONTROLS */
 
 .controls{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:10px;
+  gap:8px;margin-top:10px
 }
 
 button{
-  border:0;
-  border-radius:12px;
-
-  padding:13px;
-
-  font-size:15px;
-  font-weight:700;
-
-  color:white;
-  background:#238636;
+  border:0;border-radius:12px;padding:13px;
+  font-size:15px;font-weight:700;
+  color:white;background:#238636
 }
 
-button.secondary{
-  background:#30363d;
-}
+button.secondary{background:#30363d}
 
 .anchor{
-  margin-top:12px;
-
-  text-align:center;
-
-  font-size:12px;
-  color:#8b949e;
+  margin-top:12px;text-align:center;
+  font-size:12px;color:#8b949e
 }
 </style>
 </head>
@@ -378,11 +254,9 @@ button.secondary{
 <h1>🧙 Mage Idle</h1>
 
 <div class="version">
-Rebuild V0.2 — Spell Engine
+Rebuild V0.3A — Reaction Engine
 </div>
 
-
-<!-- PLAYER -->
 
 <div class="panel">
 
@@ -396,11 +270,7 @@ Rebuild V0.2 — Spell Engine
   </div>
 
   <div class="bar">
-    <div
-      id="hpBar"
-      class="fill hp"
-      style="width:100%">
-    </div>
+    <div id="hpBar" class="fill hp" style="width:100%"></div>
   </div>
 
   <div class="row">
@@ -408,11 +278,7 @@ Rebuild V0.2 — Spell Engine
   </div>
 
   <div class="bar">
-    <div
-      id="mpBar"
-      class="fill mp"
-      style="width:100%">
-    </div>
+    <div id="mpBar" class="fill mp" style="width:100%"></div>
   </div>
 
   <div class="row">
@@ -420,80 +286,46 @@ Rebuild V0.2 — Spell Engine
   </div>
 
   <div class="bar">
-    <div
-      id="expBar"
-      class="fill exp"
-      style="width:0%">
-    </div>
+    <div id="expBar" class="fill exp" style="width:0%"></div>
   </div>
 
 </div>
 
-
-<!-- WORLD -->
 
 <div id="world">
-
-  <div
-    id="player"
-    class="entity">
-    🧙
-  </div>
-
+  <div id="player" class="entity">🧙</div>
 </div>
 
-
-<!-- SKILLS -->
 
 <div class="panel">
 
   <div class="skills">
 
     <div class="skill">
-
-      <div class="skillIcon">
-        🔥
-      </div>
-
+      <div class="skillIcon">🔥</div>
       Fire
-
       <div class="skillInfo">
         DMG 10<br>
         Burning 3/s
       </div>
-
     </div>
 
-
     <div class="skill">
-
-      <div class="skillIcon">
-        ⚡
-      </div>
-
+      <div class="skillIcon">⚡</div>
       Lightning
-
       <div class="skillInfo">
         DMG 10<br>
         45% Chain
       </div>
-
     </div>
 
-
     <div class="skill">
-
-      <div class="skillIcon">
-        ❄️
-      </div>
-
+      <div class="skillIcon">❄️</div>
       Ice
-
       <div class="skillInfo">
         DMG 7<br>
-        Frostbite
+        Burning → 💥 Shatter
       </div>
-
     </div>
 
   </div>
@@ -501,13 +333,9 @@ Rebuild V0.2 — Spell Engine
 </div>
 
 
-<!-- LOG -->
-
 <div class="panel">
 
-  <strong>
-    📜 戰鬥紀錄
-  </strong>
+  <strong>📜 戰鬥紀錄</strong>
 
   <div id="log"></div>
 
@@ -517,9 +345,7 @@ Rebuild V0.2 — Spell Engine
       暫停
     </button>
 
-    <button
-      id="resetBtn"
-      class="secondary">
+    <button id="resetBtn" class="secondary">
       重置測試
     </button>
 
@@ -529,8 +355,9 @@ Rebuild V0.2 — Spell Engine
 
 
 <div class="anchor">
-🔒 V0.1-BASE preserved<br>
-🧪 Candidate：V0.2 Spell Engine
+🔒 V0.1 Combat Engine<br>
+🔒 V0.2 Spell Engine<br>
+🧪 V0.3A Reaction Engine：SHATTER
 </div>
 
 </div>
@@ -538,20 +365,21 @@ Rebuild V0.2 — Spell Engine
 
 <script>
 
-/* =========================================================
-   MAGE IDLE
-   V0.2 SPELL ENGINE
+/* =====================================================
+   MAGE IDLE V0.3A
 
-   V0.1 combat architecture preserved.
-   Spell effects are independent game states.
-========================================================= */
+   V0.1 = Combat Engine
+   V0.2 = Spell Engine
+   V0.3A = Reaction Engine
+
+   First Reaction:
+   Burning + Ice = SHATTER
+===================================================== */
 
 
-/* =========================================================
-   CONFIG
-========================================================= */
+/* CONFIG */
 
-const CONFIG = {
+const CONFIG={
 
   TICK_MS:100,
 
@@ -575,73 +403,53 @@ const CONFIG = {
 
   CHAIN_MAX_TARGETS:3,
 
-  CHAIN_DAMAGE_MULTIPLIER:0.70
+  CHAIN_DAMAGE_MULTIPLIER:0.70,
+
+  SHATTER_DAMAGE:12
 
 };
 
 
-/* =========================================================
-   SKILLS
-========================================================= */
+/* SKILLS */
 
-const SKILLS = [
+const SKILLS=[
 
   {
     id:"fire",
-
     name:"Fire",
-
     icon:"🔥",
-
     damage:10,
-
     range:20,
-
     cooldown:1000,
-
     className:"fireText"
   },
 
   {
     id:"lightning",
-
     name:"Lightning",
-
     icon:"⚡",
-
     damage:10,
-
     range:20,
-
     cooldown:1000,
-
     className:"lightningText"
   },
 
   {
     id:"ice",
-
     name:"Ice",
-
     icon:"❄️",
-
     damage:7,
-
     range:9,
-
     cooldown:650,
-
     className:"iceText"
   }
 
 ];
 
 
-/* =========================================================
-   GAME STATE
-========================================================= */
+/* GAME */
 
-const game = {
+const game={
 
   running:true,
 
@@ -670,161 +478,80 @@ const game = {
     skillIndex:0,
 
     nextAttackAt:0
-
   },
 
   monsters:[]
-
 };
 
 
-/* =========================================================
-   DOM
-========================================================= */
+/* DOM */
 
-const worldEl =
-  document.getElementById("world");
+const worldEl=document.getElementById("world");
+const playerEl=document.getElementById("player");
 
-const playerEl =
-  document.getElementById("player");
+const hpText=document.getElementById("hpText");
+const mpText=document.getElementById("mpText");
+const expText=document.getElementById("expText");
 
-const hpText =
-  document.getElementById("hpText");
+const hpBar=document.getElementById("hpBar");
+const mpBar=document.getElementById("mpBar");
+const expBar=document.getElementById("expBar");
 
-const mpText =
-  document.getElementById("mpText");
+const levelText=document.getElementById("levelText");
+const killText=document.getElementById("killText");
 
-const expText =
-  document.getElementById("expText");
+const logEl=document.getElementById("log");
 
-const hpBar =
-  document.getElementById("hpBar");
-
-const mpBar =
-  document.getElementById("mpBar");
-
-const expBar =
-  document.getElementById("expBar");
-
-const levelText =
-  document.getElementById("levelText");
-
-const killText =
-  document.getElementById("killText");
-
-const logEl =
-  document.getElementById("log");
-
-const pauseBtn =
-  document.getElementById("pauseBtn");
-
-const resetBtn =
-  document.getElementById("resetBtn");
+const pauseBtn=document.getElementById("pauseBtn");
+const resetBtn=document.getElementById("resetBtn");
 
 
-/* =========================================================
-   UTILITY
-========================================================= */
+/* UTILITY */
 
-function clamp(
-  value,
-  min,
-  max
-){
+function clamp(value,min,max){
+  return Math.max(min,Math.min(max,value));
+}
 
-  return Math.max(
-    min,
-    Math.min(
-      max,
-      value
-    )
-  );
+function distance(a,b){
 
+  const dx=a.x-b.x;
+  const dy=a.y-b.y;
+
+  return Math.sqrt(dx*dx+dy*dy);
+}
+
+function random(min,max){
+  return min+Math.random()*(max-min);
 }
 
 
-function distance(
-  a,
-  b
-){
+/* LOG */
 
-  const dx =
-    a.x - b.x;
+function addLog(text,className=""){
 
-  const dy =
-    a.y - b.y;
-
-  return Math.sqrt(
-    dx*dx +
-    dy*dy
-  );
-
-}
-
-
-function random(
-  min,
-  max
-){
-
-  return (
-    min +
-    Math.random() *
-    (max-min)
-  );
-
-}
-
-
-/* =========================================================
-   LOG
-========================================================= */
-
-function addLog(
-  text,
-  className=""
-){
-
-  const line =
-    document.createElement("div");
+  const line=document.createElement("div");
 
   if(className){
-    line.className =
-      className;
+    line.className=className;
   }
 
-  line.textContent =
-    text;
+  line.textContent=text;
 
-  logEl.appendChild(
-    line
-  );
+  logEl.appendChild(line);
 
-
-  while(
-    logEl.children.length > 35
-  ){
-
-    logEl.removeChild(
-      logEl.firstChild
-    );
-
+  while(logEl.children.length>40){
+    logEl.removeChild(logEl.firstChild);
   }
 
-
-  logEl.scrollTop =
-    logEl.scrollHeight;
-
+  logEl.scrollTop=logEl.scrollHeight;
 }
 
 
-/* =========================================================
-   MONSTER
-========================================================= */
+/* MONSTER */
 
 function createMonster(id){
 
-  const monster = {
+  const monster={
 
     id,
 
@@ -841,29 +568,21 @@ function createMonster(id){
     respawnAt:0,
 
     burningUntil:0,
-
     nextBurnTick:0,
 
     frostUntil:0,
 
     el:null,
-
     hpFill:null,
-
     statusEl:null
-
   };
 
 
-  const el =
-    document.createElement("div");
+  const el=document.createElement("div");
 
-  el.className =
-    "entity slime";
+  el.className="entity slime";
 
-
-  el.innerHTML = `
-
+  el.innerHTML=`
     <div class="statuses"></div>
 
     <div class="mob-hp">
@@ -871,351 +590,255 @@ function createMonster(id){
     </div>
 
     🟢
-
   `;
-
 
   worldEl.appendChild(el);
 
+  monster.el=el;
 
-  monster.el = el;
+  monster.hpFill=
+    el.querySelector(".mob-hp-fill");
 
-  monster.hpFill =
-    el.querySelector(
-      ".mob-hp-fill"
-    );
+  monster.statusEl=
+    el.querySelector(".statuses");
 
-  monster.statusEl =
-    el.querySelector(
-      ".statuses"
-    );
-
-
-  game.monsters.push(
-    monster
-  );
-
+  game.monsters.push(monster);
 }
 
 
-/* =========================================================
-   TARGETING
-========================================================= */
+/* TARGET */
 
 function getTarget(){
 
-  let best = null;
+  let best=null;
+  let bestDistance=Infinity;
 
-  let bestDistance =
-    Infinity;
-
-
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     if(!monster.alive){
       continue;
     }
 
+    const d=distance(game.player,monster);
 
-    const d =
-      distance(
-        game.player,
-        monster
-      );
+    if(d<bestDistance){
 
-
-    if(
-      d <
-      bestDistance
-    ){
-
-      bestDistance = d;
-
-      best = monster;
-
+      bestDistance=d;
+      best=monster;
     }
-
   }
 
-
   return best;
-
 }
 
 
-/* =========================================================
-   MOVEMENT
-========================================================= */
+/* MOVEMENT */
 
-function moveToward(
-  target,
-  deltaSeconds
-){
+function moveToward(target,deltaSeconds){
 
-  const player =
-    game.player;
+  const player=game.player;
 
+  const dx=target.x-player.x;
+  const dy=target.y-player.y;
 
-  const dx =
-    target.x -
-    player.x;
+  const d=Math.sqrt(dx*dx+dy*dy);
 
-  const dy =
-    target.y -
-    player.y;
-
-
-  const d =
-    Math.sqrt(
-      dx*dx +
-      dy*dy
-    );
-
-
-  if(
-    d <= 0.001
-  ){
+  if(d<=0.001){
     return;
   }
 
+  const move=
+    CONFIG.PLAYER_SPEED*deltaSeconds;
 
-  const move =
-    CONFIG.PLAYER_SPEED *
-    deltaSeconds;
+  const amount=
+    Math.min(move,d);
 
+  player.x+=dx/d*amount;
+  player.y+=dy/d*amount;
 
-  const amount =
-    Math.min(
-      move,
-      d
-    );
-
-
-  player.x +=
-    dx / d *
-    amount;
-
-  player.y +=
-    dy / d *
-    amount;
-
-
-  player.x =
-    clamp(
-      player.x,
-      3,
-      97
-    );
-
-  player.y =
-    clamp(
-      player.y,
-      4,
-      96
-    );
-
+  player.x=clamp(player.x,3,97);
+  player.y=clamp(player.y,4,96);
 }
 
 
-/* =========================================================
-   VISUAL EFFECT
-========================================================= */
+/* EFFECT */
 
-function createEffect(
-  monster,
-  icon
-){
+function createEffect(monster,icon){
 
-  const effect =
-    document.createElement(
-      "div"
-    );
+  const effect=document.createElement("div");
 
+  effect.className="effect";
 
-  effect.className =
-    "effect";
+  effect.textContent=icon;
 
-  effect.textContent =
-    icon;
+  effect.style.left=monster.x+"%";
+  effect.style.top=monster.y+"%";
 
-  effect.style.left =
-    monster.x + "%";
-
-  effect.style.top =
-    monster.y + "%";
-
-
-  worldEl.appendChild(
-    effect
-  );
-
+  worldEl.appendChild(effect);
 
   setTimeout(
-    () => effect.remove(),
+    ()=>effect.remove(),
     600
   );
-
 }
 
 
-/* =========================================================
-   LIGHTNING VISUAL
-========================================================= */
+/* REACTION VISUAL */
 
-function createLightningLine(
-  from,
-  to
-){
+function createReactionEffect(monster){
 
-  const worldRect =
-    worldEl.getBoundingClientRect();
+  const effect=document.createElement("div");
 
+  effect.className="reaction";
 
-  const x1 =
-    from.x / 100 *
-    worldRect.width;
+  effect.innerHTML=`
+    <span class="reactionIcon">💥</span>
+    SHATTER!
+  `;
 
-  const y1 =
-    from.y / 100 *
-    worldRect.height;
+  effect.style.left=monster.x+"%";
+  effect.style.top=monster.y+"%";
 
-  const x2 =
-    to.x / 100 *
-    worldRect.width;
-
-  const y2 =
-    to.y / 100 *
-    worldRect.height;
-
-
-  const dx =
-    x2 - x1;
-
-  const dy =
-    y2 - y1;
-
-
-  const length =
-    Math.sqrt(
-      dx*dx +
-      dy*dy
-    );
-
-
-  const angle =
-    Math.atan2(
-      dy,
-      dx
-    ) *
-    180 /
-    Math.PI;
-
-
-  const line =
-    document.createElement(
-      "div"
-    );
-
-
-  line.className =
-    "lightning-line";
-
-
-  line.style.left =
-    x1 + "px";
-
-  line.style.top =
-    y1 + "px";
-
-  line.style.width =
-    length + "px";
-
-  line.style.transform =
-    `rotate(${angle}deg)`;
-
-
-  worldEl.appendChild(
-    line
-  );
-
+  worldEl.appendChild(effect);
 
   setTimeout(
-    () => line.remove(),
-    300
+    ()=>effect.remove(),
+    950
   );
-
 }
 
 
-/* =========================================================
-   DAMAGE
-========================================================= */
+/* LIGHTNING LINE */
 
-function damageMonster(
-  monster,
-  amount
-){
+function createLightningLine(from,to){
 
-  if(
-    !monster ||
-    !monster.alive
-  ){
+  const worldRect=
+    worldEl.getBoundingClientRect();
+
+  const x1=
+    from.x/100*worldRect.width;
+
+  const y1=
+    from.y/100*worldRect.height;
+
+  const x2=
+    to.x/100*worldRect.width;
+
+  const y2=
+    to.y/100*worldRect.height;
+
+  const dx=x2-x1;
+  const dy=y2-y1;
+
+  const length=
+    Math.sqrt(dx*dx+dy*dy);
+
+  const angle=
+    Math.atan2(dy,dx)*180/Math.PI;
+
+  const line=
+    document.createElement("div");
+
+  line.className=
+    "lightning-line";
+
+  line.style.left=x1+"px";
+  line.style.top=y1+"px";
+  line.style.width=length+"px";
+
+  line.style.transform=
+    `rotate(${angle}deg)`;
+
+  worldEl.appendChild(line);
+
+  setTimeout(
+    ()=>line.remove(),
+    300
+  );
+}
+
+
+/* DAMAGE */
+
+function damageMonster(monster,amount){
+
+  if(!monster || !monster.alive){
+    return false;
+  }
+
+  monster.hp-=amount;
+
+  monster.hp=
+    Math.max(0,monster.hp);
+
+  if(monster.hp<=0){
+
+    killMonster(monster);
+
+    return true;
+  }
+
+  return false;
+}
+
+
+/* =====================================================
+   REACTION ENGINE
+===================================================== */
+
+function tryReaction(monster,incomingElement){
+
+  if(!monster || !monster.alive){
     return false;
   }
 
 
-  monster.hp -=
-    amount;
-
-
-  monster.hp =
-    Math.max(
-      0,
-      monster.hp
-    );
-
+  /* Burning + Ice = Shatter */
 
   if(
-    monster.hp <= 0
+    incomingElement==="ice" &&
+    monster.burningUntil>game.time
   ){
 
-    killMonster(
-      monster
+    /* consume Burning */
+
+    monster.burningUntil=0;
+    monster.nextBurnTick=0;
+
+
+    createReactionEffect(monster);
+
+
+    addLog(
+      `💥 SHATTER！額外傷害 -${CONFIG.SHATTER_DAMAGE}`,
+      "reactionText"
     );
 
-    return true;
 
+    damageMonster(
+      monster,
+      CONFIG.SHATTER_DAMAGE
+    );
+
+
+    return true;
   }
 
 
   return false;
-
 }
 
 
-/* =========================================================
-   FIRE
-========================================================= */
+/* FIRE */
 
-function castFire(
-  monster,
-  skill
-){
+function castFire(monster,skill){
 
-  createEffect(
-    monster,
-    "🔥"
-  );
-
+  createEffect(monster,"🔥");
 
   damageMonster(
     monster,
     skill.damage
   );
-
 
   addLog(
     `🔥 Fire → Slime -${skill.damage}`,
@@ -1223,16 +846,14 @@ function castFire(
   );
 
 
-  if(
-    monster.alive
-  ){
+  if(monster.alive){
 
-    monster.burningUntil =
-      game.time +
+    monster.burningUntil=
+      game.time+
       CONFIG.BURN_DURATION_MS;
 
-    monster.nextBurnTick =
-      game.time +
+    monster.nextBurnTick=
+      game.time+
       CONFIG.BURN_TICK_MS;
 
 
@@ -1240,25 +861,15 @@ function castFire(
       "🔥 Slime 進入 Burning",
       "burnText"
     );
-
   }
-
 }
 
 
-/* =========================================================
-   ICE
-========================================================= */
+/* ICE */
 
-function castIce(
-  monster,
-  skill
-){
+function castIce(monster,skill){
 
-  createEffect(
-    monster,
-    "❄️"
-  );
+  createEffect(monster,"❄️");
 
 
   damageMonster(
@@ -1273,38 +884,44 @@ function castIce(
   );
 
 
-  if(
-    monster.alive
-  ){
-
-    monster.frostUntil =
-      game.time +
-      CONFIG.FROST_DURATION_MS;
-
-
-    addLog(
-      "❄️ Slime 進入 Frostbite",
-      "iceText"
-    );
-
+  if(!monster.alive){
+    return;
   }
 
+
+  /*
+    Reaction check happens
+    BEFORE applying Frostbite.
+  */
+
+  tryReaction(
+    monster,
+    "ice"
+  );
+
+
+  if(!monster.alive){
+    return;
+  }
+
+
+  monster.frostUntil=
+    game.time+
+    CONFIG.FROST_DURATION_MS;
+
+
+  addLog(
+    "❄️ Slime 進入 Frostbite",
+    "iceText"
+  );
 }
 
 
-/* =========================================================
-   LIGHTNING
-========================================================= */
+/* LIGHTNING */
 
-function castLightning(
-  monster,
-  skill
-){
+function castLightning(monster,skill){
 
-  createEffect(
-    monster,
-    "⚡"
-  );
+  createEffect(monster,"⚡");
 
 
   damageMonster(
@@ -1320,39 +937,31 @@ function castLightning(
 
 
   if(
-    Math.random() >
+    Math.random()>
     CONFIG.CHAIN_CHANCE
   ){
-
     return;
-
   }
 
 
-  let current =
-    monster;
+  let current=monster;
 
-
-  const hitIds =
+  const hitIds=
     new Set();
 
+  hitIds.add(monster.id);
 
-  hitIds.add(
-    monster.id
-  );
-
-
-  let jumps = 1;
+  let jumps=1;
 
 
   while(
-    jumps <
+    jumps<
     CONFIG.CHAIN_MAX_TARGETS
   ){
 
-    let next = null;
+    let next=null;
 
-    let bestDistance =
+    let bestDistance=
       Infinity;
 
 
@@ -1361,23 +970,18 @@ function castLightning(
       of game.monsters
     ){
 
+      if(!candidate.alive){
+        continue;
+      }
+
       if(
-        !candidate.alive
+        hitIds.has(candidate.id)
       ){
         continue;
       }
 
 
-      if(
-        hitIds.has(
-          candidate.id
-        )
-      ){
-        continue;
-      }
-
-
-      const d =
+      const d=
         distance(
           current,
           candidate
@@ -1385,20 +989,13 @@ function castLightning(
 
 
       if(
-        d <=
-        CONFIG.CHAIN_RANGE &&
-        d <
-        bestDistance
+        d<=CONFIG.CHAIN_RANGE &&
+        d<bestDistance
       ){
 
-        next =
-          candidate;
-
-        bestDistance =
-          d;
-
+        next=candidate;
+        bestDistance=d;
       }
-
     }
 
 
@@ -1407,11 +1004,11 @@ function castLightning(
     }
 
 
-    const chainDamage =
+    const chainDamage=
       Math.max(
         1,
         Math.round(
-          skill.damage *
+          skill.damage*
           CONFIG.CHAIN_DAMAGE_MULTIPLIER
         )
       );
@@ -1441,69 +1038,39 @@ function castLightning(
     );
 
 
-    hitIds.add(
-      next.id
-    );
+    hitIds.add(next.id);
 
+    current=next;
 
-    current =
-      next;
-
-
-    jumps += 1;
-
+    jumps++;
   }
-
 }
 
 
-/* =========================================================
-   SPELL ROUTER
-========================================================= */
+/* SPELL ROUTER */
 
-function castSkill(
-  monster,
-  skill
-){
+function castSkill(monster,skill){
 
-  if(
-    !monster ||
-    !monster.alive
-  ){
+  if(!monster || !monster.alive){
     return;
   }
 
 
-  if(
-    skill.id ===
-    "fire"
-  ){
+  if(skill.id==="fire"){
 
     castFire(
       monster,
       skill
     );
 
-  }
-
-
-  else if(
-    skill.id ===
-    "lightning"
-  ){
+  }else if(skill.id==="lightning"){
 
     castLightning(
       monster,
       skill
     );
 
-  }
-
-
-  else if(
-    skill.id ===
-    "ice"
-  ){
+  }else if(skill.id==="ice"){
 
     castIce(
       monster,
@@ -1511,13 +1078,10 @@ function castSkill(
     );
 
   }
-
 }
 
 
-/* =========================================================
-   STATUS UPDATE
-========================================================= */
+/* STATUS UPDATE */
 
 function updateStatuses(){
 
@@ -1526,9 +1090,7 @@ function updateStatuses(){
     of game.monsters
   ){
 
-    if(
-      !monster.alive
-    ){
+    if(!monster.alive){
       continue;
     }
 
@@ -1536,16 +1098,16 @@ function updateStatuses(){
     /* Burning */
 
     if(
-      monster.burningUntil >
+      monster.burningUntil>
       game.time
     ){
 
       if(
-        game.time >=
+        game.time>=
         monster.nextBurnTick
       ){
 
-        monster.nextBurnTick +=
+        monster.nextBurnTick+=
           CONFIG.BURN_TICK_MS;
 
 
@@ -1565,87 +1127,60 @@ function updateStatuses(){
           `🔥 Burning → Slime -${CONFIG.BURN_DAMAGE}`,
           "burnText"
         );
-
       }
 
+    }else{
+
+      monster.burningUntil=0;
+      monster.nextBurnTick=0;
     }
 
 
-    /* Expired Burning */
-
-    else{
-
-      monster.burningUntil =
-        0;
-
-    }
-
-
-    /* Expired Frost */
+    /* Frost expiration */
 
     if(
-      monster.frostUntil <=
+      monster.frostUntil<=
       game.time
     ){
 
-      monster.frostUntil =
-        0;
-
+      monster.frostUntil=0;
     }
-
   }
-
 }
 
 
-/* =========================================================
-   KILL
-========================================================= */
+/* KILL */
 
-function killMonster(
-  monster
-){
+function killMonster(monster){
 
-  if(
-    !monster.alive
-  ){
+  if(!monster.alive){
     return;
   }
 
+  monster.alive=false;
 
-  monster.alive =
-    false;
+  monster.hp=0;
 
-  monster.hp = 0;
+  monster.burningUntil=0;
+  monster.nextBurnTick=0;
+  monster.frostUntil=0;
 
-
-  monster.burningUntil = 0;
-
-  monster.nextBurnTick = 0;
-
-  monster.frostUntil = 0;
-
-
-  monster.respawnAt =
-    game.time +
+  monster.respawnAt=
+    game.time+
     CONFIG.SLIME_RESPAWN_MS;
 
 
-  game.player.kills +=
-    1;
+  game.player.kills++;
 
-  game.player.exp +=
-    10;
+  game.player.exp+=10;
 
 
   if(
-    game.player.targetId ===
+    game.player.targetId===
     monster.id
   ){
 
-    game.player.targetId =
-      null;
-
+    game.player.targetId=null;
   }
 
 
@@ -1656,67 +1191,45 @@ function killMonster(
 
 
   checkLevelUp();
-
 }
 
 
-/* =========================================================
-   LEVEL
-========================================================= */
+/* LEVEL */
 
 function checkLevelUp(){
 
-  const player =
-    game.player;
-
+  const player=game.player;
 
   while(
-    player.exp >=
+    player.exp>=
     player.expNeed
   ){
 
-    player.exp -=
+    player.exp-=
       player.expNeed;
 
+    player.level++;
 
-    player.level +=
-      1;
-
-
-    player.expNeed =
+    player.expNeed=
       Math.floor(
-        player.expNeed *
-        1.25
+        player.expNeed*1.25
       );
 
+    player.maxHp+=10;
+    player.hp=player.maxHp;
 
-    player.maxHp +=
-      10;
-
-    player.hp =
-      player.maxHp;
-
-
-    player.maxMp +=
-      5;
-
-    player.mp =
-      player.maxMp;
-
+    player.maxMp+=5;
+    player.mp=player.maxMp;
 
     addLog(
       `✨ Level Up！現在 Lv.${player.level}`,
       "good"
     );
-
   }
-
 }
 
 
-/* =========================================================
-   RESPAWN
-========================================================= */
+/* RESPAWN */
 
 function updateRespawns(){
 
@@ -1727,139 +1240,101 @@ function updateRespawns(){
 
     if(
       !monster.alive &&
-      game.time >=
+      game.time>=
       monster.respawnAt
     ){
 
-      monster.alive =
-        true;
+      monster.alive=true;
 
-      monster.hp =
+      monster.hp=
         monster.maxHp;
 
-
-      monster.x =
+      monster.x=
         random(10,90);
 
-      monster.y =
+      monster.y=
         random(12,88);
 
+      monster.respawnAt=0;
 
-      monster.respawnAt =
-        0;
-
-
-      monster.burningUntil =
-        0;
-
-      monster.nextBurnTick =
-        0;
-
-      monster.frostUntil =
-        0;
-
+      monster.burningUntil=0;
+      monster.nextBurnTick=0;
+      monster.frostUntil=0;
 
       addLog(
         "🟢 Slime 重生了"
       );
-
     }
-
   }
-
 }
 
 
-/* =========================================================
-   GAME UPDATE
-========================================================= */
+/* GAME UPDATE */
 
-function updateGame(
-  deltaMs
-){
+function updateGame(deltaMs){
 
-  if(
-    !game.running
-  ){
+  if(!game.running){
     return;
   }
 
-
-  game.time +=
-    deltaMs;
-
+  game.time+=deltaMs;
 
   updateRespawns();
 
   updateStatuses();
 
 
-  let target =
+  let target=
     game.monsters.find(
-
-      monster =>
-
-        monster.id ===
+      monster=>
+        monster.id===
         game.player.targetId &&
-
         monster.alive
-
     );
 
 
-  if(
-    !target
-  ){
+  if(!target){
 
-    target =
-      getTarget();
+    target=getTarget();
 
-
-    game.player.targetId =
-      target ?
-      target.id :
+    game.player.targetId=
+      target?
+      target.id:
       null;
-
   }
 
 
-  if(
-    !target
-  ){
+  if(!target){
     return;
   }
 
 
-  const skill =
+  const skill=
     SKILLS[
       game.player.skillIndex
     ];
 
 
-  const d =
+  const d=
     distance(
       game.player,
       target
     );
 
 
-  if(
-    d >
-    skill.range
-  ){
+  if(d>skill.range){
 
     moveToward(
       target,
-      deltaMs / 1000
+      deltaMs/1000
     );
 
     return;
-
   }
 
 
   if(
-    game.time >=
+    game.time>=
     game.player.nextAttackAt
   ){
 
@@ -1869,39 +1344,31 @@ function updateGame(
     );
 
 
-    game.player.nextAttackAt =
-      game.time +
+    game.player.nextAttackAt=
+      game.time+
       skill.cooldown;
 
 
-    game.player.skillIndex =
+    game.player.skillIndex=
       (
-        game.player.skillIndex +
-        1
-      )
-      %
+        game.player.skillIndex+1
+      )%
       SKILLS.length;
-
   }
-
 }
 
 
-/* =========================================================
-   RENDER
-========================================================= */
+/* RENDER */
 
 function render(){
 
-  const player =
-    game.player;
+  const player=game.player;
 
+  playerEl.style.left=
+    player.x+"%";
 
-  playerEl.style.left =
-    player.x + "%";
-
-  playerEl.style.top =
-    player.y + "%";
+  playerEl.style.top=
+    player.y+"%";
 
 
   for(
@@ -1909,11 +1376,11 @@ function render(){
     of game.monsters
   ){
 
-    monster.el.style.left =
-      monster.x + "%";
+    monster.el.style.left=
+      monster.x+"%";
 
-    monster.el.style.top =
-      monster.y + "%";
+    monster.el.style.top=
+      monster.y+"%";
 
 
     monster.el.classList.toggle(
@@ -1924,135 +1391,106 @@ function render(){
 
     monster.el.classList.toggle(
       "target",
-
-      monster.id ===
+      monster.id===
       player.targetId &&
-
       monster.alive
     );
 
 
-    const hpPercent =
+    const hpPercent=
       (
-        monster.hp /
+        monster.hp/
         monster.maxHp
-      ) *
-      100;
+      )*100;
 
 
-    monster.hpFill.style.width =
-      hpPercent + "%";
+    monster.hpFill.style.width=
+      hpPercent+"%";
 
 
-    let statusText = "";
+    let statusText="";
 
 
     if(
-      monster.burningUntil >
+      monster.burningUntil>
       game.time
     ){
-
-      statusText +=
-        "🔥";
-
+      statusText+="🔥";
     }
 
 
     if(
-      monster.frostUntil >
+      monster.frostUntil>
       game.time
     ){
-
-      statusText +=
-        "❄️";
-
+      statusText+="❄️";
     }
 
 
-    monster.statusEl.textContent =
+    monster.statusEl.textContent=
       statusText;
-
   }
 
 
-  hpText.textContent =
+  hpText.textContent=
     `HP ${player.hp} / ${player.maxHp}`;
 
-
-  mpText.textContent =
+  mpText.textContent=
     `MP ${player.mp} / ${player.maxMp}`;
 
-
-  expText.textContent =
+  expText.textContent=
     `EXP ${player.exp} / ${player.expNeed}`;
 
-
-  levelText.textContent =
+  levelText.textContent=
     `Lv.${player.level} Mage`;
 
-
-  killText.textContent =
+  killText.textContent=
     `Kills ${player.kills}`;
 
 
-  hpBar.style.width =
+  hpBar.style.width=
     (
-      player.hp /
-      player.maxHp *
-      100
-    ) +
-    "%";
+      player.hp/
+      player.maxHp*100
+    )+"%";
 
-
-  mpBar.style.width =
+  mpBar.style.width=
     (
-      player.mp /
-      player.maxMp *
-      100
-    ) +
-    "%";
+      player.mp/
+      player.maxMp*100
+    )+"%";
 
-
-  expBar.style.width =
+  expBar.style.width=
     (
-      player.exp /
-      player.expNeed *
-      100
-    ) +
-    "%";
-
+      player.exp/
+      player.expNeed*100
+    )+"%";
 }
 
 
-/* =========================================================
-   MAIN LOOP
-========================================================= */
+/* MAIN LOOP */
 
-let lastTime =
+let lastTime=
   performance.now();
 
-let accumulator = 0;
+let accumulator=0;
 
 
 function mainLoop(now){
 
-  const frameDelta =
+  const frameDelta=
     Math.min(
-      now - lastTime,
+      now-lastTime,
       1000
     );
 
+  lastTime=now;
 
-  lastTime =
-    now;
-
-
-  accumulator +=
-    frameDelta;
+  accumulator+=frameDelta;
 
 
   while(
-    accumulator >=
+    accumulator>=
     CONFIG.TICK_MS
   ){
 
@@ -2060,81 +1498,48 @@ function mainLoop(now){
       CONFIG.TICK_MS
     );
 
-
-    accumulator -=
+    accumulator-=
       CONFIG.TICK_MS;
-
   }
 
 
   render();
 
-
   requestAnimationFrame(
     mainLoop
   );
-
 }
 
 
-/* =========================================================
-   RESET
-========================================================= */
+/* RESET */
 
 function resetGame(){
 
-  game.time = 0;
+  game.time=0;
 
-  game.running =
-    true;
+  game.running=true;
 
+  game.player.x=50;
+  game.player.y=78;
 
-  game.player.x =
-    50;
+  game.player.hp=100;
+  game.player.maxHp=100;
 
-  game.player.y =
-    78;
+  game.player.mp=100;
+  game.player.maxMp=100;
 
+  game.player.level=1;
 
-  game.player.hp =
-    100;
+  game.player.exp=0;
+  game.player.expNeed=100;
 
-  game.player.maxHp =
-    100;
+  game.player.kills=0;
 
+  game.player.targetId=null;
 
-  game.player.mp =
-    100;
+  game.player.skillIndex=0;
 
-  game.player.maxMp =
-    100;
-
-
-  game.player.level =
-    1;
-
-
-  game.player.exp =
-    0;
-
-  game.player.expNeed =
-    100;
-
-
-  game.player.kills =
-    0;
-
-
-  game.player.targetId =
-    null;
-
-
-  game.player.skillIndex =
-    0;
-
-
-  game.player.nextAttackAt =
-    0;
+  game.player.nextAttackAt=0;
 
 
   for(
@@ -2142,84 +1547,61 @@ function resetGame(){
     of game.monsters
   ){
 
-    monster.alive =
-      true;
+    monster.alive=true;
 
-
-    monster.hp =
+    monster.hp=
       monster.maxHp;
 
-
-    monster.x =
+    monster.x=
       random(10,90);
 
-    monster.y =
+    monster.y=
       random(12,88);
 
+    monster.respawnAt=0;
 
-    monster.respawnAt =
-      0;
-
-
-    monster.burningUntil =
-      0;
-
-    monster.nextBurnTick =
-      0;
-
-    monster.frostUntil =
-      0;
-
+    monster.burningUntil=0;
+    monster.nextBurnTick=0;
+    monster.frostUntil=0;
   }
 
 
-  logEl.innerHTML =
-    "";
+  logEl.innerHTML="";
 
-
-  pauseBtn.textContent =
+  pauseBtn.textContent=
     "暫停";
 
 
   addLog(
-    "🧙 Mage Idle V0.2 開始"
+    "🧙 Mage Idle V0.3A 開始"
   );
 
+  addLog(
+    "🔥 Burning + ❄️ Ice = 💥 SHATTER"
+  );
 }
 
 
-/* =========================================================
-   CONTROLS
-========================================================= */
+/* CONTROLS */
 
 pauseBtn.addEventListener(
-
   "click",
+  ()=>{
 
-  () => {
-
-    game.running =
+    game.running=
       !game.running;
 
-
-    pauseBtn.textContent =
-      game.running ?
-      "暫停" :
+    pauseBtn.textContent=
+      game.running?
+      "暫停":
       "繼續";
 
-
     addLog(
-
-      game.running ?
-
-      "▶️ 戰鬥繼續" :
-
+      game.running?
+      "▶️ 戰鬥繼續":
       "⏸️ 戰鬥暫停"
-
     );
-
   }
-
 );
 
 
@@ -2229,35 +1611,23 @@ resetBtn.addEventListener(
 );
 
 
-/* =========================================================
-   BOOT
-========================================================= */
+/* BOOT */
 
 for(
-  let i = 0;
-  i < CONFIG.SLIME_COUNT;
+  let i=0;
+  i<CONFIG.SLIME_COUNT;
   i++
 ){
-
   createMonster(i);
-
 }
 
 
 addLog(
-  "🧙 Mage Idle V0.2 Spell Engine 啟動"
+  "🧙 Mage Idle V0.3A Reaction Engine 啟動"
 );
 
 addLog(
-  "🔥 Fire：Burning"
-);
-
-addLog(
-  "⚡ Lightning：Chain Lightning"
-);
-
-addLog(
-  "❄️ Ice：Frostbite"
+  "💥 第一反應：Burning + Ice → SHATTER"
 );
 
 
