@@ -1,1 +1,1316 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
+<title>Mage Idle Rebuild</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  background: #0d1117;
+  color: #f0f6fc;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+#app {
+  width: 100%;
+  max-width: 760px;
+  margin: auto;
+  padding: 14px;
+}
+
+h1 {
+  margin: 6px 0 2px;
+  font-size: 25px;
+}
+
+.version {
+  color: #8b949e;
+  margin-bottom: 12px;
+}
+
+.panel {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  margin-bottom: 7px;
+}
+
+.bar {
+  height: 10px;
+  background: #30363d;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.fill {
+  height: 100%;
+  transition: width .15s linear;
+}
+
+.hp {
+  background: #3fb950;
+}
+
+.mp {
+  background: #58a6ff;
+}
+
+.exp {
+  background: #a371f7;
+}
+
+/* ===== WORLD ===== */
+
+#world {
+  position: relative;
+  width: 100%;
+  height: 470px;
+
+  background:
+    radial-gradient(circle at 20% 25%, rgba(255,255,255,.06) 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 70%, rgba(255,255,255,.05) 0 4px, transparent 5px),
+    linear-gradient(#679c59, #48783f);
+
+  border: 3px solid #31552b;
+  border-radius: 18px;
+
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+/* ===== ENTITIES ===== */
+
+.entity {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+#player {
+  width: 44px;
+  height: 44px;
+
+  border-radius: 50%;
+  background: #9b59ff;
+
+  border: 3px solid #d9b8ff;
+
+  box-shadow:
+    0 0 0 3px rgba(0,0,0,.25),
+    0 0 16px rgba(155,89,255,.7);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+
+  z-index: 10;
+}
+
+.slime {
+  width: 38px;
+  height: 32px;
+
+  border-radius: 50% 50% 42% 42%;
+
+  background: #42c96b;
+
+  border: 2px solid #1e7d3d;
+
+  box-shadow: 0 4px 0 rgba(0,0,0,.18);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 17px;
+}
+
+.slime.dead {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.target {
+  outline: 3px solid #ffd866;
+  outline-offset: 5px;
+}
+
+/* ===== HP ABOVE MONSTER ===== */
+
+.mob-hp {
+  position: absolute;
+
+  width: 42px;
+  height: 5px;
+
+  background: rgba(0,0,0,.5);
+
+  top: -10px;
+  left: -4px;
+
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mob-hp-fill {
+  height: 100%;
+  background: #ff6b6b;
+}
+
+/* ===== SPELL EFFECT ===== */
+
+.effect {
+  position: absolute;
+
+  transform: translate(-50%, -50%);
+
+  font-size: 28px;
+
+  z-index: 20;
+
+  pointer-events: none;
+
+  animation: pop .55s ease-out forwards;
+}
+
+@keyframes pop {
+  0% {
+    transform: translate(-50%, -50%) scale(.5);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -90%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* ===== SKILLS ===== */
+
+.skills {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 8px;
+}
+
+.skill {
+  background: #21262d;
+
+  border: 1px solid #30363d;
+  border-radius: 12px;
+
+  padding: 10px 4px;
+
+  text-align: center;
+
+  font-size: 13px;
+}
+
+.skillIcon {
+  font-size: 25px;
+}
+
+/* ===== LOG ===== */
+
+#log {
+  height: 145px;
+
+  overflow-y: auto;
+
+  font-size: 13px;
+  line-height: 1.55;
+
+  color: #c9d1d9;
+}
+
+.good {
+  color: #7ee787;
+}
+
+.fireText {
+  color: #ff9b71;
+}
+
+.lightningText {
+  color: #ffd866;
+}
+
+.iceText {
+  color: #79cfff;
+}
+
+/* ===== CONTROLS ===== */
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+
+  padding: 13px;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  color: white;
+  background: #238636;
+}
+
+button.secondary {
+  background: #30363d;
+}
+
+.anchor {
+  margin-top: 12px;
+
+  text-align: center;
+
+  font-size: 12px;
+  color: #8b949e;
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+<h1>🧙 Mage Idle</h1>
+<div class="version">Rebuild V0.1-BASE — Combat Engine</div>
+
+<!-- PLAYER STATUS -->
+
+<div class="panel">
+
+  <div class="row">
+    <span id="levelText">Lv.1 Mage</span>
+    <span id="killText">Kills 0</span>
+  </div>
+
+  <div class="row">
+    <span id="hpText">HP 100 / 100</span>
+  </div>
+
+  <div class="bar">
+    <div id="hpBar" class="fill hp" style="width:100%"></div>
+  </div>
+
+  <div class="row">
+    <span id="mpText">MP 100 / 100</span>
+  </div>
+
+  <div class="bar">
+    <div id="mpBar" class="fill mp" style="width:100%"></div>
+  </div>
+
+  <div class="row">
+    <span id="expText">EXP 0 / 100</span>
+  </div>
+
+  <div class="bar">
+    <div id="expBar" class="fill exp" style="width:0%"></div>
+  </div>
+
+</div>
+
+<!-- WORLD -->
+
+<div id="world">
+  <div id="player" class="entity">🧙</div>
+</div>
+
+<!-- SKILLS -->
+
+<div class="panel">
+
+  <div class="skills">
+
+    <div class="skill">
+      <div class="skillIcon">🔥</div>
+      Fire
+    </div>
+
+    <div class="skill">
+      <div class="skillIcon">⚡</div>
+      Lightning
+    </div>
+
+    <div class="skill">
+      <div class="skillIcon">❄️</div>
+      Ice
+    </div>
+
+  </div>
+
+</div>
+
+<!-- LOG -->
+
+<div class="panel">
+
+  <strong>📜 戰鬥紀錄</strong>
+
+  <div id="log"></div>
+
+  <div class="controls">
+
+    <button id="pauseBtn">
+      暫停
+    </button>
+
+    <button
+      id="resetBtn"
+      class="secondary">
+      重置測試
+    </button>
+
+  </div>
+
+</div>
+
+<div class="anchor">
+🔒 Candidate Anchor：V0.1-BASE
+</div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   MAGE IDLE ENGINE
+   V0.1-BASE
+
+   IMPORTANT:
+   Game logic does NOT depend on images or animation.
+   ========================================================= */
+
+
+/* =========================================================
+   CONFIG
+   ========================================================= */
+
+const CONFIG = {
+
+  TICK_MS: 100,
+
+  WORLD_WIDTH: 100,
+  WORLD_HEIGHT: 100,
+
+  PLAYER_SPEED: 11,
+
+  SLIME_COUNT: 6,
+
+  SLIME_RESPAWN_MS: 5000
+
+};
+
+
+/* =========================================================
+   SKILL DATA
+   ========================================================= */
+
+const SKILLS = [
+
+  {
+    id: "fire",
+    name: "Fire",
+    icon: "🔥",
+    damage: 10,
+    range: 20,
+    cooldown: 1000,
+    className: "fireText"
+  },
+
+  {
+    id: "lightning",
+    name: "Lightning",
+    icon: "⚡",
+    damage: 10,
+    range: 20,
+    cooldown: 1000,
+    className: "lightningText"
+  },
+
+  {
+    id: "ice",
+    name: "Ice",
+    icon: "❄️",
+    damage: 7,
+    range: 9,
+    cooldown: 650,
+    className: "iceText"
+  }
+
+];
+
+
+/* =========================================================
+   GAME STATE
+   ========================================================= */
+
+const game = {
+
+  running: true,
+
+  time: 0,
+
+  player: {
+
+    x: 50,
+    y: 78,
+
+    hp: 100,
+    maxHp: 100,
+
+    mp: 100,
+    maxMp: 100,
+
+    level: 1,
+
+    exp: 0,
+    expNeed: 100,
+
+    kills: 0,
+
+    targetId: null,
+
+    skillIndex: 0,
+
+    nextAttackAt: 0
+
+  },
+
+  monsters: []
+
+};
+
+
+/* =========================================================
+   DOM
+   ========================================================= */
+
+const worldEl = document.getElementById("world");
+const playerEl = document.getElementById("player");
+
+const hpText = document.getElementById("hpText");
+const mpText = document.getElementById("mpText");
+const expText = document.getElementById("expText");
+
+const hpBar = document.getElementById("hpBar");
+const mpBar = document.getElementById("mpBar");
+const expBar = document.getElementById("expBar");
+
+const levelText = document.getElementById("levelText");
+const killText = document.getElementById("killText");
+
+const logEl = document.getElementById("log");
+
+const pauseBtn = document.getElementById("pauseBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+
+/* =========================================================
+   UTILITY
+   ========================================================= */
+
+function clamp(value,min,max){
+
+  return Math.max(
+    min,
+    Math.min(max,value)
+  );
+
+}
+
+
+function distance(a,b){
+
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+
+  return Math.sqrt(
+    dx * dx +
+    dy * dy
+  );
+
+}
+
+
+function random(min,max){
+
+  return min +
+    Math.random() *
+    (max-min);
+
+}
+
+
+/* =========================================================
+   LOG
+   ========================================================= */
+
+function addLog(text,className=""){
+
+  const line =
+    document.createElement("div");
+
+  if(className){
+    line.className = className;
+  }
+
+  line.textContent = text;
+
+  logEl.appendChild(line);
+
+  while(
+    logEl.children.length > 30
+  ){
+
+    logEl.removeChild(
+      logEl.firstChild
+    );
+
+  }
+
+  logEl.scrollTop =
+    logEl.scrollHeight;
+
+}
+
+
+/* =========================================================
+   MONSTERS
+   ========================================================= */
+
+function createMonster(id){
+
+  const monster = {
+
+    id,
+
+    name: "Slime",
+
+    x: random(10,90),
+    y: random(12,88),
+
+    hp: 50,
+    maxHp: 50,
+
+    alive: true,
+
+    respawnAt: 0,
+
+    element: null,
+
+    el: null,
+
+    hpFill: null
+
+  };
+
+
+  const el =
+    document.createElement("div");
+
+  el.className =
+    "entity slime";
+
+  el.innerHTML = `
+    <div class="mob-hp">
+      <div class="mob-hp-fill"></div>
+    </div>
+    🟢
+  `;
+
+  worldEl.appendChild(el);
+
+  monster.el = el;
+
+  monster.hpFill =
+    el.querySelector(
+      ".mob-hp-fill"
+    );
+
+  game.monsters.push(monster);
+
+}
+
+
+/* =========================================================
+   TARGETING
+   ========================================================= */
+
+function getTarget(){
+
+  let best = null;
+  let bestDistance = Infinity;
+
+  for(
+    const monster
+    of game.monsters
+  ){
+
+    if(!monster.alive){
+      continue;
+    }
+
+    const d =
+      distance(
+        game.player,
+        monster
+      );
+
+    if(d < bestDistance){
+
+      bestDistance = d;
+      best = monster;
+
+    }
+
+  }
+
+  return best;
+
+}
+
+
+/* =========================================================
+   MOVEMENT
+   ========================================================= */
+
+function moveToward(
+  target,
+  deltaSeconds
+){
+
+  const player =
+    game.player;
+
+  const dx =
+    target.x - player.x;
+
+  const dy =
+    target.y - player.y;
+
+  const d =
+    Math.sqrt(
+      dx*dx +
+      dy*dy
+    );
+
+  if(d <= 0.001){
+    return;
+  }
+
+  const move =
+    CONFIG.PLAYER_SPEED *
+    deltaSeconds;
+
+  const amount =
+    Math.min(move,d);
+
+  player.x +=
+    dx / d * amount;
+
+  player.y +=
+    dy / d * amount;
+
+  player.x =
+    clamp(player.x,3,97);
+
+  player.y =
+    clamp(player.y,4,96);
+
+}
+
+
+/* =========================================================
+   SPELL EFFECT
+   ========================================================= */
+
+function createEffect(
+  monster,
+  skill
+){
+
+  const effect =
+    document.createElement("div");
+
+  effect.className =
+    "effect";
+
+  effect.textContent =
+    skill.icon;
+
+  effect.style.left =
+    monster.x + "%";
+
+  effect.style.top =
+    monster.y + "%";
+
+  worldEl.appendChild(effect);
+
+  setTimeout(
+    () => effect.remove(),
+    600
+  );
+
+}
+
+
+/* =========================================================
+   COMBAT
+   ========================================================= */
+
+function castSkill(
+  monster,
+  skill
+){
+
+  if(
+    !monster ||
+    !monster.alive
+  ){
+    return;
+  }
+
+  monster.hp -=
+    skill.damage;
+
+  monster.hp =
+    Math.max(
+      0,
+      monster.hp
+    );
+
+  createEffect(
+    monster,
+    skill
+  );
+
+  addLog(
+    `${skill.icon} Mage 使用 ${skill.name} → Slime -${skill.damage}`,
+    skill.className
+  );
+
+
+  if(monster.hp <= 0){
+
+    killMonster(monster);
+
+  }
+
+}
+
+
+function killMonster(monster){
+
+  monster.alive = false;
+
+  monster.hp = 0;
+
+  monster.respawnAt =
+    game.time +
+    CONFIG.SLIME_RESPAWN_MS;
+
+  game.player.kills += 1;
+
+  game.player.exp += 10;
+
+  game.player.targetId = null;
+
+  addLog(
+    "☠️ Slime 被擊倒！ EXP +10",
+    "good"
+  );
+
+  checkLevelUp();
+
+}
+
+
+/* =========================================================
+   LEVEL
+   ========================================================= */
+
+function checkLevelUp(){
+
+  const player =
+    game.player;
+
+  while(
+    player.exp >=
+    player.expNeed
+  ){
+
+    player.exp -=
+      player.expNeed;
+
+    player.level += 1;
+
+    player.expNeed =
+      Math.floor(
+        player.expNeed *
+        1.25
+      );
+
+    player.maxHp += 10;
+    player.hp =
+      player.maxHp;
+
+    player.maxMp += 5;
+    player.mp =
+      player.maxMp;
+
+    addLog(
+      `✨ Level Up！現在 Lv.${player.level}`,
+      "good"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   RESPAWN
+   ========================================================= */
+
+function updateRespawns(){
+
+  for(
+    const monster
+    of game.monsters
+  ){
+
+    if(
+      !monster.alive &&
+      game.time >=
+      monster.respawnAt
+    ){
+
+      monster.alive = true;
+
+      monster.hp =
+        monster.maxHp;
+
+      monster.x =
+        random(10,90);
+
+      monster.y =
+        random(12,88);
+
+      addLog(
+        "🟢 Slime 重生了"
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   GAME LOGIC
+   ========================================================= */
+
+function updateGame(
+  deltaMs
+){
+
+  if(!game.running){
+    return;
+  }
+
+  game.time +=
+    deltaMs;
+
+  updateRespawns();
+
+
+  let target =
+    game.monsters.find(
+      monster =>
+        monster.id ===
+        game.player.targetId &&
+        monster.alive
+    );
+
+
+  if(!target){
+
+    target =
+      getTarget();
+
+    game.player.targetId =
+      target ?
+      target.id :
+      null;
+
+  }
+
+
+  if(!target){
+    return;
+  }
+
+
+  const skill =
+    SKILLS[
+      game.player.skillIndex
+    ];
+
+
+  const d =
+    distance(
+      game.player,
+      target
+    );
+
+
+  if(d > skill.range){
+
+    moveToward(
+      target,
+      deltaMs / 1000
+    );
+
+    return;
+
+  }
+
+
+  if(
+    game.time >=
+    game.player.nextAttackAt
+  ){
+
+    castSkill(
+      target,
+      skill
+    );
+
+    game.player.nextAttackAt =
+      game.time +
+      skill.cooldown;
+
+    game.player.skillIndex =
+      (
+        game.player.skillIndex + 1
+      )
+      %
+      SKILLS.length;
+
+  }
+
+}
+
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+
+function render(){
+
+  const player =
+    game.player;
+
+
+  playerEl.style.left =
+    player.x + "%";
+
+  playerEl.style.top =
+    player.y + "%";
+
+
+  for(
+    const monster
+    of game.monsters
+  ){
+
+    monster.el.style.left =
+      monster.x + "%";
+
+    monster.el.style.top =
+      monster.y + "%";
+
+
+    monster.el.classList.toggle(
+      "dead",
+      !monster.alive
+    );
+
+
+    monster.el.classList.toggle(
+      "target",
+      monster.id ===
+      player.targetId &&
+      monster.alive
+    );
+
+
+    const hpPercent =
+      (
+        monster.hp /
+        monster.maxHp
+      ) * 100;
+
+
+    monster.hpFill.style.width =
+      hpPercent + "%";
+
+  }
+
+
+  hpText.textContent =
+    `HP ${player.hp} / ${player.maxHp}`;
+
+  mpText.textContent =
+    `MP ${player.mp} / ${player.maxMp}`;
+
+  expText.textContent =
+    `EXP ${player.exp} / ${player.expNeed}`;
+
+
+  levelText.textContent =
+    `Lv.${player.level} Mage`;
+
+  killText.textContent =
+    `Kills ${player.kills}`;
+
+
+  hpBar.style.width =
+    (
+      player.hp /
+      player.maxHp *
+      100
+    ) + "%";
+
+
+  mpBar.style.width =
+    (
+      player.mp /
+      player.maxMp *
+      100
+    ) + "%";
+
+
+  expBar.style.width =
+    (
+      player.exp /
+      player.expNeed *
+      100
+    ) + "%";
+
+}
+
+
+/* =========================================================
+   MAIN LOOP
+   ========================================================= */
+
+let lastTime =
+  performance.now();
+
+let accumulator = 0;
+
+
+function mainLoop(now){
+
+  const frameDelta =
+    Math.min(
+      now - lastTime,
+      1000
+    );
+
+  lastTime = now;
+
+  accumulator +=
+    frameDelta;
+
+
+  while(
+    accumulator >=
+    CONFIG.TICK_MS
+  ){
+
+    updateGame(
+      CONFIG.TICK_MS
+    );
+
+    accumulator -=
+      CONFIG.TICK_MS;
+
+  }
+
+
+  render();
+
+
+  requestAnimationFrame(
+    mainLoop
+  );
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function resetGame(){
+
+  game.time = 0;
+
+  game.running = true;
+
+  game.player.x = 50;
+  game.player.y = 78;
+
+  game.player.hp = 100;
+  game.player.maxHp = 100;
+
+  game.player.mp = 100;
+  game.player.maxMp = 100;
+
+  game.player.level = 1;
+
+  game.player.exp = 0;
+  game.player.expNeed = 100;
+
+  game.player.kills = 0;
+
+  game.player.targetId = null;
+
+  game.player.skillIndex = 0;
+
+  game.player.nextAttackAt = 0;
+
+
+  for(
+    const monster
+    of game.monsters
+  ){
+
+    monster.alive = true;
+
+    monster.hp =
+      monster.maxHp;
+
+    monster.x =
+      random(10,90);
+
+    monster.y =
+      random(12,88);
+
+    monster.respawnAt = 0;
+
+  }
+
+
+  logEl.innerHTML = "";
+
+  pauseBtn.textContent =
+    "暫停";
+
+  addLog(
+    "🧙 Mage Idle V0.1-BASE 開始"
+  );
+
+}
+
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+pauseBtn.addEventListener(
+  "click",
+  () => {
+
+    game.running =
+      !game.running;
+
+    pauseBtn.textContent =
+      game.running ?
+      "暫停" :
+      "繼續";
+
+    addLog(
+      game.running ?
+      "▶️ 戰鬥繼續" :
+      "⏸️ 戰鬥暫停"
+    );
+
+  }
+);
+
+
+resetBtn.addEventListener(
+  "click",
+  resetGame
+);
+
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+
+for(
+  let i = 0;
+  i < CONFIG.SLIME_COUNT;
+  i++
+){
+
+  createMonster(i);
+
+}
+
+
+addLog(
+  "🧙 Mage Idle V0.1-BASE 啟動"
+);
+
+addLog(
+  "🎯 自動尋找最近的 Slime"
+);
+
+
+requestAnimationFrame(
+  mainLoop
+);
+
+</script>
+
+</body>
+</html>
