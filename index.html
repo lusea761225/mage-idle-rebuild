@@ -109,6 +109,7 @@ h1{margin:6px 0 2px;font-size:25px}
   overflow:hidden;margin-bottom:12px
 }
 .entity{position:absolute;transform:translate(-50%,-50%)}
+
 #safeZone{
   position:absolute;left:50%;top:88%;width:105px;height:58px;
   transform:translate(-50%,-50%);
@@ -117,6 +118,7 @@ h1{margin:6px 0 2px;font-size:25px}
   display:flex;align-items:center;justify-content:center;
   font-size:12px;font-weight:800;z-index:1;pointer-events:none
 }
+
 #player{
   width:44px;height:44px;border-radius:50%;
   background:#9b59ff;border:3px solid #d9b8ff;
@@ -125,6 +127,7 @@ h1{margin:6px 0 2px;font-size:25px}
   font-size:22px;z-index:10
 }
 #player.dead{filter:grayscale(1);opacity:.5}
+
 .slime{
   width:38px;height:32px;border-radius:50% 50% 42% 42%;
   background:#42c96b;border:2px solid #1e7d3d;
@@ -136,11 +139,13 @@ h1{margin:6px 0 2px;font-size:25px}
   box-shadow:0 4px 0 rgba(0,0,0,.18),0 0 12px rgba(255,80,80,.85)
 }
 .target{outline:3px solid #ffd866;outline-offset:5px}
+
 .mob-hp{
   position:absolute;width:42px;height:5px;top:-11px;left:-4px;
   background:rgba(0,0,0,.55);border-radius:10px;overflow:hidden
 }
 .mob-hp-fill{height:100%;background:#ff6b6b}
+
 .statuses{
   position:absolute;top:-32px;left:50%;transform:translateX(-50%);
   min-width:75px;text-align:center;font-size:15px;
@@ -148,55 +153,102 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 /* ==================================================
-   V0.7A-2 REAL PIXEL FIREBALL
+   V0.7A-3 FIREBALL MOTION POLISH
 ================================================== */
 
+/* 施法瞬間 Mage 身邊的聚火 */
+.cast-flare{
+  position:absolute;
+  width:18px;height:18px;
+  border-radius:50%;
+  z-index:34;
+  pointer-events:none;
+  transform:translate(-50%,-50%) scale(.2);
+
+  background:
+    radial-gradient(circle,
+      #fff 0 12%,
+      #fff59d 13% 28%,
+      #ffb300 29% 52%,
+      #f4511e 53% 72%,
+      transparent 74%
+    );
+
+  box-shadow:
+    0 0 8px #fff59d,
+    0 0 17px #ff9800,
+    0 0 27px rgba(244,81,30,.85);
+
+  animation:castFlare .18s ease-out forwards
+}
+
+@keyframes castFlare{
+  0%{
+    transform:translate(-50%,-50%) scale(.15);
+    opacity:.3
+  }
+  65%{
+    transform:translate(-50%,-50%) scale(1.8);
+    opacity:1
+  }
+  100%{
+    transform:translate(-50%,-50%) scale(.85);
+    opacity:0
+  }
+}
+
+/* 火球外層：只負責位置與方向 */
 .fireball{
   position:absolute;
-  width:74px;
-  height:58px;
+  width:54px;
+  height:42px;
   z-index:35;
   pointer-events:none;
-
   transform-origin:center center;
   will-change:left,top,transform;
 }
 
+/* 真正 sprite */
 .fireball-sprite{
   position:absolute;
   inset:0;
 
   background-image:url("./572AD589-182E-4094-AE18-2B88F72F6447.png");
   background-repeat:no-repeat;
-
-  /*
-    原圖為 2 x 2 四格。
-  */
   background-size:200% 200%;
   background-position:0% 0%;
 
-  filter:
-    drop-shadow(0 0 3px rgba(255,230,100,.8))
-    drop-shadow(0 0 7px rgba(255,90,20,.7));
-
-  transform:scale(1.12);
   transform-origin:center center;
+
+  filter:
+    drop-shadow(0 0 2px rgba(255,255,180,.95))
+    drop-shadow(0 0 6px rgba(255,140,20,.9));
+
+  animation:fireballPulse .16s ease-in-out infinite alternate;
 }
 
-/*
-  圖片讀取失敗時的安全替代。
-  即使 GitHub 素材路徑錯誤，
-  戰鬥仍然會正常運作。
-*/
+@keyframes fireballPulse{
+  from{
+    transform:scale(.88);
+    filter:
+      drop-shadow(0 0 2px rgba(255,255,180,.85))
+      drop-shadow(0 0 5px rgba(255,120,20,.75));
+  }
+  to{
+    transform:scale(1.08);
+    filter:
+      drop-shadow(0 0 4px rgba(255,255,190,1))
+      drop-shadow(0 0 9px rgba(255,90,10,.95));
+  }
+}
 
+/* 素材失敗時 fallback */
 .fireball.asset-failed{
-  width:20px;
-  height:20px;
+  width:18px;height:18px;
   border-radius:50%;
 
   background:
-    radial-gradient(
-      circle,
+    radial-gradient(circle,
       #fff 0 14%,
       #ffe082 15% 34%,
       #ff9800 35% 65%,
@@ -212,22 +264,88 @@ h1{margin:6px 0 2px;font-size:25px}
   display:none
 }
 
-/* IMPACT */
+/* 飛行途中產生的尾焰 */
+.fire-trail{
+  position:absolute;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  z-index:31;
+  pointer-events:none;
 
+  transform:translate(-50%,-50%);
+
+  background:
+    radial-gradient(circle,
+      #fff59d 0 15%,
+      #ffb300 16% 46%,
+      #f4511e 47% 70%,
+      transparent 72%
+    );
+
+  box-shadow:
+    0 0 6px rgba(255,152,0,.9);
+
+  animation:trailFade .32s ease-out forwards
+}
+
+@keyframes trailFade{
+  0%{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:.95
+  }
+  45%{
+    transform:translate(-50%,-50%) translateY(2px) scale(.75);
+    opacity:.7
+  }
+  100%{
+    transform:translate(-50%,-50%) translateY(7px) scale(.15);
+    opacity:0
+  }
+}
+
+/* 小火星 */
+.fire-ember{
+  position:absolute;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#ffe082;
+  box-shadow:0 0 5px #ff9800;
+  z-index:32;
+  pointer-events:none;
+
+  transform:translate(-50%,-50%);
+
+  animation:emberFade .36s ease-out forwards
+}
+
+@keyframes emberFade{
+  0%{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1)
+  }
+  100%{
+    opacity:0;
+    transform:
+      translate(-50%,-50%)
+      translate(var(--ember-x),var(--ember-y))
+      scale(.15)
+  }
+}
+
+/* 命中 */
 .fireball-impact{
   position:absolute;
-  width:26px;
-  height:26px;
+  width:28px;
+  height:28px;
   border-radius:50%;
-
-  transform:translate(-50%,-50%) scale(.25);
-
+  transform:translate(-50%,-50%) scale(.2);
   z-index:38;
   pointer-events:none;
 
   background:
-    radial-gradient(
-      circle,
+    radial-gradient(circle,
       #fff 0 8%,
       #fff176 9% 22%,
       #ff9800 23% 48%,
@@ -245,18 +363,13 @@ h1{margin:6px 0 2px;font-size:25px}
 
 .fireball-spark{
   position:absolute;
-  width:5px;
-  height:5px;
+  width:5px;height:5px;
   border-radius:50%;
-
   background:#ffe082;
   box-shadow:0 0 6px #ff9800;
-
   transform:translate(-50%,-50%);
-
   z-index:37;
   pointer-events:none;
-
   animation:fireSpark .48s ease-out forwards
 }
 
@@ -265,12 +378,12 @@ h1{margin:6px 0 2px;font-size:25px}
     transform:translate(-50%,-50%) scale(.2);
     opacity:1
   }
-  55%{
-    transform:translate(-50%,-50%) scale(2);
+  45%{
+    transform:translate(-50%,-50%) scale(2.1);
     opacity:1
   }
   100%{
-    transform:translate(-50%,-50%) scale(2.8);
+    transform:translate(-50%,-50%) scale(3);
     opacity:0
   }
 }
@@ -304,6 +417,7 @@ h1{margin:6px 0 2px;font-size:25px}
 .ground-loot.flying{
   transform:translate(-50%,-50%) scale(.55);opacity:.25
 }
+
 @keyframes lootSpawn{
   0%{transform:translate(-50%,-50%) scale(.25);opacity:0}
   65%{transform:translate(-50%,-65%) scale(1.25);opacity:1}
@@ -315,6 +429,7 @@ h1{margin:6px 0 2px;font-size:25px}
   font-size:28px;z-index:20;pointer-events:none;
   animation:pop .55s ease-out forwards
 }
+
 @keyframes pop{
   0%{transform:translate(-50%,-50%) scale(.5);opacity:0}
   25%{opacity:1}
@@ -327,6 +442,7 @@ h1{margin:6px 0 2px;font-size:25px}
   text-shadow:0 2px 3px #000;pointer-events:none;
   animation:damageFloat .7s ease-out forwards
 }
+
 @keyframes damageFloat{
   0%{transform:translate(-50%,-30%);opacity:1}
   100%{transform:translate(-50%,-120%);opacity:0}
@@ -340,6 +456,7 @@ h1{margin:6px 0 2px;font-size:25px}
   animation:reactionPop .9s ease-out forwards
 }
 .reactionIcon{display:block;font-size:34px}
+
 @keyframes reactionPop{
   0%{transform:translate(-50%,-40%) scale(.4);opacity:0}
   20%{transform:translate(-50%,-55%) scale(1.25);opacity:1}
@@ -356,6 +473,7 @@ h1{margin:6px 0 2px;font-size:25px}
   z-index:25;pointer-events:none;
   animation:stormExpand .65s ease-out forwards
 }
+
 @keyframes stormExpand{
   0%{transform:translate(-50%,-50%) scale(.2);opacity:1}
   100%{transform:translate(-50%,-50%) scale(1.25);opacity:0}
@@ -372,6 +490,7 @@ h1{margin:6px 0 2px;font-size:25px}
   z-index:30;pointer-events:none;
   animation:overloadExpand .55s ease-out forwards
 }
+
 @keyframes overloadExpand{
   0%{transform:translate(-50%,-50%) scale(.15);opacity:1}
   100%{transform:translate(-50%,-50%) scale(1.35);opacity:0}
@@ -383,7 +502,11 @@ h1{margin:6px 0 2px;font-size:25px}
   box-shadow:0 0 7px #fff,0 0 13px #ffd54f;
   animation:flashLine .28s ease-out forwards
 }
-@keyframes flashLine{0%{opacity:1}100%{opacity:0}}
+
+@keyframes flashLine{
+  0%{opacity:1}
+  100%{opacity:0}
+}
 
 /* SKILLS */
 
@@ -418,11 +541,13 @@ h1{margin:6px 0 2px;font-size:25px}
 .controls{
   display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px
 }
+
 button{
   border:0;border-radius:12px;padding:13px;
   font-size:15px;font-weight:700;color:white;background:#238636
 }
 button.secondary{background:#30363d}
+
 .anchor{
   margin-top:12px;text-align:center;font-size:12px;color:#8b949e
 }
@@ -434,7 +559,7 @@ button.secondary{background:#30363d}
 <div id="app">
 
 <h1>🧙 Mage Idle</h1>
-<div class="version">Rebuild V0.7A-2 — Real Pixel Fireball</div>
+<div class="version">Rebuild V0.7A-3 — Fireball Motion Polish</div>
 
 <div class="panel">
 
@@ -541,10 +666,8 @@ button.secondary{background:#30363d}
 
 
 <div id="world">
-
 <div id="safeZone">🏠 SAFE ZONE</div>
 <div id="player" class="entity">🧙</div>
-
 </div>
 
 
@@ -555,7 +678,7 @@ button.secondary{background:#30363d}
 <div class="skill">
 <div class="skillIcon">🔥</div>
 Fire
-<div id="fireInfo" class="skillInfo">傷害 10<br>🔥 Pixel Fireball</div>
+<div id="fireInfo" class="skillInfo">傷害 10<br>🔥 Fireball</div>
 </div>
 
 <div class="skill">
@@ -600,7 +723,7 @@ Ice
 🔒 V0.6A Equipment Core<br>
 🔒 V0.6B Equipment Foundation<br>
 🔒 V0.7A-1 Fireball Animation Engine<br>
-🧪 V0.7A-2 Real Pixel Fireball
+🧪 V0.7A-3 Fireball Motion Polish
 
 </div>
 
@@ -630,8 +753,9 @@ const CONFIG={
   AUTO_LOOT_DELAY:450,
   AUTO_LOOT_FLY_TIME:320,
 
-  FIREBALL_DURATION:420,
-  FIREBALL_FRAME_MS:90,
+  FIREBALL_DURATION:390,
+  FIREBALL_FRAME_MS:70,
+  FIREBALL_TRAIL_MS:45,
 
   BURN_DAMAGE:3,
   BURN_TICK_MS:1000,
@@ -942,10 +1066,11 @@ function updateInventoryUI(){
     unequipBtn.style.display="none";
   }
 
-  spellPowerText.textContent=`✨ Spell Power +${player.stats.spellPower}`;
+  spellPowerText.textContent=
+    `✨ Spell Power +${player.stats.spellPower}`;
 
   fireInfo.innerHTML=
-    `傷害 ${10+player.stats.spellPower}<br>🔥 Pixel Fireball`;
+    `傷害 ${10+player.stats.spellPower}<br>🔥 Fireball`;
 
   lightningInfo.innerHTML=
     `傷害 ${10+player.stats.spellPower}<br>⚡ Chain / Charge`;
@@ -956,14 +1081,79 @@ function updateInventoryUI(){
 
 
 /* ==================================================
-   V0.7A-2 FIREBALL SPRITE ENGINE
+   V0.7A-3 FIREBALL VISUAL ENGINE
 ================================================== */
+
+function createCastFlare(x,y){
+
+  const flare=document.createElement("div");
+
+  flare.className="cast-flare";
+  flare.style.left=x+"%";
+  flare.style.top=y+"%";
+
+  worldEl.appendChild(flare);
+
+  setTimeout(()=>flare.remove(),220);
+}
+
+
+function createFireTrail(x,y){
+
+  const trail=document.createElement("div");
+
+  trail.className="fire-trail";
+
+  trail.style.left=
+    `calc(${x}% + ${random(-4,4)}px)`;
+
+  trail.style.top=
+    `calc(${y}% + ${random(-4,4)}px)`;
+
+  const size=random(6,12);
+
+  trail.style.width=size+"px";
+  trail.style.height=size+"px";
+
+  worldEl.appendChild(trail);
+
+  setTimeout(()=>trail.remove(),360);
+
+
+  if(Math.random()<.65){
+
+    const ember=document.createElement("div");
+
+    ember.className="fire-ember";
+
+    ember.style.left=x+"%";
+    ember.style.top=y+"%";
+
+    ember.style.setProperty(
+      "--ember-x",
+      random(-10,10)+"px"
+    );
+
+    ember.style.setProperty(
+      "--ember-y",
+      random(-12,7)+"px"
+    );
+
+    worldEl.appendChild(ember);
+
+    setTimeout(()=>ember.remove(),400);
+  }
+}
+
 
 function createFireballVisual(from,target){
 
   if(!target){
     return;
   }
+
+  createCastFlare(from.x,from.y);
+
 
   const fireball=document.createElement("div");
   fireball.className="fireball";
@@ -972,6 +1162,7 @@ function createFireballVisual(from,target){
   sprite.className="fireball-sprite";
 
   fireball.appendChild(sprite);
+
 
   const startX=from.x;
   const startY=from.y;
@@ -982,24 +1173,24 @@ function createFireballVisual(from,target){
   fireball.style.left=startX+"%";
   fireball.style.top=startY+"%";
 
+
   const dx=endX-startX;
   const dy=endY-startY;
 
-  /*
-    素材原本是朝右。
-    因此用攻擊方向直接旋轉。
-  */
-
-  const angle=Math.atan2(dy,dx)*180/Math.PI;
+  const angle=
+    Math.atan2(dy,dx)*180/Math.PI;
 
   fireball.style.transform=
-    `translate(-50%,-50%) rotate(${angle}deg)`;
+    `translate(-50%,-50%)
+     rotate(${angle}deg)
+     scale(.55)`;
+
 
   worldEl.appendChild(fireball);
 
 
   /*
-    素材載入保險。
+    Asset fallback
   */
 
   const testImage=new Image();
@@ -1012,12 +1203,7 @@ function createFireballVisual(from,target){
 
 
   /*
-    四格動畫：
-
-    1 左上
-    2 右上
-    3 左下
-    4 右下
+    4-frame sprite
   */
 
   const frames=[
@@ -1049,37 +1235,115 @@ function createFireballVisual(from,target){
 
 
   /*
-    Safari：
-    先畫起點，再開始飛行。
+    用 JS 計算飛行位置。
+    這樣尾焰可以真正跟著火球產生，
+    而不是單純一張圖片 CSS 滑過去。
   */
 
-  fireball.getBoundingClientRect();
+  const startTime=performance.now();
 
-  fireball.style.transition=
-    `left ${CONFIG.FIREBALL_DURATION}ms linear,
-     top ${CONFIG.FIREBALL_DURATION}ms linear`;
+  let lastTrailTime=0;
+
+  function animate(now){
+
+    const elapsed=now-startTime;
+
+    let progress=
+      elapsed/CONFIG.FIREBALL_DURATION;
+
+    progress=clamp(progress,0,1);
 
 
-  requestAnimationFrame(()=>{
+    /*
+      ease-in-out：
+      出手稍快、命中有重量感
+    */
 
-    fireball.style.left=endX+"%";
-    fireball.style.top=endY+"%";
+    const eased=
+      progress<.5
+      ? 2*progress*progress
+      : 1-Math.pow(-2*progress+2,2)/2;
 
-  });
+
+    const currentX=
+      startX+(endX-startX)*eased;
+
+    const currentY=
+      startY+(endY-startY)*eased;
 
 
-  setTimeout(()=>{
+    fireball.style.left=currentX+"%";
+    fireball.style.top=currentY+"%";
 
-    clearInterval(frameTimer);
 
-    fireball.remove();
+    /*
+      出手由小變正常，
+      最後命中前稍微收縮。
+    */
 
-    createFireballImpact(
-      endX,
-      endY
-    );
+    let scale;
 
-  },CONFIG.FIREBALL_DURATION);
+    if(progress<.18){
+
+      scale=
+        .55+
+        (progress/.18)*.55;
+
+    }else if(progress>.82){
+
+      scale=
+        1-
+        ((progress-.82)/.18)*.28;
+
+    }else{
+
+      scale=1;
+    }
+
+
+    fireball.style.transform=
+      `translate(-50%,-50%)
+       rotate(${angle}deg)
+       scale(${scale})`;
+
+
+    /*
+      尾焰
+    */
+
+    if(
+      now-lastTrailTime>=
+      CONFIG.FIREBALL_TRAIL_MS
+    ){
+
+      createFireTrail(
+        currentX,
+        currentY
+      );
+
+      lastTrailTime=now;
+    }
+
+
+    if(progress<1){
+
+      requestAnimationFrame(animate);
+
+    }else{
+
+      clearInterval(frameTimer);
+
+      fireball.remove();
+
+      createFireballImpact(
+        endX,
+        endY
+      );
+    }
+  }
+
+
+  requestAnimationFrame(animate);
 }
 
 
@@ -1095,7 +1359,7 @@ function createFireballImpact(x,y){
   worldEl.appendChild(impact);
 
 
-  for(let i=0;i<7;i++){
+  for(let i=0;i<8;i++){
 
     const spark=document.createElement("div");
 
@@ -1105,13 +1369,10 @@ function createFireballImpact(x,y){
     spark.style.top=y+"%";
 
     const angle=
-      Math.random()*
-      Math.PI*
-      2;
+      Math.random()*Math.PI*2;
 
     const length=
-      18+
-      Math.random()*25;
+      18+Math.random()*28;
 
     spark.style.setProperty(
       "--spark-x",
@@ -1130,6 +1391,7 @@ function createFireballImpact(x,y){
       520
     );
   }
+
 
   setTimeout(
     ()=>impact.remove(),
@@ -1181,7 +1443,10 @@ function spawnGroundLoot(item,x,y){
 
   game.groundLoot.push(loot);
 
-  addLog(`🎁 Slime 掉落 ${loot.icon} ${loot.name}`,"lootText");
+  addLog(
+    `🎁 Slime 掉落 ${loot.icon} ${loot.name}`,
+    "lootText"
+  );
 }
 
 function startAutoCollect(loot){
@@ -1201,12 +1466,18 @@ function startAutoCollect(loot){
 
   addItem(loot.itemId,1);
 
-  addLog(`🎒 自動拾取 ${loot.icon} ${loot.name}`,"lootText");
+  addLog(
+    `🎒 自動拾取 ${loot.icon} ${loot.name}`,
+    "lootText"
+  );
 
   const uid=loot.uid;
 
   setTimeout(()=>{
-    const current=game.groundLoot.find(item=>item.uid===uid);
+    const current=
+      game.groundLoot.find(
+        item=>item.uid===uid
+      );
 
     if(current){
       removeGroundLoot(current);
@@ -1215,7 +1486,10 @@ function startAutoCollect(loot){
 }
 
 function removeGroundLoot(loot){
-  const index=game.groundLoot.findIndex(item=>item.uid===loot.uid);
+  const index=
+    game.groundLoot.findIndex(
+      item=>item.uid===loot.uid
+    );
 
   if(index>=0){
     game.groundLoot.splice(index,1);
@@ -1244,6 +1518,7 @@ function updateAutoLoot(){
 function createMonster(id){
   const monster={
     id,
+
     x:random(10,90),
     y:random(10,68),
 
@@ -1282,8 +1557,11 @@ function createMonster(id){
   worldEl.appendChild(el);
 
   monster.el=el;
-  monster.hpFill=el.querySelector(".mob-hp-fill");
-  monster.statusEl=el.querySelector(".statuses");
+  monster.hpFill=
+    el.querySelector(".mob-hp-fill");
+
+  monster.statusEl=
+    el.querySelector(".statuses");
 
   game.monsters.push(monster);
 }
@@ -1294,11 +1572,13 @@ function getTarget(){
   let bestDistance=Infinity;
 
   for(const monster of game.monsters){
+
     if(!monster.alive){
       continue;
     }
 
-    const d=distance(game.player,monster);
+    const d=
+      distance(game.player,monster);
 
     if(d<bestDistance){
       bestDistance=d;
@@ -1336,6 +1616,7 @@ function movePlayerToward(target,deltaSeconds){
   player.y=clamp(player.y,4,96);
 }
 
+
 function moveMonsterToward(monster,target,deltaSeconds){
   const dx=target.x-monster.x;
   const dy=target.y-monster.y;
@@ -1359,33 +1640,46 @@ function moveMonsterToward(monster,target,deltaSeconds){
 }
 
 
-/* EFFECTS */
+/* GENERAL EFFECTS */
 
 function createEffect(target,icon){
   const effect=document.createElement("div");
 
   effect.className="effect";
   effect.textContent=icon;
+
   effect.style.left=target.x+"%";
   effect.style.top=target.y+"%";
 
   worldEl.appendChild(effect);
 
-  setTimeout(()=>effect.remove(),600);
+  setTimeout(
+    ()=>effect.remove(),
+    600
+  );
 }
+
 
 function createDamageText(amount){
   const effect=document.createElement("div");
 
   effect.className="damage-text";
   effect.textContent=`-${amount}`;
-  effect.style.left=game.player.x+"%";
-  effect.style.top=game.player.y+"%";
+
+  effect.style.left=
+    game.player.x+"%";
+
+  effect.style.top=
+    game.player.y+"%";
 
   worldEl.appendChild(effect);
 
-  setTimeout(()=>effect.remove(),750);
+  setTimeout(
+    ()=>effect.remove(),
+    750
+  );
 }
+
 
 function createReactionEffect(monster,icon,text){
   const effect=document.createElement("div");
@@ -1402,8 +1696,12 @@ function createReactionEffect(monster,icon,text){
 
   worldEl.appendChild(effect);
 
-  setTimeout(()=>effect.remove(),950);
+  setTimeout(
+    ()=>effect.remove(),
+    950
+  );
 }
+
 
 function createStormEffect(monster){
   const ring=document.createElement("div");
@@ -1414,8 +1712,12 @@ function createStormEffect(monster){
 
   worldEl.appendChild(ring);
 
-  setTimeout(()=>ring.remove(),700);
+  setTimeout(
+    ()=>ring.remove(),
+    700
+  );
 }
+
 
 function createOverloadEffect(monster){
   const ring=document.createElement("div");
@@ -1426,36 +1728,57 @@ function createOverloadEffect(monster){
 
   worldEl.appendChild(ring);
 
-  setTimeout(()=>ring.remove(),600);
+  setTimeout(
+    ()=>ring.remove(),
+    600
+  );
 }
 
+
 function createLightningLine(from,to){
-  const rect=worldEl.getBoundingClientRect();
+  const rect=
+    worldEl.getBoundingClientRect();
 
-  const x1=from.x/100*rect.width;
-  const y1=from.y/100*rect.height;
+  const x1=
+    from.x/100*rect.width;
 
-  const x2=to.x/100*rect.width;
-  const y2=to.y/100*rect.height;
+  const y1=
+    from.y/100*rect.height;
+
+  const x2=
+    to.x/100*rect.width;
+
+  const y2=
+    to.y/100*rect.height;
 
   const dx=x2-x1;
   const dy=y2-y1;
 
-  const length=Math.sqrt(dx*dx+dy*dy);
-  const angle=Math.atan2(dy,dx)*180/Math.PI;
+  const length=
+    Math.sqrt(dx*dx+dy*dy);
 
-  const line=document.createElement("div");
+  const angle=
+    Math.atan2(dy,dx)*180/Math.PI;
 
-  line.className="lightning-line";
+  const line=
+    document.createElement("div");
+
+  line.className=
+    "lightning-line";
 
   line.style.left=x1+"px";
   line.style.top=y1+"px";
   line.style.width=length+"px";
-  line.style.transform=`rotate(${angle}deg)`;
+
+  line.style.transform=
+    `rotate(${angle}deg)`;
 
   worldEl.appendChild(line);
 
-  setTimeout(()=>line.remove(),300);
+  setTimeout(
+    ()=>line.remove(),
+    300
+  );
 }
 
 
@@ -1464,17 +1787,25 @@ function createLightningLine(from,to){
 function damagePlayer(amount){
   const player=game.player;
 
-  if(!player.alive || isPlayerInSafeZone()){
+  if(
+    !player.alive ||
+    isPlayerInSafeZone()
+  ){
     return;
   }
 
   player.hp-=amount;
-  player.hp=Math.max(0,player.hp);
+
+  player.hp=
+    Math.max(0,player.hp);
 
   createDamageText(amount);
   createEffect(player,"💢");
 
-  addLog(`🟢 Slime 攻擊 Mage -${amount} HP`,"enemyText");
+  addLog(
+    `🟢 Slime 攻擊 Mage -${amount} HP`,
+    "enemyText"
+  );
 
   if(player.hp<=0){
     killPlayer();
@@ -1493,27 +1824,41 @@ function killPlayer(){
   player.hp=0;
   player.targetId=null;
 
-  player.respawnAt=game.time+CONFIG.PLAYER_RESPAWN_MS;
+  player.respawnAt=
+    game.time+
+    CONFIG.PLAYER_RESPAWN_MS;
 
   player.x=CONFIG.SAFE_X;
   player.y=CONFIG.SAFE_Y;
 
-  player.nextAttackAt=player.respawnAt;
+  player.nextAttackAt=
+    player.respawnAt;
 
   for(const monster of game.monsters){
     monster.aggro=false;
-    monster.nextAttackAt=game.time+500;
+    monster.nextAttackAt=
+      game.time+500;
   }
 
-  addLog("☠️ Mage 被擊倒！","deathText");
-  addLog("🏠 返回 Safe Zone，3 秒後恢復","respawnText");
+  addLog(
+    "☠️ Mage 被擊倒！",
+    "deathText"
+  );
+
+  addLog(
+    "🏠 返回 Safe Zone，3 秒後恢復",
+    "respawnText"
+  );
 }
 
 
 function updatePlayerRespawn(){
   const player=game.player;
 
-  if(player.alive || game.time<player.respawnAt){
+  if(
+    player.alive ||
+    game.time<player.respawnAt
+  ){
     return;
   }
 
@@ -1526,12 +1871,21 @@ function updatePlayerRespawn(){
   player.y=CONFIG.SAFE_Y;
 
   player.targetId=null;
-  player.nextAttackAt=game.time+500;
+
+  player.nextAttackAt=
+    game.time+500;
 
   recomputePlayerStats();
 
-  addLog("✨ Mage 恢復完成！","respawnText");
-  addLog("⚔️ 裝備保留，自動重新出發","good");
+  addLog(
+    "✨ Mage 恢復完成！",
+    "respawnText"
+  );
+
+  addLog(
+    "⚔️ 裝備保留，自動重新出發",
+    "good"
+  );
 }
 
 
@@ -1539,9 +1893,11 @@ function updatePlayerRespawn(){
 
 function updateMonsterAI(deltaMs){
   const player=game.player;
-  const deltaSeconds=deltaMs/1000;
+  const deltaSeconds=
+    deltaMs/1000;
 
   for(const monster of game.monsters){
+
     if(!monster.alive){
       continue;
     }
@@ -1551,7 +1907,8 @@ function updateMonsterAI(deltaMs){
       continue;
     }
 
-    const d=distance(monster,player);
+    const d=
+      distance(monster,player);
 
     if(isPlayerInSafeZone()){
       monster.aggro=false;
@@ -1563,7 +1920,9 @@ function updateMonsterAI(deltaMs){
       d<=CONFIG.SLIME_DETECTION_RANGE
     ){
       monster.aggro=true;
-      monster.nextAttackAt=game.time+500;
+
+      monster.nextAttackAt=
+        game.time+500;
     }
 
     if(!monster.aggro){
@@ -1571,20 +1930,38 @@ function updateMonsterAI(deltaMs){
     }
 
     if(d>CONFIG.SLIME_ATTACK_RANGE){
-      moveMonsterToward(monster,player,deltaSeconds);
+
+      moveMonsterToward(
+        monster,
+        player,
+        deltaSeconds
+      );
+
       continue;
     }
 
-    if(game.time>=monster.nextAttackAt){
+    if(
+      game.time>=
+      monster.nextAttackAt
+    ){
+
       monster.nextAttackAt=
-        game.time+CONFIG.SLIME_ATTACK_COOLDOWN;
+        game.time+
+        CONFIG.SLIME_ATTACK_COOLDOWN;
 
       const attackDamage=
         monster.frostUntil>game.time
-        ? Math.max(0,monster.attack-2)
-        : monster.attack;
+        ?
+        Math.max(
+          0,
+          monster.attack-2
+        )
+        :
+        monster.attack;
 
-      damagePlayer(attackDamage);
+      damagePlayer(
+        attackDamage
+      );
 
       if(!player.alive){
         return;
@@ -1597,12 +1974,17 @@ function updateMonsterAI(deltaMs){
 /* MONSTER DAMAGE */
 
 function damageMonster(monster,amount){
-  if(!monster || !monster.alive){
+  if(
+    !monster ||
+    !monster.alive
+  ){
     return false;
   }
 
   monster.hp-=amount;
-  monster.hp=Math.max(0,monster.hp);
+
+  monster.hp=
+    Math.max(0,monster.hp);
 
   if(
     monster.hp>0 &&
@@ -1613,7 +1995,9 @@ function damageMonster(monster,amount){
   }
 
   if(monster.hp<=0){
+
     killMonster(monster);
+
     return true;
   }
 
@@ -1627,21 +2011,33 @@ function triggerShatter(monster){
   monster.burningUntil=0;
   monster.nextBurnTick=0;
 
-  createReactionEffect(monster,"💥","SHATTER!");
+  createReactionEffect(
+    monster,
+    "💥",
+    "SHATTER!"
+  );
 
   addLog(
     `💥 SHATTER！額外傷害 -${CONFIG.SHATTER_DAMAGE}`,
     "reactionText"
   );
 
-  damageMonster(monster,CONFIG.SHATTER_DAMAGE);
+  damageMonster(
+    monster,
+    CONFIG.SHATTER_DAMAGE
+  );
 }
 
 
 function triggerStorm(monster){
   monster.frostUntil=0;
 
-  createReactionEffect(monster,"🌩️","STORM!");
+  createReactionEffect(
+    monster,
+    "🌩️",
+    "STORM!"
+  );
+
   createStormEffect(monster);
 
   addLog(
@@ -1649,15 +2045,27 @@ function triggerStorm(monster){
     "stormText"
   );
 
-  const victims=game.monsters.filter(
-    candidate=>
-      candidate.alive &&
-      distance(monster,candidate)<=CONFIG.STORM_RANGE
-  );
+  const victims=
+    game.monsters.filter(
+      candidate=>
+        candidate.alive &&
+        distance(
+          monster,
+          candidate
+        )<=CONFIG.STORM_RANGE
+    );
 
   for(const victim of victims){
-    createEffect(victim,"⚡");
-    damageMonster(victim,CONFIG.STORM_DAMAGE);
+
+    createEffect(
+      victim,
+      "⚡"
+    );
+
+    damageMonster(
+      victim,
+      CONFIG.STORM_DAMAGE
+    );
   }
 }
 
@@ -1665,29 +2073,51 @@ function triggerStorm(monster){
 function triggerOverload(monster){
   monster.chargeUntil=0;
 
-  createReactionEffect(monster,"💥","OVERLOAD!");
-  createOverloadEffect(monster);
+  createReactionEffect(
+    monster,
+    "💥",
+    "OVERLOAD!"
+  );
+
+  createOverloadEffect(
+    monster
+  );
 
   addLog(
     `💥 OVERLOAD！範圍傷害 -${CONFIG.OVERLOAD_DAMAGE}`,
     "overloadText"
   );
 
-  const victims=game.monsters.filter(
-    candidate=>
-      candidate.alive &&
-      distance(monster,candidate)<=CONFIG.OVERLOAD_RANGE
-  );
+  const victims=
+    game.monsters.filter(
+      candidate=>
+        candidate.alive &&
+        distance(
+          monster,
+          candidate
+        )<=CONFIG.OVERLOAD_RANGE
+    );
 
   for(const victim of victims){
-    createEffect(victim,"💥");
-    damageMonster(victim,CONFIG.OVERLOAD_DAMAGE);
+
+    createEffect(
+      victim,
+      "💥"
+    );
+
+    damageMonster(
+      victim,
+      CONFIG.OVERLOAD_DAMAGE
+    );
   }
 }
 
 
 function tryReaction(monster,incomingElement){
-  if(!monster || !monster.alive){
+  if(
+    !monster ||
+    !monster.alive
+  ){
     return false;
   }
 
@@ -1723,7 +2153,8 @@ function tryReaction(monster,incomingElement){
 
 function castFire(monster,skill){
 
-  const damage=getSkillDamage(skill);
+  const damage=
+    getSkillDamage(skill);
 
   createFireballVisual(
     {
@@ -1736,12 +2167,17 @@ function castFire(monster,skill){
     }
   );
 
+
   /*
-    傷害仍立即處理。
-    Sprite 只是視覺層。
+    IMPORTANT:
+    Combat remains immediate.
+    Fireball animation is visual only.
   */
 
-  damageMonster(monster,damage);
+  damageMonster(
+    monster,
+    damage
+  );
 
   addLog(
     `🔥 Fire → Slime -${damage}`,
@@ -1752,17 +2188,22 @@ function castFire(monster,skill){
     return;
   }
 
-  tryReaction(monster,"fire");
+  tryReaction(
+    monster,
+    "fire"
+  );
 
   if(!monster.alive){
     return;
   }
 
   monster.burningUntil=
-    game.time+CONFIG.BURN_DURATION_MS;
+    game.time+
+    CONFIG.BURN_DURATION_MS;
 
   monster.nextBurnTick=
-    game.time+CONFIG.BURN_TICK_MS;
+    game.time+
+    CONFIG.BURN_TICK_MS;
 
   addLog(
     "🔥 Slime 進入 Burning",
@@ -1774,11 +2215,18 @@ function castFire(monster,skill){
 /* ICE */
 
 function castIce(monster,skill){
-  const damage=getSkillDamage(skill);
+  const damage=
+    getSkillDamage(skill);
 
-  createEffect(monster,"❄️");
+  createEffect(
+    monster,
+    "❄️"
+  );
 
-  damageMonster(monster,damage);
+  damageMonster(
+    monster,
+    damage
+  );
 
   addLog(
     `❄️ Ice → Slime -${damage}`,
@@ -1789,14 +2237,18 @@ function castIce(monster,skill){
     return;
   }
 
-  tryReaction(monster,"ice");
+  tryReaction(
+    monster,
+    "ice"
+  );
 
   if(!monster.alive){
     return;
   }
 
   monster.frostUntil=
-    game.time+CONFIG.FROST_DURATION_MS;
+    game.time+
+    CONFIG.FROST_DURATION_MS;
 
   addLog(
     "❄️ Slime 進入 Frostbite",
@@ -1808,11 +2260,18 @@ function castIce(monster,skill){
 /* LIGHTNING */
 
 function castLightning(monster,skill){
-  const damage=getSkillDamage(skill);
+  const damage=
+    getSkillDamage(skill);
 
-  createEffect(monster,"⚡");
+  createEffect(
+    monster,
+    "⚡"
+  );
 
-  damageMonster(monster,damage);
+  damageMonster(
+    monster,
+    damage
+  );
 
   addLog(
     `⚡ Lightning → Slime -${damage}`,
@@ -1823,44 +2282,68 @@ function castLightning(monster,skill){
     return;
   }
 
-  tryReaction(monster,"lightning");
+  tryReaction(
+    monster,
+    "lightning"
+  );
 
   if(!monster.alive){
     return;
   }
 
   monster.chargeUntil=
-    game.time+CONFIG.CHARGE_DURATION_MS;
+    game.time+
+    CONFIG.CHARGE_DURATION_MS;
 
   addLog(
     "⚡ Slime 進入 Charge",
     "lightningText"
   );
 
-  if(Math.random()>CONFIG.CHAIN_CHANCE){
+  if(
+    Math.random()>
+    CONFIG.CHAIN_CHANCE
+  ){
     return;
   }
 
   let current=monster;
-  const hitIds=new Set([monster.id]);
+
+  const hitIds=
+    new Set([monster.id]);
+
   let jumps=1;
 
-  while(jumps<CONFIG.CHAIN_MAX_TARGETS){
+  while(
+    jumps<
+    CONFIG.CHAIN_MAX_TARGETS
+  ){
 
     let next=null;
     let bestDistance=Infinity;
 
-    for(const candidate of game.monsters){
+    for(
+      const candidate
+      of game.monsters
+    ){
 
       if(!candidate.alive){
         continue;
       }
 
-      if(hitIds.has(candidate.id)){
+      if(
+        hitIds.has(
+          candidate.id
+        )
+      ){
         continue;
       }
 
-      const d=distance(current,candidate);
+      const d=
+        distance(
+          current,
+          candidate
+        );
 
       if(
         d<=CONFIG.CHAIN_RANGE &&
@@ -1875,17 +2358,29 @@ function castLightning(monster,skill){
       break;
     }
 
-    const chainDamage=Math.max(
-      1,
-      Math.round(
-        damage*CONFIG.CHAIN_DAMAGE_MULTIPLIER
-      )
+    const chainDamage=
+      Math.max(
+        1,
+        Math.round(
+          damage*
+          CONFIG.CHAIN_DAMAGE_MULTIPLIER
+        )
+      );
+
+    createLightningLine(
+      current,
+      next
     );
 
-    createLightningLine(current,next);
-    createEffect(next,"⚡");
+    createEffect(
+      next,
+      "⚡"
+    );
 
-    damageMonster(next,chainDamage);
+    damageMonster(
+      next,
+      chainDamage
+    );
 
     addLog(
       `⚡ Chain → Slime -${chainDamage}`,
@@ -1893,11 +2388,14 @@ function castLightning(monster,skill){
     );
 
     if(next.alive){
+
       next.chargeUntil=
-        game.time+CONFIG.CHARGE_DURATION_MS;
+        game.time+
+        CONFIG.CHARGE_DURATION_MS;
     }
 
     hitIds.add(next.id);
+
     current=next;
     jumps++;
   }
@@ -1930,22 +2428,39 @@ function castSkill(monster,skill){
 /* STATUS */
 
 function updateStatuses(){
-  for(const monster of game.monsters){
+
+  for(
+    const monster
+    of game.monsters
+  ){
 
     if(!monster.alive){
       continue;
     }
 
-    if(monster.burningUntil>game.time){
+    if(
+      monster.burningUntil>
+      game.time
+    ){
 
-      if(game.time>=monster.nextBurnTick){
+      if(
+        game.time>=
+        monster.nextBurnTick
+      ){
 
-        monster.nextBurnTick+=CONFIG.BURN_TICK_MS;
+        monster.nextBurnTick+=
+          CONFIG.BURN_TICK_MS;
 
-        createEffect(monster,"🔥");
+        createEffect(
+          monster,
+          "🔥"
+        );
 
         const killed=
-          damageMonster(monster,CONFIG.BURN_DAMAGE);
+          damageMonster(
+            monster,
+            CONFIG.BURN_DAMAGE
+          );
 
         addLog(
           `🔥 Burning → Slime -${CONFIG.BURN_DAMAGE}`,
@@ -1958,15 +2473,22 @@ function updateStatuses(){
       }
 
     }else{
+
       monster.burningUntil=0;
       monster.nextBurnTick=0;
     }
 
-    if(monster.frostUntil<=game.time){
+    if(
+      monster.frostUntil<=
+      game.time
+    ){
       monster.frostUntil=0;
     }
 
-    if(monster.chargeUntil<=game.time){
+    if(
+      monster.chargeUntil<=
+      game.time
+    ){
       monster.chargeUntil=0;
     }
   }
@@ -1992,12 +2514,16 @@ function killMonster(monster){
   monster.nextAttackAt=0;
 
   monster.respawnAt=
-    game.time+CONFIG.SLIME_RESPAWN_MS;
+    game.time+
+    CONFIG.SLIME_RESPAWN_MS;
 
   game.player.kills++;
   game.player.exp+=10;
 
-  if(game.player.targetId===monster.id){
+  if(
+    game.player.targetId===
+    monster.id
+  ){
     game.player.targetId=null;
   }
 
@@ -2015,14 +2541,20 @@ function killMonster(monster){
 function checkLevelUp(){
   const player=game.player;
 
-  while(player.exp>=player.expNeed){
+  while(
+    player.exp>=
+    player.expNeed
+  ){
 
-    player.exp-=player.expNeed;
+    player.exp-=
+      player.expNeed;
 
     player.level++;
 
     player.expNeed=
-      Math.floor(player.expNeed*1.25);
+      Math.floor(
+        player.expNeed*1.25
+      );
 
     player.maxHp+=10;
     player.hp=player.maxHp;
@@ -2039,12 +2571,18 @@ function checkLevelUp(){
 
 
 function updateMonsterRespawns(){
-  for(const monster of game.monsters){
+
+  for(
+    const monster
+    of game.monsters
+  ){
 
     if(
       !monster.alive &&
-      game.time>=monster.respawnAt
+      game.time>=
+      monster.respawnAt
     ){
+
       monster.alive=true;
       monster.hp=monster.maxHp;
 
@@ -2052,7 +2590,10 @@ function updateMonsterRespawns(){
       monster.y=random(10,68);
 
       monster.respawnAt=0;
-      monster.nextAttackAt=game.time+500;
+
+      monster.nextAttackAt=
+        game.time+500;
+
       monster.aggro=false;
 
       monster.burningUntil=0;
@@ -2060,7 +2601,9 @@ function updateMonsterRespawns(){
       monster.frostUntil=0;
       monster.chargeUntil=0;
 
-      addLog("🟢 Slime 重生了");
+      addLog(
+        "🟢 Slime 重生了"
+      );
     }
   }
 }
@@ -2075,23 +2618,38 @@ function updatePlayerAI(deltaMs){
     return;
   }
 
-  let target=game.monsters.find(
-    monster=>
-      monster.id===player.targetId &&
-      monster.alive
-  );
+  let target=
+    game.monsters.find(
+      monster=>
+        monster.id===
+        player.targetId &&
+        monster.alive
+    );
 
   if(!target){
+
     target=getTarget();
-    player.targetId=target ? target.id : null;
+
+    player.targetId=
+      target
+      ? target.id
+      : null;
   }
 
   if(!target){
     return;
   }
 
-  const skill=SKILLS[player.skillIndex];
-  const d=distance(player,target);
+  const skill=
+    SKILLS[
+      player.skillIndex
+    ];
+
+  const d=
+    distance(
+      player,
+      target
+    );
 
   if(d>skill.range){
 
@@ -2100,15 +2658,25 @@ function updatePlayerAI(deltaMs){
       deltaMs/1000
     );
 
-  }else if(game.time>=player.nextAttackAt){
+  }else if(
+    game.time>=
+    player.nextAttackAt
+  ){
 
-    castSkill(target,skill);
+    castSkill(
+      target,
+      skill
+    );
 
     player.nextAttackAt=
-      game.time+skill.cooldown;
+      game.time+
+      skill.cooldown;
 
     player.skillIndex=
-      (player.skillIndex+1)%SKILLS.length;
+      (
+        player.skillIndex+1
+      )%
+      SKILLS.length;
   }
 }
 
@@ -2141,8 +2709,11 @@ function updateGame(deltaMs){
 function render(){
   const player=game.player;
 
-  playerEl.style.left=player.x+"%";
-  playerEl.style.top=player.y+"%";
+  playerEl.style.left=
+    player.x+"%";
+
+  playerEl.style.top=
+    player.y+"%";
 
   playerEl.classList.toggle(
     "dead",
@@ -2150,13 +2721,21 @@ function render(){
   );
 
   playerEl.textContent=
-    player.alive ? "🧙" : "☠️";
+    player.alive
+    ? "🧙"
+    : "☠️";
 
 
-  for(const monster of game.monsters){
+  for(
+    const monster
+    of game.monsters
+  ){
 
-    monster.el.style.left=monster.x+"%";
-    monster.el.style.top=monster.y+"%";
+    monster.el.style.left=
+      monster.x+"%";
+
+    monster.el.style.top=
+      monster.y+"%";
 
     monster.el.classList.toggle(
       "dead",
@@ -2165,38 +2744,57 @@ function render(){
 
     monster.el.classList.toggle(
       "aggro",
-      monster.aggro && monster.alive
+      monster.aggro &&
+      monster.alive
     );
 
     monster.el.classList.toggle(
       "target",
-      monster.id===player.targetId &&
+      monster.id===
+      player.targetId &&
       monster.alive &&
       player.alive
     );
 
     monster.hpFill.style.width=
-      (monster.hp/monster.maxHp*100)+"%";
+      (
+        monster.hp/
+        monster.maxHp*
+        100
+      )+"%";
 
     let statusText="";
 
-    if(monster.burningUntil>game.time){
+    if(
+      monster.burningUntil>
+      game.time
+    ){
       statusText+="🔥";
     }
 
-    if(monster.frostUntil>game.time){
+    if(
+      monster.frostUntil>
+      game.time
+    ){
       statusText+="❄️";
     }
 
-    if(monster.chargeUntil>game.time){
+    if(
+      monster.chargeUntil>
+      game.time
+    ){
       statusText+="⚡";
     }
 
-    if(monster.aggro && monster.alive){
+    if(
+      monster.aggro &&
+      monster.alive
+    ){
       statusText+="❗";
     }
 
-    monster.statusEl.textContent=statusText;
+    monster.statusEl.textContent=
+      statusText;
   }
 
 
@@ -2211,20 +2809,34 @@ function render(){
 
   levelText.textContent=
     player.alive
-    ? `Lv.${player.level} Mage`
-    : `Lv.${player.level} Mage ☠️`;
+    ?
+    `Lv.${player.level} Mage`
+    :
+    `Lv.${player.level} Mage ☠️`;
 
   killText.textContent=
     `Kills ${player.kills}`;
 
   hpBar.style.width=
-    (player.hp/player.maxHp*100)+"%";
+    (
+      player.hp/
+      player.maxHp*
+      100
+    )+"%";
 
   mpBar.style.width=
-    (player.mp/player.maxMp*100)+"%";
+    (
+      player.mp/
+      player.maxMp*
+      100
+    )+"%";
 
   expBar.style.width=
-    (player.exp/player.expNeed*100)+"%";
+    (
+      player.exp/
+      player.expNeed*
+      100
+    )+"%";
 
   updateInventoryUI();
 }
@@ -2232,35 +2844,53 @@ function render(){
 
 /* LOOP */
 
-let lastTime=performance.now();
+let lastTime=
+  performance.now();
+
 let accumulator=0;
 
 function mainLoop(now){
 
   const frameDelta=
-    Math.min(now-lastTime,1000);
+    Math.min(
+      now-lastTime,
+      1000
+    );
 
   lastTime=now;
 
   accumulator+=frameDelta;
 
-  while(accumulator>=CONFIG.TICK_MS){
+  while(
+    accumulator>=
+    CONFIG.TICK_MS
+  ){
 
-    updateGame(CONFIG.TICK_MS);
+    updateGame(
+      CONFIG.TICK_MS
+    );
 
-    accumulator-=CONFIG.TICK_MS;
+    accumulator-=
+      CONFIG.TICK_MS;
   }
 
   render();
 
-  requestAnimationFrame(mainLoop);
+  requestAnimationFrame(
+    mainLoop
+  );
 }
 
 
 /* RESET */
 
 function clearGroundLoot(){
-  for(const loot of game.groundLoot){
+
+  for(
+    const loot
+    of game.groundLoot
+  ){
+
     if(loot.el){
       loot.el.remove();
     }
@@ -2269,13 +2899,18 @@ function clearGroundLoot(){
   game.groundLoot=[];
 }
 
+
 function clearTemporaryVisuals(){
+
   worldEl
     .querySelectorAll(
-      ".fireball,.fireball-impact,.fireball-spark,.effect,.reaction,.storm-ring,.overload-ring,.lightning-line,.damage-text"
+      ".fireball,.cast-flare,.fire-trail,.fire-ember,.fireball-impact,.fireball-spark,.effect,.reaction,.storm-ring,.overload-ring,.lightning-line,.damage-text"
     )
-    .forEach(el=>el.remove());
+    .forEach(
+      el=>el.remove()
+    );
 }
+
 
 function resetGame(){
 
@@ -2317,13 +2952,20 @@ function resetGame(){
 
   recomputePlayerStats();
 
-  for(const monster of game.monsters){
+  for(
+    const monster
+    of game.monsters
+  ){
 
     monster.alive=true;
-    monster.hp=monster.maxHp;
+    monster.hp=
+      monster.maxHp;
 
-    monster.x=random(10,90);
-    monster.y=random(10,68);
+    monster.x=
+      random(10,90);
+
+    monster.y=
+      random(10,68);
 
     monster.respawnAt=0;
     monster.nextAttackAt=0;
@@ -2337,13 +2979,23 @@ function resetGame(){
 
   logEl.innerHTML="";
 
-  inventoryPanel.classList.remove("open");
-  inventoryBtn.textContent="🎒 打開背包";
+  inventoryPanel
+    .classList
+    .remove("open");
 
-  pauseBtn.textContent="暫停";
+  inventoryBtn.textContent=
+    "🎒 打開背包";
 
-  addLog("🧙 V0.7A-2 測試開始");
-  addLog("🔥 新 Pixel Fireball 四格動畫已啟用");
+  pauseBtn.textContent=
+    "暫停";
+
+  addLog(
+    "🧙 V0.7A-3 測試開始"
+  );
+
+  addLog(
+    "🔥 Fireball Motion Polish 已啟用"
+  );
 }
 
 
@@ -2362,28 +3014,41 @@ unequipBtn.addEventListener(
 inventoryBtn.addEventListener(
   "click",
   ()=>{
+
     const open=
-      inventoryPanel.classList.toggle("open");
+      inventoryPanel
+      .classList
+      .toggle("open");
 
     inventoryBtn.textContent=
       open
-      ? "🎒 關閉背包"
-      : "🎒 打開背包";
+      ?
+      "🎒 關閉背包"
+      :
+      "🎒 打開背包";
   }
 );
 
 pauseBtn.addEventListener(
   "click",
   ()=>{
-    game.running=!game.running;
+
+    game.running=
+      !game.running;
 
     pauseBtn.textContent=
-      game.running ? "暫停" : "繼續";
+      game.running
+      ?
+      "暫停"
+      :
+      "繼續";
 
     addLog(
       game.running
-      ? "▶️ 戰鬥繼續"
-      : "⏸️ 戰鬥暫停"
+      ?
+      "▶️ 戰鬥繼續"
+      :
+      "⏸️ 戰鬥暫停"
     );
   }
 );
@@ -2396,18 +3061,35 @@ resetBtn.addEventListener(
 
 /* BOOT */
 
-for(let i=0;i<CONFIG.SLIME_COUNT;i++){
+for(
+  let i=0;
+  i<CONFIG.SLIME_COUNT;
+  i++
+){
   createMonster(i);
 }
 
 recomputePlayerStats();
 
-addLog("🧙 Mage Idle V0.7A-2 啟動");
-addLog("🔥 新 Pixel Fireball 素材已接入");
-addLog("🎞️ Fireball：Frame 1 → 2 → 3 → 4");
-addLog("🎯 戰鬥邏輯與動畫層保持分離");
+addLog(
+  "🧙 Mage Idle V0.7A-3 啟動"
+);
 
-requestAnimationFrame(mainLoop);
+addLog(
+  "🔥 Fireball Motion Polish 已啟用"
+);
+
+addLog(
+  "✨ 蓄火 → 動態飛行 → 尾焰 → 命中爆炸"
+);
+
+addLog(
+  "🎯 戰鬥核心仍與動畫層分離"
+);
+
+requestAnimationFrame(
+  mainLoop
+);
 
 </script>
 </body>
