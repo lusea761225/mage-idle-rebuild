@@ -97,7 +97,10 @@ h1{margin:6px 0 2px;font-size:25px}
   border-radius:10px;overflow:hidden
 }
 
-.mob-hp-fill{height:100%;background:#ff6b6b}
+.mob-hp-fill{
+  height:100%;
+  background:#ff6b6b
+}
 
 
 /* STATUS */
@@ -106,13 +109,13 @@ h1{margin:6px 0 2px;font-size:25px}
   position:absolute;
   top:-32px;left:50%;
   transform:translateX(-50%);
-  min-width:55px;text-align:center;
+  min-width:70px;text-align:center;
   font-size:15px;white-space:nowrap;
   pointer-events:none
 }
 
 
-/* NORMAL EFFECT */
+/* BASIC EFFECT */
 
 .effect{
   position:absolute;
@@ -129,12 +132,12 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 
-/* REACTION TEXT */
+/* REACTION LABEL */
 
 .reaction{
   position:absolute;
   transform:translate(-50%,-50%);
-  z-index:35;
+  z-index:40;
   pointer-events:none;
   text-align:center;
   font-weight:900;
@@ -167,18 +170,13 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 
-/* STORM AOE */
+/* STORM */
 
 .storm-ring{
   position:absolute;
-
-  width:120px;
-  height:120px;
-
+  width:120px;height:120px;
   border-radius:50%;
-
   border:4px solid rgba(255,245,157,.95);
-
   background:
     radial-gradient(
       circle,
@@ -186,17 +184,12 @@ h1{margin:6px 0 2px;font-size:25px}
       rgba(130,170,255,.18) 45%,
       transparent 70%
     );
-
   box-shadow:
     0 0 18px #fff59d,
     inset 0 0 18px rgba(130,170,255,.8);
-
   transform:translate(-50%,-50%) scale(.25);
-
   z-index:25;
-
   pointer-events:none;
-
   animation:stormExpand .65s ease-out forwards
 }
 
@@ -212,14 +205,55 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 
-/* LIGHTNING */
+/* OVERLOAD */
+
+.overload-ring{
+  position:absolute;
+  width:82px;height:82px;
+  border-radius:50%;
+  border:5px solid rgba(255,165,80,.95);
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.8) 0%,
+      rgba(255,190,70,.55) 25%,
+      rgba(255,80,50,.25) 55%,
+      transparent 72%
+    );
+  box-shadow:
+    0 0 20px rgba(255,120,50,.95),
+    inset 0 0 18px rgba(255,220,100,.9);
+  transform:translate(-50%,-50%) scale(.2);
+  z-index:30;
+  pointer-events:none;
+  animation:overloadExpand .55s ease-out forwards
+}
+
+@keyframes overloadExpand{
+  0%{
+    transform:translate(-50%,-50%) scale(.15);
+    opacity:1
+  }
+  55%{
+    opacity:1
+  }
+  100%{
+    transform:translate(-50%,-50%) scale(1.35);
+    opacity:0
+  }
+}
+
+
+/* LIGHTNING LINE */
 
 .lightning-line{
   position:absolute;height:4px;
   background:#fff59d;
   transform-origin:left center;
   z-index:18;pointer-events:none;
-  box-shadow:0 0 7px #fff,0 0 13px #ffd54f;
+  box-shadow:
+    0 0 7px #fff,
+    0 0 13px #ffd54f;
   animation:flashLine .28s ease-out forwards
 }
 
@@ -238,23 +272,31 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 .skill{
-  background:#21262d;border:1px solid #30363d;
-  border-radius:12px;padding:10px 4px;
-  text-align:center;font-size:13px
+  background:#21262d;
+  border:1px solid #30363d;
+  border-radius:12px;
+  padding:10px 4px;
+  text-align:center;
+  font-size:13px
 }
 
 .skillIcon{font-size:25px}
 
 .skillInfo{
-  color:#8b949e;font-size:11px;margin-top:4px
+  color:#8b949e;
+  font-size:11px;
+  margin-top:4px
 }
 
 
 /* LOG */
 
 #log{
-  height:185px;overflow-y:auto;
-  font-size:13px;line-height:1.55;color:#c9d1d9
+  height:190px;
+  overflow-y:auto;
+  font-size:13px;
+  line-height:1.55;
+  color:#c9d1d9
 }
 
 .good{color:#7ee787}
@@ -273,26 +315,39 @@ h1{margin:6px 0 2px;font-size:25px}
   font-weight:900
 }
 
+.overloadText{
+  color:#ffad66;
+  font-weight:900
+}
+
 
 /* CONTROLS */
 
 .controls{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px;margin-top:10px
+  gap:8px;
+  margin-top:10px
 }
 
 button{
-  border:0;border-radius:12px;padding:13px;
-  font-size:15px;font-weight:700;
-  color:white;background:#238636
+  border:0;border-radius:12px;
+  padding:13px;
+  font-size:15px;
+  font-weight:700;
+  color:white;
+  background:#238636
 }
 
-button.secondary{background:#30363d}
+button.secondary{
+  background:#30363d
+}
 
 .anchor{
-  margin-top:12px;text-align:center;
-  font-size:12px;color:#8b949e
+  margin-top:12px;
+  text-align:center;
+  font-size:12px;
+  color:#8b949e
 }
 </style>
 </head>
@@ -304,7 +359,7 @@ button.secondary{background:#30363d}
 <h1>🧙 Mage Idle</h1>
 
 <div class="version">
-Rebuild V0.3B — Elemental Reactions
+Rebuild V0.3C — Elemental Reaction Complete
 </div>
 
 
@@ -355,8 +410,8 @@ Rebuild V0.3B — Elemental Reactions
       <div class="skillIcon">🔥</div>
       Fire
       <div class="skillInfo">
-        DMG 10<br>
-        Burning 3/s
+        Burning<br>
+        ⚡ → 💥 Overload
       </div>
     </div>
 
@@ -364,7 +419,7 @@ Rebuild V0.3B — Elemental Reactions
       <div class="skillIcon">⚡</div>
       Lightning
       <div class="skillInfo">
-        DMG 10<br>
+        Chain + Charge<br>
         ❄️ → 🌩️ Storm
       </div>
     </div>
@@ -373,7 +428,7 @@ Rebuild V0.3B — Elemental Reactions
       <div class="skillIcon">❄️</div>
       Ice
       <div class="skillInfo">
-        DMG 7<br>
+        Frostbite<br>
         🔥 → 💥 Shatter
       </div>
     </div>
@@ -408,7 +463,8 @@ Rebuild V0.3B — Elemental Reactions
 🔒 V0.1 Combat Engine<br>
 🔒 V0.2 Spell Engine<br>
 🔒 V0.3A SHATTER<br>
-🧪 V0.3B STORM
+🔒 V0.3B STORM<br>
+🧪 V0.3C OVERLOAD
 </div>
 
 </div>
@@ -417,15 +473,18 @@ Rebuild V0.3B — Elemental Reactions
 <script>
 
 /* =====================================================
-   MAGE IDLE V0.3B
+   MAGE IDLE V0.3C
 
-   Reactions:
+   ELEMENTAL REACTIONS
 
    Burning + Ice
    = SHATTER
 
    Frostbite + Lightning
    = STORM
+
+   Charge + Fire
+   = OVERLOAD
 ===================================================== */
 
 
@@ -449,6 +508,8 @@ const CONFIG={
 
   FROST_DURATION_MS:5000,
 
+  CHARGE_DURATION_MS:5000,
+
   CHAIN_CHANCE:0.45,
 
   CHAIN_RANGE:32,
@@ -461,7 +522,11 @@ const CONFIG={
 
   STORM_DAMAGE:10,
 
-  STORM_RANGE:25
+  STORM_RANGE:25,
+
+  OVERLOAD_DAMAGE:9,
+
+  OVERLOAD_RANGE:18
 
 };
 
@@ -539,24 +604,44 @@ const game={
 
 /* DOM */
 
-const worldEl=document.getElementById("world");
-const playerEl=document.getElementById("player");
+const worldEl=
+  document.getElementById("world");
 
-const hpText=document.getElementById("hpText");
-const mpText=document.getElementById("mpText");
-const expText=document.getElementById("expText");
+const playerEl=
+  document.getElementById("player");
 
-const hpBar=document.getElementById("hpBar");
-const mpBar=document.getElementById("mpBar");
-const expBar=document.getElementById("expBar");
+const hpText=
+  document.getElementById("hpText");
 
-const levelText=document.getElementById("levelText");
-const killText=document.getElementById("killText");
+const mpText=
+  document.getElementById("mpText");
 
-const logEl=document.getElementById("log");
+const expText=
+  document.getElementById("expText");
 
-const pauseBtn=document.getElementById("pauseBtn");
-const resetBtn=document.getElementById("resetBtn");
+const hpBar=
+  document.getElementById("hpBar");
+
+const mpBar=
+  document.getElementById("mpBar");
+
+const expBar=
+  document.getElementById("expBar");
+
+const levelText=
+  document.getElementById("levelText");
+
+const killText=
+  document.getElementById("killText");
+
+const logEl=
+  document.getElementById("log");
+
+const pauseBtn=
+  document.getElementById("pauseBtn");
+
+const resetBtn=
+  document.getElementById("resetBtn");
 
 
 /* UTILITY */
@@ -570,7 +655,10 @@ function distance(a,b){
   const dx=a.x-b.x;
   const dy=a.y-b.y;
 
-  return Math.sqrt(dx*dx+dy*dy);
+  return Math.sqrt(
+    dx*dx+
+    dy*dy
+  );
 }
 
 function random(min,max){
@@ -582,7 +670,8 @@ function random(min,max){
 
 function addLog(text,className=""){
 
-  const line=document.createElement("div");
+  const line=
+    document.createElement("div");
 
   if(className){
     line.className=className;
@@ -592,11 +681,16 @@ function addLog(text,className=""){
 
   logEl.appendChild(line);
 
-  while(logEl.children.length>45){
-    logEl.removeChild(logEl.firstChild);
+  while(
+    logEl.children.length>45
+  ){
+    logEl.removeChild(
+      logEl.firstChild
+    );
   }
 
-  logEl.scrollTop=logEl.scrollHeight;
+  logEl.scrollTop=
+    logEl.scrollHeight;
 }
 
 
@@ -623,15 +717,19 @@ function createMonster(id){
 
     frostUntil:0,
 
+    chargeUntil:0,
+
     el:null,
     hpFill:null,
     statusEl:null
   };
 
 
-  const el=document.createElement("div");
+  const el=
+    document.createElement("div");
 
-  el.className="entity slime";
+  el.className=
+    "entity slime";
 
   el.innerHTML=`
     <div class="statuses"></div>
@@ -664,7 +762,10 @@ function getTarget(){
   let best=null;
   let bestDistance=Infinity;
 
-  for(const monster of game.monsters){
+  for(
+    const monster
+    of game.monsters
+  ){
 
     if(!monster.alive){
       continue;
@@ -689,14 +790,25 @@ function getTarget(){
 
 /* MOVEMENT */
 
-function moveToward(target,deltaSeconds){
+function moveToward(
+  target,
+  deltaSeconds
+){
 
-  const player=game.player;
+  const player=
+    game.player;
 
-  const dx=target.x-player.x;
-  const dy=target.y-player.y;
+  const dx=
+    target.x-player.x;
 
-  const d=Math.sqrt(dx*dx+dy*dy);
+  const dy=
+    target.y-player.y;
+
+  const d=
+    Math.sqrt(
+      dx*dx+
+      dy*dy
+    );
 
   if(d<=0.001){
     return;
@@ -709,8 +821,11 @@ function moveToward(target,deltaSeconds){
   const amount=
     Math.min(move,d);
 
-  player.x+=dx/d*amount;
-  player.y+=dy/d*amount;
+  player.x+=
+    dx/d*amount;
+
+  player.y+=
+    dy/d*amount;
 
   player.x=
     clamp(player.x,3,97);
@@ -722,14 +837,19 @@ function moveToward(target,deltaSeconds){
 
 /* BASIC EFFECT */
 
-function createEffect(monster,icon){
+function createEffect(
+  monster,
+  icon
+){
 
   const effect=
     document.createElement("div");
 
-  effect.className="effect";
+  effect.className=
+    "effect";
 
-  effect.textContent=icon;
+  effect.textContent=
+    icon;
 
   effect.style.left=
     monster.x+"%";
@@ -757,7 +877,8 @@ function createReactionEffect(
   const effect=
     document.createElement("div");
 
-  effect.className="reaction";
+  effect.className=
+    "reaction";
 
   effect.innerHTML=`
     <span class="reactionIcon">${icon}</span>
@@ -781,12 +902,15 @@ function createReactionEffect(
 
 /* STORM VISUAL */
 
-function createStormEffect(monster){
+function createStormEffect(
+  monster
+){
 
   const ring=
     document.createElement("div");
 
-  ring.className="storm-ring";
+  ring.className=
+    "storm-ring";
 
   ring.style.left=
     monster.x+"%";
@@ -803,34 +927,75 @@ function createStormEffect(monster){
 }
 
 
+/* OVERLOAD VISUAL */
+
+function createOverloadEffect(
+  monster
+){
+
+  const ring=
+    document.createElement("div");
+
+  ring.className=
+    "overload-ring";
+
+  ring.style.left=
+    monster.x+"%";
+
+  ring.style.top=
+    monster.y+"%";
+
+  worldEl.appendChild(ring);
+
+  setTimeout(
+    ()=>ring.remove(),
+    600
+  );
+}
+
+
 /* LIGHTNING LINE */
 
-function createLightningLine(from,to){
+function createLightningLine(
+  from,
+  to
+){
 
   const rect=
     worldEl.getBoundingClientRect();
 
   const x1=
-    from.x/100*rect.width;
+    from.x/100*
+    rect.width;
 
   const y1=
-    from.y/100*rect.height;
+    from.y/100*
+    rect.height;
 
   const x2=
-    to.x/100*rect.width;
+    to.x/100*
+    rect.width;
 
   const y2=
-    to.y/100*rect.height;
+    to.y/100*
+    rect.height;
 
   const dx=x2-x1;
   const dy=y2-y1;
 
   const length=
-    Math.sqrt(dx*dx+dy*dy);
+    Math.sqrt(
+      dx*dx+
+      dy*dy
+    );
 
   const angle=
-    Math.atan2(dy,dx)*
-    180/Math.PI;
+    Math.atan2(
+      dy,
+      dx
+    )*
+    180/
+    Math.PI;
 
   const line=
     document.createElement("div");
@@ -896,7 +1061,9 @@ function damageMonster(
    SHATTER
 ===================================================== */
 
-function triggerShatter(monster){
+function triggerShatter(
+  monster
+){
 
   monster.burningUntil=0;
   monster.nextBurnTick=0;
@@ -923,12 +1090,11 @@ function triggerShatter(monster){
    STORM
 ===================================================== */
 
-function triggerStorm(monster){
-
-  /* Consume Frostbite */
+function triggerStorm(
+  monster
+){
 
   monster.frostUntil=0;
-
 
   createReactionEffect(
     monster,
@@ -940,18 +1106,11 @@ function triggerStorm(monster){
     monster
   );
 
-
   addLog(
     `🌩️ STORM！範圍傷害 -${CONFIG.STORM_DAMAGE}`,
     "stormText"
   );
 
-
-  /*
-    Snapshot targets first.
-    This avoids mutation problems when
-    several monsters die during the AoE.
-  */
 
   const victims=
     game.monsters.filter(
@@ -984,6 +1143,67 @@ function triggerStorm(monster){
 
 
 /* =====================================================
+   OVERLOAD
+===================================================== */
+
+function triggerOverload(
+  monster
+){
+
+  /* Consume Charge */
+
+  monster.chargeUntil=0;
+
+
+  createReactionEffect(
+    monster,
+    "💥",
+    "OVERLOAD!"
+  );
+
+
+  createOverloadEffect(
+    monster
+  );
+
+
+  addLog(
+    `💥 OVERLOAD！範圍傷害 -${CONFIG.OVERLOAD_DAMAGE}`,
+    "overloadText"
+  );
+
+
+  const victims=
+    game.monsters.filter(
+      candidate=>
+        candidate.alive &&
+        distance(
+          monster,
+          candidate
+        )<=
+        CONFIG.OVERLOAD_RANGE
+    );
+
+
+  for(
+    const victim
+    of victims
+  ){
+
+    createEffect(
+      victim,
+      "💥"
+    );
+
+    damageMonster(
+      victim,
+      CONFIG.OVERLOAD_DAMAGE
+    );
+  }
+}
+
+
+/* =====================================================
    REACTION ENGINE
 ===================================================== */
 
@@ -1000,10 +1220,7 @@ function tryReaction(
   }
 
 
-  /*
-    Burning + Ice
-    = Shatter
-  */
+  /* Burning + Ice */
 
   if(
     incomingElement==="ice" &&
@@ -1019,10 +1236,7 @@ function tryReaction(
   }
 
 
-  /*
-    Frostbite + Lightning
-    = Storm
-  */
+  /* Frostbite + Lightning */
 
   if(
     incomingElement==="lightning" &&
@@ -1038,11 +1252,29 @@ function tryReaction(
   }
 
 
+  /* Charge + Fire */
+
+  if(
+    incomingElement==="fire" &&
+    monster.chargeUntil>
+    game.time
+  ){
+
+    triggerOverload(
+      monster
+    );
+
+    return true;
+  }
+
+
   return false;
 }
 
 
-/* FIRE */
+/* =====================================================
+   FIRE
+===================================================== */
 
 function castFire(
   monster,
@@ -1054,10 +1286,12 @@ function castFire(
     "🔥"
   );
 
+
   damageMonster(
     monster,
     skill.damage
   );
+
 
   addLog(
     `🔥 Fire → Slime -${skill.damage}`,
@@ -1065,25 +1299,46 @@ function castFire(
   );
 
 
-  if(monster.alive){
-
-    monster.burningUntil=
-      game.time+
-      CONFIG.BURN_DURATION_MS;
-
-    monster.nextBurnTick=
-      game.time+
-      CONFIG.BURN_TICK_MS;
-
-    addLog(
-      "🔥 Slime 進入 Burning",
-      "burnText"
-    );
+  if(!monster.alive){
+    return;
   }
+
+
+  /*
+    Check Charge + Fire
+    before applying Burning.
+  */
+
+  tryReaction(
+    monster,
+    "fire"
+  );
+
+
+  if(!monster.alive){
+    return;
+  }
+
+
+  monster.burningUntil=
+    game.time+
+    CONFIG.BURN_DURATION_MS;
+
+  monster.nextBurnTick=
+    game.time+
+    CONFIG.BURN_TICK_MS;
+
+
+  addLog(
+    "🔥 Slime 進入 Burning",
+    "burnText"
+  );
 }
 
 
-/* ICE */
+/* =====================================================
+   ICE
+===================================================== */
 
 function castIce(
   monster,
@@ -1095,10 +1350,12 @@ function castIce(
     "❄️"
   );
 
+
   damageMonster(
     monster,
     skill.damage
   );
+
 
   addLog(
     `❄️ Ice → Slime -${skill.damage}`,
@@ -1134,7 +1391,9 @@ function castIce(
 }
 
 
-/* LIGHTNING */
+/* =====================================================
+   LIGHTNING
+===================================================== */
 
 function castLightning(
   monster,
@@ -1146,10 +1405,12 @@ function castLightning(
     "⚡"
   );
 
+
   damageMonster(
     monster,
     skill.damage
   );
+
 
   addLog(
     `⚡ Lightning → Slime -${skill.damage}`,
@@ -1163,7 +1424,8 @@ function castLightning(
 
 
   /*
-    Check Storm BEFORE Chain.
+    Frostbite + Lightning
+    can trigger Storm.
   */
 
   tryReaction(
@@ -1175,6 +1437,23 @@ function castLightning(
   if(!monster.alive){
     return;
   }
+
+
+  /*
+    Lightning leaves Charge.
+    This becomes fuel for
+    Fire → Overload.
+  */
+
+  monster.chargeUntil=
+    game.time+
+    CONFIG.CHARGE_DURATION_MS;
+
+
+  addLog(
+    "⚡ Slime 進入 Charge",
+    "lightningText"
+  );
 
 
   /*
@@ -1221,6 +1500,7 @@ function castLightning(
       if(!candidate.alive){
         continue;
       }
+
 
       if(
         hitIds.has(
@@ -1293,6 +1573,20 @@ function castLightning(
     );
 
 
+    /*
+      Chained targets also receive Charge.
+      This will matter later when
+      player skill rotations become editable.
+    */
+
+    if(next.alive){
+
+      next.chargeUntil=
+        game.time+
+        CONFIG.CHARGE_DURATION_MS;
+    }
+
+
     hitIds.add(
       next.id
     );
@@ -1322,7 +1616,9 @@ function castSkill(
   }
 
 
-  if(skill.id==="fire"){
+  if(
+    skill.id==="fire"
+  ){
 
     castFire(
       monster,
@@ -1350,7 +1646,9 @@ function castSkill(
 }
 
 
-/* STATUS */
+/* =====================================================
+   STATUS UPDATE
+===================================================== */
 
 function updateStatuses(){
 
@@ -1414,25 +1712,46 @@ function updateStatuses(){
 
       monster.frostUntil=0;
     }
+
+
+    /* Charge */
+
+    if(
+      monster.chargeUntil<=
+      game.time
+    ){
+
+      monster.chargeUntil=0;
+    }
   }
 }
 
 
-/* KILL */
+/* =====================================================
+   KILL
+===================================================== */
 
-function killMonster(monster){
+function killMonster(
+  monster
+){
 
   if(!monster.alive){
     return;
   }
 
+
   monster.alive=false;
 
   monster.hp=0;
 
+
   monster.burningUntil=0;
   monster.nextBurnTick=0;
+
   monster.frostUntil=0;
+
+  monster.chargeUntil=0;
+
 
   monster.respawnAt=
     game.time+
@@ -1448,6 +1767,7 @@ function killMonster(monster){
     game.player.targetId===
     monster.id
   ){
+
     game.player.targetId=null;
   }
 
@@ -1469,6 +1789,7 @@ function checkLevelUp(){
   const player=
     game.player;
 
+
   while(
     player.exp>=
     player.expNeed
@@ -1477,18 +1798,28 @@ function checkLevelUp(){
     player.exp-=
       player.expNeed;
 
+
     player.level++;
+
 
     player.expNeed=
       Math.floor(
-        player.expNeed*1.25
+        player.expNeed*
+        1.25
       );
 
+
     player.maxHp+=10;
-    player.hp=player.maxHp;
+
+    player.hp=
+      player.maxHp;
+
 
     player.maxMp+=5;
-    player.mp=player.maxMp;
+
+    player.mp=
+      player.maxMp;
+
 
     addLog(
       `✨ Level Up！現在 Lv.${player.level}`,
@@ -1498,7 +1829,9 @@ function checkLevelUp(){
 }
 
 
-/* RESPAWN */
+/* =====================================================
+   RESPAWN
+===================================================== */
 
 function updateRespawns(){
 
@@ -1518,17 +1851,24 @@ function updateRespawns(){
       monster.hp=
         monster.maxHp;
 
+
       monster.x=
         random(10,90);
 
       monster.y=
         random(12,88);
 
+
       monster.respawnAt=0;
+
 
       monster.burningUntil=0;
       monster.nextBurnTick=0;
+
       monster.frostUntil=0;
+
+      monster.chargeUntil=0;
+
 
       addLog(
         "🟢 Slime 重生了"
@@ -1538,13 +1878,18 @@ function updateRespawns(){
 }
 
 
-/* GAME UPDATE */
+/* =====================================================
+   GAME UPDATE
+===================================================== */
 
-function updateGame(deltaMs){
+function updateGame(
+  deltaMs
+){
 
   if(!game.running){
     return;
   }
+
 
   game.time+=
     deltaMs;
@@ -1568,6 +1913,7 @@ function updateGame(deltaMs){
 
     target=
       getTarget();
+
 
     game.player.targetId=
       target?
@@ -1626,14 +1972,17 @@ function updateGame(deltaMs){
 
     game.player.skillIndex=
       (
-        game.player.skillIndex+1
+        game.player.skillIndex+
+        1
       )%
       SKILLS.length;
   }
 }
 
 
-/* RENDER */
+/* =====================================================
+   RENDER
+===================================================== */
 
 function render(){
 
@@ -1678,7 +2027,8 @@ function render(){
       (
         monster.hp/
         monster.maxHp
-      )*100;
+      )*
+      100;
 
 
     monster.hpFill.style.width=
@@ -1692,6 +2042,7 @@ function render(){
       monster.burningUntil>
       game.time
     ){
+
       statusText+="🔥";
     }
 
@@ -1700,7 +2051,17 @@ function render(){
       monster.frostUntil>
       game.time
     ){
+
       statusText+="❄️";
+    }
+
+
+    if(
+      monster.chargeUntil>
+      game.time
+    ){
+
+      statusText+="⚡";
     }
 
 
@@ -1712,14 +2073,18 @@ function render(){
   hpText.textContent=
     `HP ${player.hp} / ${player.maxHp}`;
 
+
   mpText.textContent=
     `MP ${player.mp} / ${player.maxMp}`;
+
 
   expText.textContent=
     `EXP ${player.exp} / ${player.expNeed}`;
 
+
   levelText.textContent=
     `Lv.${player.level} Mage`;
+
 
   killText.textContent=
     `Kills ${player.kills}`;
@@ -1728,24 +2093,31 @@ function render(){
   hpBar.style.width=
     (
       player.hp/
-      player.maxHp*100
+      player.maxHp*
+      100
     )+"%";
+
 
   mpBar.style.width=
     (
       player.mp/
-      player.maxMp*100
+      player.maxMp*
+      100
     )+"%";
+
 
   expBar.style.width=
     (
       player.exp/
-      player.expNeed*100
+      player.expNeed*
+      100
     )+"%";
 }
 
 
-/* MAIN LOOP */
+/* =====================================================
+   MAIN LOOP
+===================================================== */
 
 let lastTime=
   performance.now();
@@ -1761,7 +2133,10 @@ function mainLoop(now){
       1000
     );
 
-  lastTime=now;
+
+  lastTime=
+    now;
+
 
   accumulator+=
     frameDelta;
@@ -1775,6 +2150,7 @@ function mainLoop(now){
     updateGame(
       CONFIG.TICK_MS
     );
+
 
     accumulator-=
       CONFIG.TICK_MS;
@@ -1790,7 +2166,9 @@ function mainLoop(now){
 }
 
 
-/* RESET */
+/* =====================================================
+   RESET
+===================================================== */
 
 function resetGame(){
 
@@ -1798,25 +2176,34 @@ function resetGame(){
 
   game.running=true;
 
+
   game.player.x=50;
   game.player.y=78;
+
 
   game.player.hp=100;
   game.player.maxHp=100;
 
+
   game.player.mp=100;
   game.player.maxMp=100;
 
+
   game.player.level=1;
+
 
   game.player.exp=0;
   game.player.expNeed=100;
 
+
   game.player.kills=0;
+
 
   game.player.targetId=null;
 
+
   game.player.skillIndex=0;
+
 
   game.player.nextAttackAt=0;
 
@@ -1831,36 +2218,50 @@ function resetGame(){
     monster.hp=
       monster.maxHp;
 
+
     monster.x=
       random(10,90);
 
     monster.y=
       random(12,88);
 
+
     monster.respawnAt=0;
+
 
     monster.burningUntil=0;
     monster.nextBurnTick=0;
+
     monster.frostUntil=0;
+
+    monster.chargeUntil=0;
   }
 
 
   logEl.innerHTML="";
+
 
   pauseBtn.textContent=
     "暫停";
 
 
   addLog(
-    "🧙 Mage Idle V0.3B 開始"
+    "🧙 Mage Idle V0.3C 開始"
   );
+
 
   addLog(
     "💥 Burning + Ice → SHATTER"
   );
 
+
   addLog(
     "🌩️ Frostbite + Lightning → STORM"
+  );
+
+
+  addLog(
+    "💥 Charge + Fire → OVERLOAD"
   );
 }
 
@@ -1874,10 +2275,12 @@ pauseBtn.addEventListener(
     game.running=
       !game.running;
 
+
     pauseBtn.textContent=
       game.running?
       "暫停":
       "繼續";
+
 
     addLog(
       game.running?
@@ -1894,7 +2297,9 @@ resetBtn.addEventListener(
 );
 
 
-/* BOOT */
+/* =====================================================
+   BOOT
+===================================================== */
 
 for(
   let i=0;
@@ -1907,15 +2312,19 @@ for(
 
 
 addLog(
-  "🧙 Mage Idle V0.3B 啟動"
+  "🧙 Mage Idle V0.3C 啟動"
 );
 
 addLog(
-  "💥 SHATTER 已啟用"
+  "🔥❄️ SHATTER 已啟用"
 );
 
 addLog(
-  "🌩️ STORM 已啟用"
+  "❄️⚡ STORM 已啟用"
+);
+
+addLog(
+  "⚡🔥 OVERLOAD 已啟用"
 );
 
 
