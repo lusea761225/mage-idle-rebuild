@@ -148,59 +148,47 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 /* ==================================================
-   V0.7A-2 PIXEL FIREBALL SPRITE
+   V0.7A-2 REAL PIXEL FIREBALL
 ================================================== */
-
-/*
-  外層只負責：
-  1. 世界座標
-  2. 飛行
-  3. 旋轉
-
-  內層負責：
-  1. 顯示 2x2 圖集
-  2. 四格動畫
-
-  這樣旋轉不會破壞 sprite frame。
-*/
 
 .fireball{
   position:absolute;
-  width:72px;
-  height:72px;
+  width:74px;
+  height:58px;
   z-index:35;
   pointer-events:none;
+
   transform-origin:center center;
   will-change:left,top,transform;
 }
 
 .fireball-sprite{
-  width:100%;
-  height:100%;
+  position:absolute;
+  inset:0;
 
-  background-image:url("./BE99A07C-D3A4-47A2-B2CE-0792FD72DAE9.png");
+  background-image:url("./572AD589-182E-4094-AE18-2B88F72F6447.png");
   background-repeat:no-repeat;
 
   /*
-    2x2 圖集：
-    每格就是整張圖的一半寬、一半高。
+    原圖為 2 x 2 四格。
   */
   background-size:200% 200%;
   background-position:0% 0%;
 
-  image-rendering:auto;
-
   filter:
-    drop-shadow(0 0 4px rgba(255,245,180,.95))
-    drop-shadow(0 0 8px rgba(255,120,20,.8));
+    drop-shadow(0 0 3px rgba(255,230,100,.8))
+    drop-shadow(0 0 7px rgba(255,90,20,.7));
 
-  will-change:background-position;
+  transform:scale(1.12);
+  transform-origin:center center;
 }
 
 /*
-  如果圖片讀不到，這顆小火球會顯示。
-  所以素材失效也不會影響戰鬥。
+  圖片讀取失敗時的安全替代。
+  即使 GitHub 素材路徑錯誤，
+  戰鬥仍然會正常運作。
 */
+
 .fireball.asset-failed{
   width:20px;
   height:20px;
@@ -209,9 +197,9 @@ h1{margin:6px 0 2px;font-size:25px}
   background:
     radial-gradient(
       circle,
-      #fff 0 15%,
-      #ffe082 16% 35%,
-      #ff9800 36% 65%,
+      #fff 0 14%,
+      #ffe082 15% 34%,
+      #ff9800 35% 65%,
       #e53935 66% 100%
     );
 
@@ -221,15 +209,19 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 .fireball.asset-failed .fireball-sprite{
-  display:none;
+  display:none
 }
+
+/* IMPACT */
 
 .fireball-impact{
   position:absolute;
-  width:24px;
-  height:24px;
+  width:26px;
+  height:26px;
   border-radius:50%;
+
   transform:translate(-50%,-50%) scale(.25);
+
   z-index:38;
   pointer-events:none;
 
@@ -256,11 +248,15 @@ h1{margin:6px 0 2px;font-size:25px}
   width:5px;
   height:5px;
   border-radius:50%;
+
   background:#ffe082;
   box-shadow:0 0 6px #ff9800;
+
   transform:translate(-50%,-50%);
+
   z-index:37;
   pointer-events:none;
+
   animation:fireSpark .48s ease-out forwards
 }
 
@@ -324,6 +320,7 @@ h1{margin:6px 0 2px;font-size:25px}
   25%{opacity:1}
   100%{transform:translate(-50%,-95%) scale(1.5);opacity:0}
 }
+
 .damage-text{
   position:absolute;transform:translate(-50%,-50%);
   z-index:45;color:#ff7b72;font-size:18px;font-weight:900;
@@ -348,6 +345,7 @@ h1{margin:6px 0 2px;font-size:25px}
   20%{transform:translate(-50%,-55%) scale(1.25);opacity:1}
   100%{transform:translate(-50%,-130%) scale(1);opacity:0}
 }
+
 .storm-ring{
   position:absolute;width:120px;height:120px;border-radius:50%;
   border:4px solid rgba(255,245,157,.95);
@@ -362,6 +360,7 @@ h1{margin:6px 0 2px;font-size:25px}
   0%{transform:translate(-50%,-50%) scale(.2);opacity:1}
   100%{transform:translate(-50%,-50%) scale(1.25);opacity:0}
 }
+
 .overload-ring{
   position:absolute;width:82px;height:82px;border-radius:50%;
   border:5px solid rgba(255,165,80,.95);
@@ -377,6 +376,7 @@ h1{margin:6px 0 2px;font-size:25px}
   0%{transform:translate(-50%,-50%) scale(.15);opacity:1}
   100%{transform:translate(-50%,-50%) scale(1.35);opacity:0}
 }
+
 .lightning-line{
   position:absolute;height:4px;background:#fff59d;
   transform-origin:left center;z-index:18;pointer-events:none;
@@ -434,7 +434,7 @@ button.secondary{background:#30363d}
 <div id="app">
 
 <h1>🧙 Mage Idle</h1>
-<div class="version">Rebuild V0.7A-2 — Pixel Fireball Sprite Animation</div>
+<div class="version">Rebuild V0.7A-2 — Real Pixel Fireball</div>
 
 <div class="panel">
 
@@ -600,7 +600,7 @@ Ice
 🔒 V0.6A Equipment Core<br>
 🔒 V0.6B Equipment Foundation<br>
 🔒 V0.7A-1 Fireball Animation Engine<br>
-🧪 V0.7A-2 Pixel Fireball Sprite Animation
+🧪 V0.7A-2 Real Pixel Fireball
 
 </div>
 
@@ -630,8 +630,8 @@ const CONFIG={
   AUTO_LOOT_DELAY:450,
   AUTO_LOOT_FLY_TIME:320,
 
-  FIREBALL_DURATION:360,
-  FIREBALL_FRAME_MS:80,
+  FIREBALL_DURATION:420,
+  FIREBALL_FRAME_MS:90,
 
   BURN_DAMAGE:3,
   BURN_TICK_MS:1000,
@@ -653,7 +653,7 @@ const CONFIG={
 };
 
 const FIREBALL_SPRITE=
-  "./BE99A07C-D3A4-47A2-B2CE-0792FD72DAE9.png";
+  "./572AD589-182E-4094-AE18-2B88F72F6447.png";
 
 
 const ITEMS={
@@ -985,12 +985,13 @@ function createFireballVisual(from,target){
   const dx=endX-startX;
   const dy=endY-startY;
 
+  /*
+    素材原本是朝右。
+    因此用攻擊方向直接旋轉。
+  */
+
   const angle=Math.atan2(dy,dx)*180/Math.PI;
 
-  /*
-    原始素材本身朝右飛。
-    外層依實際攻擊方向旋轉。
-  */
   fireball.style.transform=
     `translate(-50%,-50%) rotate(${angle}deg)`;
 
@@ -998,9 +999,7 @@ function createFireballVisual(from,target){
 
 
   /*
-    先確認素材真的能讀。
-    讀不到時只退回 CSS 火球，
-    戰鬥系統不受影響。
+    素材載入保險。
   */
 
   const testImage=new Image();
@@ -1013,12 +1012,12 @@ function createFireballVisual(from,target){
 
 
   /*
-    2x2 sprite sheet：
+    四格動畫：
 
-    Frame 0 = 左上
-    Frame 1 = 右上
-    Frame 2 = 左下
-    Frame 3 = 右下
+    1 左上
+    2 右上
+    3 左下
+    4 右下
   */
 
   const frames=[
@@ -1031,12 +1030,14 @@ function createFireballVisual(from,target){
   let frameIndex=0;
 
   function showFrame(){
+
     const frame=frames[frameIndex];
 
     sprite.style.backgroundPosition=
       `${frame[0]} ${frame[1]}`;
 
-    frameIndex=(frameIndex+1)%frames.length;
+    frameIndex=
+      (frameIndex+1)%frames.length;
   }
 
   showFrame();
@@ -1048,11 +1049,11 @@ function createFireballVisual(from,target){
 
 
   /*
-    先讓 Safari 畫出起始位置。
+    Safari：
+    先畫起點，再開始飛行。
   */
 
   fireball.getBoundingClientRect();
-
 
   fireball.style.transition=
     `left ${CONFIG.FIREBALL_DURATION}ms linear,
@@ -1094,7 +1095,7 @@ function createFireballImpact(x,y){
   worldEl.appendChild(impact);
 
 
-  for(let i=0;i<6;i++){
+  for(let i=0;i<7;i++){
 
     const spark=document.createElement("div");
 
@@ -1110,7 +1111,7 @@ function createFireballImpact(x,y){
 
     const length=
       18+
-      Math.random()*22;
+      Math.random()*25;
 
     spark.style.setProperty(
       "--spark-x",
@@ -1129,7 +1130,6 @@ function createFireballImpact(x,y){
       520
     );
   }
-
 
   setTimeout(
     ()=>impact.remove(),
@@ -1359,7 +1359,7 @@ function moveMonsterToward(monster,target,deltaSeconds){
 }
 
 
-/* GENERAL EFFECTS */
+/* EFFECTS */
 
 function createEffect(target,icon){
   const effect=document.createElement("div");
@@ -1725,12 +1725,6 @@ function castFire(monster,skill){
 
   const damage=getSkillDamage(skill);
 
-  /*
-    重要：
-    只有視覺層換成 Pixel Fireball。
-    傷害判定仍然是 V0.7A-1 的即時邏輯。
-  */
-
   createFireballVisual(
     {
       x:game.player.x,
@@ -1741,6 +1735,11 @@ function castFire(monster,skill){
       y:monster.y
     }
   );
+
+  /*
+    傷害仍立即處理。
+    Sprite 只是視覺層。
+  */
 
   damageMonster(monster,damage);
 
@@ -2344,7 +2343,7 @@ function resetGame(){
   pauseBtn.textContent="暫停";
 
   addLog("🧙 V0.7A-2 測試開始");
-  addLog("🔥 Pixel Fireball Sprite Animation 已啟用");
+  addLog("🔥 新 Pixel Fireball 四格動畫已啟用");
 }
 
 
@@ -2404,8 +2403,9 @@ for(let i=0;i<CONFIG.SLIME_COUNT;i++){
 recomputePlayerStats();
 
 addLog("🧙 Mage Idle V0.7A-2 啟動");
-addLog("🔥 四格 Pixel Fireball 動畫已載入");
-addLog("🎯 戰鬥邏輯仍與動畫層分離");
+addLog("🔥 新 Pixel Fireball 素材已接入");
+addLog("🎞️ Fireball：Frame 1 → 2 → 3 → 4");
+addLog("🎯 戰鬥邏輯與動畫層保持分離");
 
 requestAnimationFrame(mainLoop);
 
