@@ -7,1102 +7,583 @@
 
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
 body{
-  margin:0;
-  background:#0d1117;
-  color:#f0f6fc;
+  margin:0;background:#0d1117;color:#f0f6fc;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
-
-#app{
-  width:100%;
-  max-width:760px;
-  margin:auto;
-  padding:14px
-}
-
+#app{width:100%;max-width:760px;margin:auto;padding:14px}
 h1{margin:6px 0 2px;font-size:25px}
 .version{color:#8b949e;margin-bottom:12px}
-
 .panel{
-  background:#161b22;
-  border:1px solid #30363d;
-  border-radius:14px;
-  padding:12px;
-  margin-bottom:12px
+  background:#161b22;border:1px solid #30363d;
+  border-radius:14px;padding:12px;margin-bottom:12px
 }
-
 .row{
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-  font-size:14px;
-  margin-bottom:7px
+  display:flex;justify-content:space-between;gap:8px;
+  font-size:14px;margin-bottom:7px
 }
-
 .bar{
-  height:10px;
-  background:#30363d;
-  border-radius:20px;
-  overflow:hidden;
-  margin-bottom:8px
+  height:10px;background:#30363d;border-radius:20px;
+  overflow:hidden;margin-bottom:8px
 }
-
 .fill{height:100%;transition:width .15s linear}
 .hp{background:#3fb950}
 .mp{background:#58a6ff}
 .exp{background:#a371f7}
 
-
 /* EQUIPMENT */
 
 .equipment-box{
-  margin-top:10px;
-  padding:11px;
-  background:#0d1117;
-  border:1px solid #30363d;
-  border-radius:12px
+  margin-top:10px;padding:11px;background:#0d1117;
+  border:1px solid #30363d;border-radius:12px
 }
-
 .equipment-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:8px
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:8px
 }
-
-.equipment-header strong{
-  font-size:14px
-}
-
+.equipment-header strong{font-size:14px}
 .equipment-slot{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:9px;
-  background:#21262d;
-  border:1px solid #30363d;
-  border-radius:10px
+  display:flex;align-items:center;gap:10px;padding:9px;
+  background:#21262d;border:1px solid #30363d;border-radius:10px
 }
-
 .slot-icon{
-  width:42px;
-  height:42px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:9px;
-  background:#161b22;
-  font-size:25px
+  width:42px;height:42px;display:flex;align-items:center;
+  justify-content:center;border-radius:9px;background:#161b22;font-size:25px
 }
-
-.slot-info{
-  flex:1
-}
-
-.slot-label{
-  color:#8b949e;
-  font-size:11px
-}
-
-#weaponText{
-  margin-top:2px;
-  font-size:14px;
-  font-weight:800
-}
-
-#spellPowerText{
-  color:#d2a8ff;
-  font-size:12px;
-  margin-top:4px
-}
-
+.slot-info{flex:1}
+.slot-label{color:#8b949e;font-size:11px}
+#weaponText{margin-top:2px;font-size:14px;font-weight:800}
+#spellPowerText{color:#d2a8ff;font-size:12px;margin-top:4px}
 #unequipBtn{
-  display:none;
-  padding:8px 10px;
-  font-size:12px;
-  background:#30363d
+  display:none;padding:8px 10px;font-size:12px;background:#30363d
 }
-
-
-/* LOOT SUMMARY */
-
-.loot-summary{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  margin-top:10px
-}
-
-.loot-box{
-  background:#21262d;
-  border:1px solid #30363d;
-  border-radius:10px;
-  padding:8px 4px;
-  text-align:center;
-  font-size:12px
-}
-
-.loot-icon{
-  display:block;
-  font-size:21px;
-  margin-bottom:3px
-}
-
 
 /* INVENTORY */
 
-.inventory-button{
-  width:100%;
-  margin-top:10px;
-  background:#8957e5
+.loot-summary{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:7px;margin-top:10px
 }
-
+.loot-box{
+  background:#21262d;border:1px solid #30363d;
+  border-radius:10px;padding:8px 4px;text-align:center;font-size:12px
+}
+.loot-icon{display:block;font-size:21px;margin-bottom:3px}
+.inventory-button{width:100%;margin-top:10px;background:#8957e5}
 #inventoryPanel{display:none}
 #inventoryPanel.open{display:block}
-
 .inventory-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px
+  display:flex;justify-content:space-between;align-items:center;
+  gap:10px;margin-bottom:10px
 }
-
 .inventory-title strong{font-size:17px}
-
-.inventory-count{
-  color:#8b949e;
-  font-size:12px
-}
-
-.inventory-grid{
-  display:grid;
-  gap:8px
-}
-
+.inventory-count{color:#8b949e;font-size:12px}
+.inventory-grid{display:grid;gap:8px}
 .inventory-item{
-  display:grid;
-  grid-template-columns:48px 1fr auto;
-  gap:10px;
-  align-items:center;
-
-  background:#21262d;
-  border:1px solid #30363d;
-  border-radius:12px;
-  padding:10px
+  display:grid;grid-template-columns:48px 1fr auto;
+  gap:10px;align-items:center;background:#21262d;
+  border:1px solid #30363d;border-radius:12px;padding:10px
 }
-
-.inventory-item.empty{
-  opacity:.5
-}
-
+.inventory-item.empty{opacity:.5}
 .item-icon{
-  width:46px;
-  height:46px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:#161b22;
-  border:1px solid #30363d;
-  border-radius:10px;
-
-  font-size:27px
+  width:46px;height:46px;display:flex;align-items:center;
+  justify-content:center;background:#161b22;
+  border:1px solid #30363d;border-radius:10px;font-size:27px
 }
-
-.item-name{
-  font-size:14px;
-  font-weight:800
-}
-
-.item-desc{
-  color:#8b949e;
-  font-size:11px;
-  line-height:1.4;
-  margin-top:3px
-}
-
-.item-right{
-  min-width:72px;
-  text-align:right
-}
-
-.item-qty{
-  color:#d2a8ff;
-  font-size:15px;
-  font-weight:900;
-  margin-bottom:5px
-}
-
-.equip-btn{
-  padding:7px 10px;
-  font-size:12px;
-  background:#8957e5
-}
-
-.equip-btn:disabled{
-  opacity:.35
-}
-
+.item-name{font-size:14px;font-weight:800}
+.item-desc{color:#8b949e;font-size:11px;line-height:1.4;margin-top:3px}
+.item-right{min-width:72px;text-align:right}
+.item-qty{color:#d2a8ff;font-size:15px;font-weight:900;margin-bottom:5px}
+.equip-btn{padding:7px 10px;font-size:12px;background:#8957e5}
+.equip-btn:disabled{opacity:.35}
 
 /* WORLD */
 
 #world{
-  position:relative;
-  width:100%;
-  height:470px;
-
+  position:relative;width:100%;height:470px;
   background:
     radial-gradient(circle at 20% 25%,rgba(255,255,255,.06) 0 3px,transparent 4px),
     radial-gradient(circle at 70% 70%,rgba(255,255,255,.05) 0 4px,transparent 5px),
     linear-gradient(#679c59,#48783f);
-
-  border:3px solid #31552b;
-  border-radius:18px;
-  overflow:hidden;
-  margin-bottom:12px
+  border:3px solid #31552b;border-radius:18px;
+  overflow:hidden;margin-bottom:12px
 }
-
-.entity{
-  position:absolute;
-  transform:translate(-50%,-50%)
-}
-
+.entity{position:absolute;transform:translate(-50%,-50%)}
 #safeZone{
-  position:absolute;
-  left:50%;
-  top:88%;
-
-  width:105px;
-  height:58px;
-
+  position:absolute;left:50%;top:88%;width:105px;height:58px;
   transform:translate(-50%,-50%);
-
-  border:2px dashed rgba(255,255,255,.85);
-  border-radius:18px;
-
+  border:2px dashed rgba(255,255,255,.85);border-radius:18px;
   background:rgba(80,150,255,.17);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:12px;
-  font-weight:800;
-
-  z-index:1;
-  pointer-events:none
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;z-index:1;pointer-events:none
 }
-
-
-/* PLAYER */
-
 #player{
-  width:44px;
-  height:44px;
-
-  border-radius:50%;
-
-  background:#9b59ff;
-  border:3px solid #d9b8ff;
-
-  box-shadow:
-    0 0 0 3px rgba(0,0,0,.25),
-    0 0 16px rgba(155,89,255,.7);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:22px;
-  z-index:10
+  width:44px;height:44px;border-radius:50%;
+  background:#9b59ff;border:3px solid #d9b8ff;
+  box-shadow:0 0 0 3px rgba(0,0,0,.25),0 0 16px rgba(155,89,255,.7);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;z-index:10
 }
-
-#player.dead{
-  filter:grayscale(1);
-  opacity:.5
-}
-
-
-/* MONSTER */
-
+#player.dead{filter:grayscale(1);opacity:.5}
 .slime{
-  width:38px;
-  height:32px;
-
-  border-radius:50% 50% 42% 42%;
-
-  background:#42c96b;
-  border:2px solid #1e7d3d;
-
+  width:38px;height:32px;border-radius:50% 50% 42% 42%;
+  background:#42c96b;border:2px solid #1e7d3d;
   box-shadow:0 4px 0 rgba(0,0,0,.18);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:17px
+  display:flex;align-items:center;justify-content:center;font-size:17px
 }
-
-.slime.dead{
-  opacity:0;
-  pointer-events:none
-}
-
+.slime.dead{opacity:0;pointer-events:none}
 .slime.aggro{
-  box-shadow:
-    0 4px 0 rgba(0,0,0,.18),
-    0 0 12px rgba(255,80,80,.85)
+  box-shadow:0 4px 0 rgba(0,0,0,.18),0 0 12px rgba(255,80,80,.85)
 }
-
-.target{
-  outline:3px solid #ffd866;
-  outline-offset:5px
-}
-
+.target{outline:3px solid #ffd866;outline-offset:5px}
 .mob-hp{
-  position:absolute;
-  width:42px;
-  height:5px;
-
-  top:-11px;
-  left:-4px;
-
-  background:rgba(0,0,0,.55);
-  border-radius:10px;
-  overflow:hidden
+  position:absolute;width:42px;height:5px;top:-11px;left:-4px;
+  background:rgba(0,0,0,.55);border-radius:10px;overflow:hidden
 }
-
-.mob-hp-fill{
-  height:100%;
-  background:#ff6b6b
-}
-
+.mob-hp-fill{height:100%;background:#ff6b6b}
 .statuses{
-  position:absolute;
-  top:-32px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  min-width:75px;
-  text-align:center;
-
-  font-size:15px;
-  white-space:nowrap;
-
-  pointer-events:none
+  position:absolute;top:-32px;left:50%;transform:translateX(-50%);
+  min-width:75px;text-align:center;font-size:15px;
+  white-space:nowrap;pointer-events:none
 }
 
+/* ==================================================
+   V0.7A-1 FIREBALL ANIMATION
+================================================== */
 
-/* LOOT */
-
-.ground-loot{
+.fireball{
   position:absolute;
-  transform:translate(-50%,-50%);
-  z-index:30;
-
-  min-width:34px;
-  min-height:34px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:25px;
+  width:18px;
+  height:18px;
   border-radius:50%;
-
-  background:rgba(0,0,0,.28);
-
-  pointer-events:none;
-
-  transition:
-    left .32s ease-in,
-    top .32s ease-in,
-    transform .32s ease-in,
-    opacity .32s ease-in
-}
-
-.ground-loot.spawn{
-  animation:lootSpawn .38s ease-out
-}
-
-.ground-loot.flying{
-  transform:translate(-50%,-50%) scale(.55);
-  opacity:.25
-}
-
-@keyframes lootSpawn{
-  0%{
-    transform:translate(-50%,-50%) scale(.25);
-    opacity:0
-  }
-
-  65%{
-    transform:translate(-50%,-65%) scale(1.25);
-    opacity:1
-  }
-
-  100%{
-    transform:translate(-50%,-50%) scale(1);
-    opacity:1
-  }
-}
-
-
-/* EFFECT */
-
-.effect{
-  position:absolute;
   transform:translate(-50%,-50%);
-
-  font-size:28px;
-  z-index:20;
-
+  z-index:35;
   pointer-events:none;
 
-  animation:pop .55s ease-out forwards
+  background:
+    radial-gradient(
+      circle at 38% 35%,
+      #fffde7 0 15%,
+      #ffe082 16% 32%,
+      #ff9800 33% 62%,
+      #e53935 63% 100%
+    );
+
+  box-shadow:
+    0 0 5px #fff,
+    0 0 10px #ffd54f,
+    0 0 18px #ff9800,
+    0 0 28px rgba(244,67,54,.85);
 }
 
-@keyframes pop{
-  0%{
-    transform:translate(-50%,-50%) scale(.5);
-    opacity:0
-  }
-
-  25%{opacity:1}
-
-  100%{
-    transform:translate(-50%,-95%) scale(1.5);
-    opacity:0
-  }
-}
-
-.damage-text{
-  position:absolute;
-  transform:translate(-50%,-50%);
-
-  z-index:45;
-
-  color:#ff7b72;
-  font-size:18px;
-  font-weight:900;
-
-  text-shadow:0 2px 3px #000;
-
-  pointer-events:none;
-
-  animation:damageFloat .7s ease-out forwards
-}
-
-@keyframes damageFloat{
-  0%{
-    transform:translate(-50%,-30%);
-    opacity:1
-  }
-
-  100%{
-    transform:translate(-50%,-120%);
-    opacity:0
-  }
-}
-
-
-/* REACTIONS */
-
-.reaction{
-  position:absolute;
-  transform:translate(-50%,-50%);
-
-  z-index:40;
-  pointer-events:none;
-
-  text-align:center;
-  font-size:18px;
-  font-weight:900;
-
-  white-space:nowrap;
-
-  text-shadow:
-    0 2px 2px #000,
-    0 0 10px #fff;
-
-  animation:reactionPop .9s ease-out forwards
-}
-
-.reactionIcon{
-  display:block;
-  font-size:34px
-}
-
-@keyframes reactionPop{
-  0%{
-    transform:translate(-50%,-40%) scale(.4);
-    opacity:0
-  }
-
-  20%{
-    transform:translate(-50%,-55%) scale(1.25);
-    opacity:1
-  }
-
-  100%{
-    transform:translate(-50%,-130%) scale(1);
-    opacity:0
-  }
-}
-
-.storm-ring{
+.fireball::before{
+  content:"";
   position:absolute;
 
-  width:120px;
-  height:120px;
+  width:26px;
+  height:10px;
+
+  right:8px;
+  top:4px;
+
+  border-radius:100% 0 0 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,87,34,.35),
+      #ff9800,
+      #ffe082
+    );
+
+  filter:blur(2px);
+
+  transform-origin:right center;
+}
+
+.fireball::after{
+  content:"";
+  position:absolute;
+
+  width:8px;
+  height:8px;
+
+  left:5px;
+  top:5px;
 
   border-radius:50%;
 
-  border:4px solid rgba(255,245,157,.95);
+  background:#fff;
+
+  box-shadow:0 0 7px #fff59d;
+}
+
+.fireball-impact{
+  position:absolute;
+
+  width:24px;
+  height:24px;
+
+  border-radius:50%;
+
+  transform:translate(-50%,-50%) scale(.25);
+
+  z-index:38;
+  pointer-events:none;
 
   background:
     radial-gradient(
       circle,
-      rgba(255,255,255,.30),
-      rgba(130,170,255,.18) 45%,
+      #fff 0 8%,
+      #fff176 9% 22%,
+      #ff9800 23% 48%,
+      #f44336 49% 68%,
       transparent 70%
     );
 
   box-shadow:
-    0 0 18px #fff59d,
-    inset 0 0 18px rgba(130,170,255,.8);
+    0 0 12px #fff176,
+    0 0 24px #ff9800,
+    0 0 35px rgba(244,67,54,.9);
 
-  transform:translate(-50%,-50%) scale(.25);
-
-  z-index:25;
-  pointer-events:none;
-
-  animation:stormExpand .65s ease-out forwards
+  animation:fireImpact .42s ease-out forwards
 }
 
-@keyframes stormExpand{
+.fireball-spark{
+  position:absolute;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#ffe082;
+  box-shadow:0 0 6px #ff9800;
+  transform:translate(-50%,-50%);
+  z-index:37;
+  pointer-events:none;
+  animation:fireSpark .48s ease-out forwards
+}
+
+@keyframes fireImpact{
   0%{
     transform:translate(-50%,-50%) scale(.2);
     opacity:1
   }
-
-  100%{
-    transform:translate(-50%,-50%) scale(1.25);
-    opacity:0
-  }
-}
-
-.overload-ring{
-  position:absolute;
-
-  width:82px;
-  height:82px;
-
-  border-radius:50%;
-
-  border:5px solid rgba(255,165,80,.95);
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.8) 0%,
-      rgba(255,190,70,.55) 25%,
-      rgba(255,80,50,.25) 55%,
-      transparent 72%
-    );
-
-  box-shadow:
-    0 0 20px rgba(255,120,50,.95),
-    inset 0 0 18px rgba(255,220,100,.9);
-
-  transform:translate(-50%,-50%) scale(.2);
-
-  z-index:30;
-  pointer-events:none;
-
-  animation:overloadExpand .55s ease-out forwards
-}
-
-@keyframes overloadExpand{
-  0%{
-    transform:translate(-50%,-50%) scale(.15);
+  55%{
+    transform:translate(-50%,-50%) scale(2);
     opacity:1
   }
-
   100%{
-    transform:translate(-50%,-50%) scale(1.35);
+    transform:translate(-50%,-50%) scale(2.8);
     opacity:0
   }
 }
 
-.lightning-line{
-  position:absolute;
+@keyframes fireSpark{
+  0%{
+    transform:translate(-50%,-50%) translate(0,0) scale(1);
+    opacity:1
+  }
+  100%{
+    transform:
+      translate(-50%,-50%)
+      translate(var(--spark-x),var(--spark-y))
+      scale(.2);
+    opacity:0
+  }
+}
 
-  height:4px;
+/* OTHER EFFECTS */
 
-  background:#fff59d;
-
-  transform-origin:left center;
-
-  z-index:18;
+.ground-loot{
+  position:absolute;transform:translate(-50%,-50%);z-index:30;
+  min-width:34px;min-height:34px;display:flex;
+  align-items:center;justify-content:center;font-size:25px;
+  border-radius:50%;background:rgba(0,0,0,.28);
   pointer-events:none;
+  transition:left .32s ease-in,top .32s ease-in,
+             transform .32s ease-in,opacity .32s ease-in
+}
+.ground-loot.spawn{animation:lootSpawn .38s ease-out}
+.ground-loot.flying{
+  transform:translate(-50%,-50%) scale(.55);opacity:.25
+}
+@keyframes lootSpawn{
+  0%{transform:translate(-50%,-50%) scale(.25);opacity:0}
+  65%{transform:translate(-50%,-65%) scale(1.25);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1);opacity:1}
+}
 
-  box-shadow:
-    0 0 7px #fff,
-    0 0 13px #ffd54f;
+.effect{
+  position:absolute;transform:translate(-50%,-50%);
+  font-size:28px;z-index:20;pointer-events:none;
+  animation:pop .55s ease-out forwards
+}
+@keyframes pop{
+  0%{transform:translate(-50%,-50%) scale(.5);opacity:0}
+  25%{opacity:1}
+  100%{transform:translate(-50%,-95%) scale(1.5);opacity:0}
+}
+.damage-text{
+  position:absolute;transform:translate(-50%,-50%);
+  z-index:45;color:#ff7b72;font-size:18px;font-weight:900;
+  text-shadow:0 2px 3px #000;pointer-events:none;
+  animation:damageFloat .7s ease-out forwards
+}
+@keyframes damageFloat{
+  0%{transform:translate(-50%,-30%);opacity:1}
+  100%{transform:translate(-50%,-120%);opacity:0}
+}
 
+.reaction{
+  position:absolute;transform:translate(-50%,-50%);
+  z-index:40;pointer-events:none;text-align:center;
+  font-size:18px;font-weight:900;white-space:nowrap;
+  text-shadow:0 2px 2px #000,0 0 10px #fff;
+  animation:reactionPop .9s ease-out forwards
+}
+.reactionIcon{display:block;font-size:34px}
+@keyframes reactionPop{
+  0%{transform:translate(-50%,-40%) scale(.4);opacity:0}
+  20%{transform:translate(-50%,-55%) scale(1.25);opacity:1}
+  100%{transform:translate(-50%,-130%) scale(1);opacity:0}
+}
+.storm-ring{
+  position:absolute;width:120px;height:120px;border-radius:50%;
+  border:4px solid rgba(255,245,157,.95);
+  background:radial-gradient(circle,rgba(255,255,255,.30),
+    rgba(130,170,255,.18) 45%,transparent 70%);
+  box-shadow:0 0 18px #fff59d,inset 0 0 18px rgba(130,170,255,.8);
+  transform:translate(-50%,-50%) scale(.25);
+  z-index:25;pointer-events:none;
+  animation:stormExpand .65s ease-out forwards
+}
+@keyframes stormExpand{
+  0%{transform:translate(-50%,-50%) scale(.2);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1.25);opacity:0}
+}
+.overload-ring{
+  position:absolute;width:82px;height:82px;border-radius:50%;
+  border:5px solid rgba(255,165,80,.95);
+  background:radial-gradient(circle,#fff 0%,rgba(255,190,70,.55) 25%,
+    rgba(255,80,50,.25) 55%,transparent 72%);
+  box-shadow:0 0 20px rgba(255,120,50,.95),
+    inset 0 0 18px rgba(255,220,100,.9);
+  transform:translate(-50%,-50%) scale(.2);
+  z-index:30;pointer-events:none;
+  animation:overloadExpand .55s ease-out forwards
+}
+@keyframes overloadExpand{
+  0%{transform:translate(-50%,-50%) scale(.15);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1.35);opacity:0}
+}
+.lightning-line{
+  position:absolute;height:4px;background:#fff59d;
+  transform-origin:left center;z-index:18;pointer-events:none;
+  box-shadow:0 0 7px #fff,0 0 13px #ffd54f;
   animation:flashLine .28s ease-out forwards
 }
-
-@keyframes flashLine{
-  0%{opacity:1}
-  100%{opacity:0}
-}
-
+@keyframes flashLine{0%{opacity:1}100%{opacity:0}}
 
 /* SKILLS */
 
-.skills{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px
-}
-
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .skill{
-  background:#21262d;
-  border:1px solid #30363d;
-  border-radius:12px;
-
-  padding:10px 4px;
-
-  text-align:center;
-  font-size:13px
+  background:#21262d;border:1px solid #30363d;
+  border-radius:12px;padding:10px 4px;text-align:center;font-size:13px
 }
-
-.skillIcon{
-  font-size:25px
-}
-
-.skillInfo{
-  color:#8b949e;
-  font-size:11px;
-  margin-top:4px
-}
-
+.skillIcon{font-size:25px}
+.skillInfo{color:#8b949e;font-size:11px;margin-top:4px}
 
 /* LOG */
 
 #log{
-  height:190px;
-  overflow-y:auto;
-
-  font-size:13px;
-  line-height:1.55;
-
-  color:#c9d1d9
+  height:190px;overflow-y:auto;font-size:13px;
+  line-height:1.55;color:#c9d1d9
 }
-
 .good{color:#7ee787}
 .fireText{color:#ff9b71}
 .lightningText{color:#ffd866}
 .iceText{color:#79cfff}
 .burnText{color:#ff7b54}
-
-.reactionText{
-  color:#f2ccff;
-  font-weight:800
-}
-
-.stormText{
-  color:#fff59d;
-  font-weight:900
-}
-
-.overloadText{
-  color:#ffad66;
-  font-weight:900
-}
-
-.enemyText{
-  color:#ff7b72;
-  font-weight:700
-}
-
-.deathText{
-  color:#ff5c5c;
-  font-weight:900
-}
-
-.respawnText{
-  color:#79c0ff;
-  font-weight:800
-}
-
-.lootText{
-  color:#ffd866;
-  font-weight:800
-}
-
-.equipText{
-  color:#d2a8ff;
-  font-weight:900
-}
-
-
-/* BUTTONS */
+.reactionText{color:#f2ccff;font-weight:800}
+.stormText{color:#fff59d;font-weight:900}
+.overloadText{color:#ffad66;font-weight:900}
+.enemyText{color:#ff7b72;font-weight:700}
+.deathText{color:#ff5c5c;font-weight:900}
+.respawnText{color:#79c0ff;font-weight:800}
+.lootText{color:#ffd866;font-weight:800}
+.equipText{color:#d2a8ff;font-weight:900}
 
 .controls{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:10px
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px
 }
-
 button{
-  border:0;
-  border-radius:12px;
-
-  padding:13px;
-
-  font-size:15px;
-  font-weight:700;
-
-  color:white;
-  background:#238636
+  border:0;border-radius:12px;padding:13px;
+  font-size:15px;font-weight:700;color:white;background:#238636
 }
-
-button.secondary{
-  background:#30363d
-}
-
+button.secondary{background:#30363d}
 .anchor{
-  margin-top:12px;
-
-  text-align:center;
-
-  font-size:12px;
-  color:#8b949e
+  margin-top:12px;text-align:center;font-size:12px;color:#8b949e
 }
 </style>
 </head>
-
 
 <body>
 
 <div id="app">
 
 <h1>🧙 Mage Idle</h1>
-
-<div class="version">
-Rebuild V0.6B — Equipment Foundation
-</div>
-
+<div class="version">Rebuild V0.7A-1 — Fireball Animation Engine</div>
 
 <div class="panel">
 
-  <div class="row">
-    <span id="levelText">Lv.1 Mage</span>
-    <span id="killText">Kills 0</span>
-  </div>
+<div class="row">
+<span id="levelText">Lv.1 Mage</span>
+<span id="killText">Kills 0</span>
+</div>
 
-  <div class="row">
-    <span id="hpText">HP 100 / 100</span>
-  </div>
+<div class="row"><span id="hpText">HP 100 / 100</span></div>
+<div class="bar"><div id="hpBar" class="fill hp" style="width:100%"></div></div>
 
-  <div class="bar">
-    <div id="hpBar" class="fill hp" style="width:100%"></div>
-  </div>
+<div class="row"><span id="mpText">MP 100 / 100</span></div>
+<div class="bar"><div id="mpBar" class="fill mp" style="width:100%"></div></div>
 
-  <div class="row">
-    <span id="mpText">MP 100 / 100</span>
-  </div>
+<div class="row"><span id="expText">EXP 0 / 100</span></div>
+<div class="bar"><div id="expBar" class="fill exp" style="width:0%"></div></div>
 
-  <div class="bar">
-    <div id="mpBar" class="fill mp" style="width:100%"></div>
-  </div>
+<div class="equipment-box">
 
-  <div class="row">
-    <span id="expText">EXP 0 / 100</span>
-  </div>
+<div class="equipment-header">
+<strong>⚔️ 裝備</strong>
+<span id="spellPowerText">✨ Spell Power +0</span>
+</div>
 
-  <div class="bar">
-    <div id="expBar" class="fill exp" style="width:0%"></div>
-  </div>
+<div class="equipment-slot">
 
+<div id="weaponIcon" class="slot-icon">➖</div>
 
-  <div class="equipment-box">
+<div class="slot-info">
+<div class="slot-label">武器</div>
+<div id="weaponText">尚未裝備</div>
+</div>
 
-    <div class="equipment-header">
+<button id="unequipBtn">卸下</button>
 
-      <strong>
-        ⚔️ 裝備
-      </strong>
+</div>
+</div>
 
-      <span id="spellPowerText">
-        ✨ Spell Power +0
-      </span>
+<div class="loot-summary">
 
-    </div>
+<div class="loot-box">
+<span class="loot-icon">🪙</span>
+<span id="goldText">0</span>
+</div>
 
+<div class="loot-box">
+<span class="loot-icon">🧪</span>
+<span id="potionText">0</span>
+</div>
 
-    <div class="equipment-slot">
+<div class="loot-box">
+<span class="loot-icon">🪄</span>
+<span id="staffText">0</span>
+</div>
 
-      <div id="weaponIcon" class="slot-icon">
-        ➖
-      </div>
+</div>
 
-
-      <div class="slot-info">
-
-        <div class="slot-label">
-          武器
-        </div>
-
-        <div id="weaponText">
-          尚未裝備
-        </div>
-
-      </div>
-
-
-      <button id="unequipBtn">
-        卸下
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <div class="loot-summary">
-
-    <div class="loot-box">
-      <span class="loot-icon">🪙</span>
-      <span id="goldText">0</span>
-    </div>
-
-    <div class="loot-box">
-      <span class="loot-icon">🧪</span>
-      <span id="potionText">0</span>
-    </div>
-
-    <div class="loot-box">
-      <span class="loot-icon">🪄</span>
-      <span id="staffText">0</span>
-    </div>
-
-  </div>
-
-
-  <button id="inventoryBtn" class="inventory-button">
-    🎒 打開背包
-  </button>
+<button id="inventoryBtn" class="inventory-button">🎒 打開背包</button>
 
 </div>
 
 
 <div id="inventoryPanel" class="panel">
 
-  <div class="inventory-title">
+<div class="inventory-title">
+<strong>🎒 冒險者背包</strong>
+<span id="inventoryCount" class="inventory-count">0 件物品</span>
+</div>
 
-    <strong>
-      🎒 冒險者背包
-    </strong>
+<div class="inventory-grid">
 
-    <span id="inventoryCount" class="inventory-count">
-      0 件物品
-    </span>
+<div id="goldItem" class="inventory-item empty">
+<div class="item-icon">🪙</div>
+<div>
+<div class="item-name">金幣</div>
+<div class="item-desc">世界通用貨幣。</div>
+</div>
+<div class="item-right"><div id="goldQty" class="item-qty">×0</div></div>
+</div>
 
-  </div>
+<div id="potionItem" class="inventory-item empty">
+<div class="item-icon">🧪</div>
+<div>
+<div class="item-name">小型生命藥水</div>
+<div class="item-desc">基礎恢復道具。</div>
+</div>
+<div class="item-right"><div id="potionQty" class="item-qty">×0</div></div>
+</div>
 
+<div id="staffItem" class="inventory-item empty">
+<div class="item-icon">🪄</div>
+<div>
+<div class="item-name">破舊木杖</div>
+<div class="item-desc">武器｜Spell Power +2</div>
+</div>
+<div class="item-right">
+<div id="staffQty" class="item-qty">×0</div>
+<button id="staffEquipBtn" class="equip-btn" disabled>裝備</button>
+</div>
+</div>
 
-  <div class="inventory-grid">
-
-    <div id="goldItem" class="inventory-item empty">
-
-      <div class="item-icon">
-        🪙
-      </div>
-
-      <div>
-
-        <div class="item-name">
-          金幣
-        </div>
-
-        <div class="item-desc">
-          世界通用貨幣。
-        </div>
-
-      </div>
-
-      <div class="item-right">
-
-        <div id="goldQty" class="item-qty">
-          ×0
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div id="potionItem" class="inventory-item empty">
-
-      <div class="item-icon">
-        🧪
-      </div>
-
-      <div>
-
-        <div class="item-name">
-          小型生命藥水
-        </div>
-
-        <div class="item-desc">
-          基礎恢復道具。
-        </div>
-
-      </div>
-
-      <div class="item-right">
-
-        <div id="potionQty" class="item-qty">
-          ×0
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div id="staffItem" class="inventory-item empty">
-
-      <div class="item-icon">
-        🪄
-      </div>
-
-      <div>
-
-        <div class="item-name">
-          破舊木杖
-        </div>
-
-        <div class="item-desc">
-          武器｜Spell Power +2
-        </div>
-
-      </div>
-
-      <div class="item-right">
-
-        <div id="staffQty" class="item-qty">
-          ×0
-        </div>
-
-        <button id="staffEquipBtn" class="equip-btn" disabled>
-          裝備
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
 <div id="world">
 
-  <div id="safeZone">
-    🏠 SAFE ZONE
-  </div>
+<div id="safeZone">🏠 SAFE ZONE</div>
 
-  <div id="player" class="entity">
-    🧙
-  </div>
+<div id="player" class="entity">🧙</div>
 
 </div>
 
 
 <div class="panel">
 
-  <div class="skills">
+<div class="skills">
 
-    <div class="skill">
+<div class="skill">
+<div class="skillIcon">🔥</div>
+Fire
+<div id="fireInfo" class="skillInfo">傷害 10<br>🔥 Fireball</div>
+</div>
 
-      <div class="skillIcon">
-        🔥
-      </div>
+<div class="skill">
+<div class="skillIcon">⚡</div>
+Lightning
+<div id="lightningInfo" class="skillInfo">傷害 10</div>
+</div>
 
-      Fire
+<div class="skill">
+<div class="skillIcon">❄️</div>
+Ice
+<div id="iceInfo" class="skillInfo">傷害 7</div>
+</div>
 
-      <div id="fireInfo" class="skillInfo">
-        傷害 10
-      </div>
-
-    </div>
-
-
-    <div class="skill">
-
-      <div class="skillIcon">
-        ⚡
-      </div>
-
-      Lightning
-
-      <div id="lightningInfo" class="skillInfo">
-        傷害 10
-      </div>
-
-    </div>
-
-
-    <div class="skill">
-
-      <div class="skillIcon">
-        ❄️
-      </div>
-
-      Ice
-
-      <div id="iceInfo" class="skillInfo">
-        傷害 7
-      </div>
-
-    </div>
-
-  </div>
-
+</div>
 </div>
 
 
 <div class="panel">
 
-  <strong>
-    📜 戰鬥紀錄
-  </strong>
+<strong>📜 戰鬥紀錄</strong>
 
-  <div id="log"></div>
+<div id="log"></div>
 
-  <div class="controls">
-
-    <button id="pauseBtn">
-      暫停
-    </button>
-
-    <button id="resetBtn" class="secondary">
-      重置測試
-    </button>
-
-  </div>
+<div class="controls">
+<button id="pauseBtn">暫停</button>
+<button id="resetBtn" class="secondary">重置測試</button>
+</div>
 
 </div>
 
@@ -1117,7 +598,8 @@ Rebuild V0.6B — Equipment Foundation
 🔒 V0.5A Loot System<br>
 🔒 V0.5B-1 Inventory + Auto Loot<br>
 🔒 V0.6A Equipment Core<br>
-🧪 V0.6B Equipment Foundation
+🔒 V0.6B Equipment Foundation<br>
+🧪 V0.7A-1 Fireball Animation Engine
 
 </div>
 
@@ -1126,17 +608,9 @@ Rebuild V0.6B — Equipment Foundation
 
 <script>
 
-/* ================================================
-   V0.6B EQUIPMENT FOUNDATION
-================================================ */
-
-
 const CONFIG={
-
   TICK_MS:100,
-
   PLAYER_SPEED:11,
-
   PLAYER_RESPAWN_MS:3000,
 
   SAFE_X:50,
@@ -1144,27 +618,24 @@ const CONFIG={
   SAFE_RADIUS:8,
 
   SLIME_COUNT:6,
-
   SLIME_HP:50,
   SLIME_ATTACK:5,
-
   SLIME_SPEED:4.2,
   SLIME_DETECTION_RANGE:24,
-
   SLIME_ATTACK_RANGE:6,
   SLIME_ATTACK_COOLDOWN:1000,
-
   SLIME_RESPAWN_MS:5000,
 
   AUTO_LOOT_DELAY:450,
   AUTO_LOOT_FLY_TIME:320,
+
+  FIREBALL_DURATION:360,
 
   BURN_DAMAGE:3,
   BURN_TICK_MS:1000,
   BURN_DURATION_MS:4000,
 
   FROST_DURATION_MS:5000,
-
   CHARGE_DURATION_MS:5000,
 
   CHAIN_CHANCE:.45,
@@ -1173,1866 +644,896 @@ const CONFIG={
   CHAIN_DAMAGE_MULTIPLIER:.70,
 
   SHATTER_DAMAGE:12,
-
   STORM_DAMAGE:10,
   STORM_RANGE:25,
-
   OVERLOAD_DAMAGE:9,
   OVERLOAD_RANGE:18
 };
 
 
-/* ================================================
-   ITEM DATABASE
-================================================ */
-
 const ITEMS={
-
   gold:{
-
-    id:"gold",
-
-    name:"金幣",
-
-    icon:"🪙",
-
-    type:"currency",
-
-    stats:{}
+    id:"gold",name:"金幣",icon:"🪙",
+    type:"currency",stats:{}
   },
-
-
   potion:{
-
-    id:"potion",
-
-    name:"小型生命藥水",
-
-    icon:"🧪",
-
-    type:"consumable",
-
-    stats:{}
+    id:"potion",name:"小型生命藥水",icon:"🧪",
+    type:"consumable",stats:{}
   },
-
-
   staff:{
-
-    id:"staff",
-
-    name:"破舊木杖",
-
-    icon:"🪄",
-
-    type:"weapon",
-
-    stats:{
-
-      spellPower:2
-
-    }
+    id:"staff",name:"破舊木杖",icon:"🪄",
+    type:"weapon",stats:{spellPower:2}
   }
 };
 
 
-/* ================================================
-   DROP TABLE
-================================================ */
-
 const LOOT_TABLE=[
-
-  {
-    itemId:"gold",
-    chance:.70
-  },
-
-  {
-    itemId:"potion",
-    chance:.25
-  },
-
-  {
-    itemId:"staff",
-    chance:.08
-  }
-
+  {itemId:"gold",chance:.70},
+  {itemId:"potion",chance:.25},
+  {itemId:"staff",chance:.08}
 ];
 
-
-/* ================================================
-   SKILLS
-================================================ */
 
 const SKILLS=[
-
-  {
-    id:"fire",
-    damage:10,
-    range:20,
-    cooldown:1000
-  },
-
-  {
-    id:"lightning",
-    damage:10,
-    range:20,
-    cooldown:1000
-  },
-
-  {
-    id:"ice",
-    damage:7,
-    range:9,
-    cooldown:650
-  }
-
+  {id:"fire",damage:10,range:20,cooldown:1000},
+  {id:"lightning",damage:10,range:20,cooldown:1000},
+  {id:"ice",damage:7,range:9,cooldown:650}
 ];
 
 
-/* ================================================
-   GAME STATE
-================================================ */
-
 const game={
-
   running:true,
-
   time:0,
-
   nextLootId:1,
 
-
   player:{
-
     x:CONFIG.SAFE_X,
     y:CONFIG.SAFE_Y,
 
-    hp:100,
-    maxHp:100,
-
-    mp:100,
-    maxMp:100,
+    hp:100,maxHp:100,
+    mp:100,maxMp:100,
 
     level:1,
-
     exp:0,
     expNeed:100,
-
     kills:0,
 
     alive:true,
-
     respawnAt:0,
 
     targetId:null,
-
     skillIndex:0,
-
     nextAttackAt:0,
 
-
     inventory:{
-
       gold:0,
-
       potion:0,
-
       staff:0
-
     },
-
 
     equipment:{
-
       weapon:null
-
     },
 
-
     stats:{
-
       spellPower:0
-
     }
   },
 
-
   monsters:[],
-
   groundLoot:[]
 };
 
 
-/* ================================================
-   DOM
-================================================ */
+/* DOM */
 
-const worldEl=
-document.getElementById("world");
+const worldEl=document.getElementById("world");
+const playerEl=document.getElementById("player");
 
-const playerEl=
-document.getElementById("player");
+const hpText=document.getElementById("hpText");
+const mpText=document.getElementById("mpText");
+const expText=document.getElementById("expText");
 
+const hpBar=document.getElementById("hpBar");
+const mpBar=document.getElementById("mpBar");
+const expBar=document.getElementById("expBar");
 
-const hpText=
-document.getElementById("hpText");
+const levelText=document.getElementById("levelText");
+const killText=document.getElementById("killText");
 
-const mpText=
-document.getElementById("mpText");
+const weaponIcon=document.getElementById("weaponIcon");
+const weaponText=document.getElementById("weaponText");
+const spellPowerText=document.getElementById("spellPowerText");
+const unequipBtn=document.getElementById("unequipBtn");
 
-const expText=
-document.getElementById("expText");
+const goldText=document.getElementById("goldText");
+const potionText=document.getElementById("potionText");
+const staffText=document.getElementById("staffText");
 
+const inventoryBtn=document.getElementById("inventoryBtn");
+const inventoryPanel=document.getElementById("inventoryPanel");
+const inventoryCount=document.getElementById("inventoryCount");
 
-const hpBar=
-document.getElementById("hpBar");
+const goldItem=document.getElementById("goldItem");
+const potionItem=document.getElementById("potionItem");
+const staffItem=document.getElementById("staffItem");
 
-const mpBar=
-document.getElementById("mpBar");
+const goldQty=document.getElementById("goldQty");
+const potionQty=document.getElementById("potionQty");
+const staffQty=document.getElementById("staffQty");
 
-const expBar=
-document.getElementById("expBar");
+const staffEquipBtn=document.getElementById("staffEquipBtn");
 
+const fireInfo=document.getElementById("fireInfo");
+const lightningInfo=document.getElementById("lightningInfo");
+const iceInfo=document.getElementById("iceInfo");
 
-const levelText=
-document.getElementById("levelText");
+const logEl=document.getElementById("log");
 
-const killText=
-document.getElementById("killText");
-
-
-const weaponIcon=
-document.getElementById("weaponIcon");
-
-const weaponText=
-document.getElementById("weaponText");
-
-const spellPowerText=
-document.getElementById("spellPowerText");
-
-const unequipBtn=
-document.getElementById("unequipBtn");
+const pauseBtn=document.getElementById("pauseBtn");
+const resetBtn=document.getElementById("resetBtn");
 
 
-const goldText=
-document.getElementById("goldText");
+/* UTILS */
 
-const potionText=
-document.getElementById("potionText");
-
-const staffText=
-document.getElementById("staffText");
-
-
-const inventoryBtn=
-document.getElementById("inventoryBtn");
-
-const inventoryPanel=
-document.getElementById("inventoryPanel");
-
-const inventoryCount=
-document.getElementById("inventoryCount");
-
-
-const goldItem=
-document.getElementById("goldItem");
-
-const potionItem=
-document.getElementById("potionItem");
-
-const staffItem=
-document.getElementById("staffItem");
-
-
-const goldQty=
-document.getElementById("goldQty");
-
-const potionQty=
-document.getElementById("potionQty");
-
-const staffQty=
-document.getElementById("staffQty");
-
-
-const staffEquipBtn=
-document.getElementById("staffEquipBtn");
-
-
-const fireInfo=
-document.getElementById("fireInfo");
-
-const lightningInfo=
-document.getElementById("lightningInfo");
-
-const iceInfo=
-document.getElementById("iceInfo");
-
-
-const logEl=
-document.getElementById("log");
-
-
-const pauseBtn=
-document.getElementById("pauseBtn");
-
-const resetBtn=
-document.getElementById("resetBtn");
-
-
-/* ================================================
-   UTIL
-================================================ */
-
-function clamp(value,min,max){
-
-  return Math.max(
-    min,
-    Math.min(max,value)
-  );
+function clamp(v,min,max){
+  return Math.max(min,Math.min(max,v));
 }
-
 
 function random(min,max){
-
-  return min+
-  Math.random()*
-  (max-min);
+  return min+Math.random()*(max-min);
 }
-
 
 function distance(a,b){
-
-  const dx=
-  a.x-b.x;
-
-  const dy=
-  a.y-b.y;
-
-
-  return Math.sqrt(
-    dx*dx+
-    dy*dy
-  );
+  const dx=a.x-b.x;
+  const dy=a.y-b.y;
+  return Math.sqrt(dx*dx+dy*dy);
 }
 
-
 function isPlayerInSafeZone(){
-
   return distance(
-
     game.player,
-
-    {
-      x:CONFIG.SAFE_X,
-      y:CONFIG.SAFE_Y
-    }
-
+    {x:CONFIG.SAFE_X,y:CONFIG.SAFE_Y}
   )<=CONFIG.SAFE_RADIUS;
 }
 
 
-/* ================================================
-   LOG
-================================================ */
+/* LOG */
 
 function addLog(text,className=""){
-
-  const line=
-  document.createElement("div");
-
+  const line=document.createElement("div");
 
   if(className){
-
-    line.className=
-    className;
+    line.className=className;
   }
 
+  line.textContent=text;
+  logEl.appendChild(line);
 
-  line.textContent=
-  text;
-
-
-  logEl.appendChild(
-    line
-  );
-
-
-  while(
-    logEl.children.length>55
-  ){
-
-    logEl.removeChild(
-      logEl.firstChild
-    );
+  while(logEl.children.length>55){
+    logEl.removeChild(logEl.firstChild);
   }
 
-
-  logEl.scrollTop=
-  logEl.scrollHeight;
+  logEl.scrollTop=logEl.scrollHeight;
 }
 
 
-/* ================================================
-   STATS ENGINE
-================================================ */
+/* STATS */
 
 function recomputePlayerStats(){
-
-  const player=
-  game.player;
-
-
   let spellPower=0;
 
-
-  const weaponId=
-  player.equipment.weapon;
-
+  const weaponId=game.player.equipment.weapon;
 
   if(weaponId){
+    const weapon=ITEMS[weaponId];
 
-    const weapon=
-    ITEMS[weaponId];
-
-
-    if(
-      weapon &&
-      weapon.stats
-    ){
-
-      spellPower+=
-      weapon.stats.spellPower || 0;
+    if(weapon && weapon.stats){
+      spellPower+=weapon.stats.spellPower||0;
     }
   }
 
-
-  player.stats.spellPower=
-  spellPower;
+  game.player.stats.spellPower=spellPower;
 }
-
 
 function getSkillDamage(skill){
-
-  return (
-    skill.damage+
-    game.player.stats.spellPower
-  );
+  return skill.damage+game.player.stats.spellPower;
 }
 
 
-/* ================================================
-   EQUIPMENT ENGINE
-================================================ */
+/* EQUIPMENT */
 
 function equipWeapon(itemId){
+  const player=game.player;
+  const item=ITEMS[itemId];
 
-  const player=
-  game.player;
-
-
-  const item=
-  ITEMS[itemId];
-
-
-  if(
-    !item ||
-    item.type!=="weapon"
-  ){
-
+  if(!item || item.type!=="weapon"){
     return;
   }
 
-
-  if(
-    player.inventory[itemId]<=0
-  ){
-
-    addLog(
-      `❌ 沒有 ${item.name}`
-    );
-
+  if(player.inventory[itemId]<=0){
     return;
   }
-
-
-  /*
-     Future proof:
-
-     If another weapon is already
-     equipped, return it first.
-  */
 
   if(player.equipment.weapon){
-
-    const oldWeapon=
-    player.equipment.weapon;
-
-
-    player.inventory[oldWeapon]++;
-
-
+    player.inventory[player.equipment.weapon]++;
     player.equipment.weapon=null;
   }
 
-
-  /*
-     Move ONE item from inventory
-     into equipment.
-  */
-
   player.inventory[itemId]--;
-
-
-  player.equipment.weapon=
-  itemId;
-
+  player.equipment.weapon=itemId;
 
   recomputePlayerStats();
 
-
-  addLog(
-    `🪄 裝備了 ${item.name}`,
-    "equipText"
-  );
-
-
-  addLog(
-    `✨ Spell Power +${player.stats.spellPower}`,
-    "equipText"
-  );
+  addLog(`🪄 裝備了 ${item.name}`,"equipText");
+  addLog(`✨ Spell Power +${player.stats.spellPower}`,"equipText");
 }
 
-
 function unequipWeapon(){
-
-  const player=
-  game.player;
-
-
-  const weaponId=
-  player.equipment.weapon;
-
+  const player=game.player;
+  const weaponId=player.equipment.weapon;
 
   if(!weaponId){
     return;
   }
 
-
-  const item=
-  ITEMS[weaponId];
-
-
-  /*
-     Return equipped weapon
-     to inventory.
-  */
+  const item=ITEMS[weaponId];
 
   player.inventory[weaponId]++;
-
-
-  player.equipment.weapon=
-  null;
-
+  player.equipment.weapon=null;
 
   recomputePlayerStats();
 
-
-  addLog(
-    `🎒 卸下 ${item.name}`,
-    "equipText"
-  );
-
-
-  addLog(
-    "✨ Spell Power +0",
-    "equipText"
-  );
+  addLog(`🎒 卸下 ${item.name}`,"equipText");
 }
 
 
-/* ================================================
-   INVENTORY
-================================================ */
+/* INVENTORY */
 
 function addItem(itemId,amount=1){
-
-  if(
-    game.player.inventory[itemId]===
-    undefined
-  ){
-
+  if(game.player.inventory[itemId]===undefined){
     return;
   }
 
-
-  game.player.inventory[itemId]+=
-  amount;
+  game.player.inventory[itemId]+=amount;
 }
-
 
 function getInventoryTotal(){
+  const i=game.player.inventory;
+  return i.gold+i.potion+i.staff;
+}
 
-  const inventory=
-  game.player.inventory;
+function updateInventoryUI(){
+  const player=game.player;
+  const i=player.inventory;
 
+  goldText.textContent=i.gold;
+  potionText.textContent=i.potion;
+  staffText.textContent=i.staff;
 
-  return (
+  goldQty.textContent=`×${i.gold}`;
+  potionQty.textContent=`×${i.potion}`;
+  staffQty.textContent=`×${i.staff}`;
 
-    inventory.gold+
+  goldItem.classList.toggle("empty",i.gold<=0);
+  potionItem.classList.toggle("empty",i.potion<=0);
+  staffItem.classList.toggle("empty",i.staff<=0);
 
-    inventory.potion+
+  staffEquipBtn.disabled=i.staff<=0;
 
-    inventory.staff
+  inventoryCount.textContent=`${getInventoryTotal()} 件物品`;
 
-  );
+  const weaponId=player.equipment.weapon;
+
+  if(weaponId){
+    const weapon=ITEMS[weaponId];
+
+    weaponIcon.textContent=weapon.icon;
+    weaponText.textContent=weapon.name;
+    unequipBtn.style.display="block";
+  }else{
+    weaponIcon.textContent="➖";
+    weaponText.textContent="尚未裝備";
+    unequipBtn.style.display="none";
+  }
+
+  spellPowerText.textContent=`✨ Spell Power +${player.stats.spellPower}`;
+
+  fireInfo.innerHTML=
+    `傷害 ${10+player.stats.spellPower}<br>🔥 Fireball`;
+
+  lightningInfo.innerHTML=
+    `傷害 ${10+player.stats.spellPower}<br>⚡ Chain / Charge`;
+
+  iceInfo.innerHTML=
+    `傷害 ${7+player.stats.spellPower}<br>❄️ Frostbite`;
 }
 
 
-function updateInventoryUI(){
+/* ==================================================
+   FIREBALL VISUAL ENGINE
+================================================== */
 
-  const player=
-  game.player;
+function createFireballVisual(from,target){
 
+  /*
+    Important:
+    This is visual-only.
 
-  const inventory=
-  player.inventory;
+    Combat damage is already handled
+    by the combat engine.
+  */
 
+  if(!target){
+    return;
+  }
 
-  goldText.textContent=
-  inventory.gold;
+  const fireball=document.createElement("div");
+  fireball.className="fireball";
 
+  const startX=from.x;
+  const startY=from.y;
 
-  potionText.textContent=
-  inventory.potion;
+  const endX=target.x;
+  const endY=target.y;
 
+  fireball.style.left=startX+"%";
+  fireball.style.top=startY+"%";
 
-  staffText.textContent=
-  inventory.staff;
+  const dx=endX-startX;
+  const dy=endY-startY;
 
+  const angle=Math.atan2(dy,dx)*180/Math.PI;
 
-  goldQty.textContent=
-  `×${inventory.gold}`;
+  fireball.style.transform=
+    `translate(-50%,-50%) rotate(${angle}deg)`;
 
-
-  potionQty.textContent=
-  `×${inventory.potion}`;
-
-
-  staffQty.textContent=
-  `×${inventory.staff}`;
-
-
-  goldItem.classList.toggle(
-    "empty",
-    inventory.gold<=0
-  );
-
-
-  potionItem.classList.toggle(
-    "empty",
-    inventory.potion<=0
-  );
+  worldEl.appendChild(fireball);
 
 
-  staffItem.classList.toggle(
-    "empty",
-    inventory.staff<=0
-  );
+  /*
+    Force Safari to render the starting
+    position before changing destination.
+  */
+
+  fireball.getBoundingClientRect();
 
 
-  staffEquipBtn.disabled=
-  inventory.staff<=0;
+  fireball.style.transition=
+    `left ${CONFIG.FIREBALL_DURATION}ms linear,
+     top ${CONFIG.FIREBALL_DURATION}ms linear`;
 
 
-  inventoryCount.textContent=
-  `${getInventoryTotal()} 件物品`;
+  requestAnimationFrame(()=>{
+
+    fireball.style.left=endX+"%";
+    fireball.style.top=endY+"%";
+
+  });
 
 
-  const weaponId=
-  player.equipment.weapon;
+  setTimeout(()=>{
+
+    fireball.remove();
+
+    createFireballImpact(
+      endX,
+      endY
+    );
+
+  },CONFIG.FIREBALL_DURATION);
+}
 
 
-  if(weaponId){
+function createFireballImpact(x,y){
 
-    const weapon=
-    ITEMS[weaponId];
+  const impact=document.createElement("div");
 
+  impact.className="fireball-impact";
 
-    weaponIcon.textContent=
-    weapon.icon;
+  impact.style.left=x+"%";
+  impact.style.top=y+"%";
 
-
-    weaponText.textContent=
-    weapon.name;
+  worldEl.appendChild(impact);
 
 
-    unequipBtn.style.display=
-    "block";
+  /*
+    Small sparks around impact.
+  */
 
-  }else{
+  for(let i=0;i<6;i++){
 
-    weaponIcon.textContent=
-    "➖";
+    const spark=document.createElement("div");
 
+    spark.className="fireball-spark";
 
-    weaponText.textContent=
-    "尚未裝備";
+    spark.style.left=x+"%";
+    spark.style.top=y+"%";
 
+    const angle=
+      Math.random()*
+      Math.PI*
+      2;
 
-    unequipBtn.style.display=
-    "none";
+    const length=
+      18+
+      Math.random()*22;
+
+    spark.style.setProperty(
+      "--spark-x",
+      Math.cos(angle)*length+"px"
+    );
+
+    spark.style.setProperty(
+      "--spark-y",
+      Math.sin(angle)*length+"px"
+    );
+
+    worldEl.appendChild(spark);
+
+    setTimeout(
+      ()=>spark.remove(),
+      520
+    );
   }
 
 
-  spellPowerText.textContent=
-  `✨ Spell Power +${player.stats.spellPower}`;
-
-
-  fireInfo.innerHTML=
-  `傷害 ${10+player.stats.spellPower}<br>🔥 Burning`;
-
-
-  lightningInfo.innerHTML=
-  `傷害 ${10+player.stats.spellPower}<br>⚡ Chain / Charge`;
-
-
-  iceInfo.innerHTML=
-  `傷害 ${7+player.stats.spellPower}<br>❄️ Frostbite`;
+  setTimeout(
+    ()=>impact.remove(),
+    460
+  );
 }
 
 
-/* ================================================
-   AUTO LOOT
-================================================ */
+/* AUTO LOOT */
 
 function rollLoot(monster){
-
-  for(
-    const drop
-    of LOOT_TABLE
-  ){
-
-    if(
-      Math.random()<
-      drop.chance
-    ){
-
-      const item=
-      ITEMS[drop.itemId];
-
-
+  for(const drop of LOOT_TABLE){
+    if(Math.random()<drop.chance){
       spawnGroundLoot(
-
-        item,
-
+        ITEMS[drop.itemId],
         monster.x,
-
         monster.y
       );
     }
   }
 }
 
-
 function spawnGroundLoot(item,x,y){
-
   const loot={
-
-    uid:
-    game.nextLootId++,
-
+    uid:game.nextLootId++,
     itemId:item.id,
-
     name:item.name,
-
     icon:item.icon,
 
-    x:clamp(
-      x+random(-2.2,2.2),
-      4,
-      96
-    ),
+    x:clamp(x+random(-2.2,2.2),4,96),
+    y:clamp(y+random(-2.2,2.2),5,82),
 
-    y:clamp(
-      y+random(-2.2,2.2),
-      5,
-      82
-    ),
-
-    collectAt:
-    game.time+
-    CONFIG.AUTO_LOOT_DELAY,
-
+    collectAt:game.time+CONFIG.AUTO_LOOT_DELAY,
     collecting:false,
-
     collected:false,
-
     el:null
   };
 
+  const el=document.createElement("div");
 
-  const el=
-  document.createElement("div");
+  el.className="ground-loot spawn";
+  el.textContent=loot.icon;
+  el.style.left=loot.x+"%";
+  el.style.top=loot.y+"%";
 
+  worldEl.appendChild(el);
 
-  el.className=
-  "ground-loot spawn";
+  loot.el=el;
 
+  game.groundLoot.push(loot);
 
-  el.textContent=
-  loot.icon;
-
-
-  el.style.left=
-  loot.x+"%";
-
-
-  el.style.top=
-  loot.y+"%";
-
-
-  worldEl.appendChild(
-    el
-  );
-
-
-  loot.el=
-  el;
-
-
-  game.groundLoot.push(
-    loot
-  );
-
-
-  addLog(
-    `🎁 Slime 掉落 ${loot.icon} ${loot.name}`,
-    "lootText"
-  );
+  addLog(`🎁 Slime 掉落 ${loot.icon} ${loot.name}`,"lootText");
 }
 
-
 function startAutoCollect(loot){
-
-  if(
-    !loot ||
-    loot.collecting ||
-    loot.collected
-  ){
-
+  if(!loot || loot.collecting || loot.collected){
     return;
   }
 
-
   loot.collecting=true;
 
+  loot.el.classList.remove("spawn");
+  loot.el.classList.add("flying");
 
-  loot.el.classList.remove(
-    "spawn"
-  );
-
-
-  loot.el.classList.add(
-    "flying"
-  );
-
-
-  loot.el.style.left=
-  game.player.x+"%";
-
-
-  loot.el.style.top=
-  game.player.y+"%";
-
+  loot.el.style.left=game.player.x+"%";
+  loot.el.style.top=game.player.y+"%";
 
   loot.collected=true;
 
+  addItem(loot.itemId,1);
 
-  /*
-     Item is added immediately.
+  addLog(`🎒 自動拾取 ${loot.icon} ${loot.name}`,"lootText");
 
-     Visual flight cannot cause
-     an item to be lost.
-  */
-
-  addItem(
-    loot.itemId,
-    1
-  );
-
-
-  addLog(
-    `🎒 自動拾取 ${loot.icon} ${loot.name}`,
-    "lootText"
-  );
-
-
-  const uid=
-  loot.uid;
-
+  const uid=loot.uid;
 
   setTimeout(()=>{
-
-    const current=
-    game.groundLoot.find(
-
-      item=>
-      item.uid===uid
-
-    );
-
+    const current=game.groundLoot.find(item=>item.uid===uid);
 
     if(current){
-
-      removeGroundLoot(
-        current
-      );
+      removeGroundLoot(current);
     }
-
   },CONFIG.AUTO_LOOT_FLY_TIME);
 }
 
-
 function removeGroundLoot(loot){
-
-  const index=
-  game.groundLoot.findIndex(
-
-    item=>
-    item.uid===loot.uid
-
-  );
-
+  const index=game.groundLoot.findIndex(item=>item.uid===loot.uid);
 
   if(index>=0){
-
-    game.groundLoot.splice(
-      index,
-      1
-    );
+    game.groundLoot.splice(index,1);
   }
 
-
   if(loot.el){
-
     loot.el.remove();
   }
 }
 
-
 function updateAutoLoot(){
-
-  const lootList=[
-    ...game.groundLoot
-  ];
-
-
-  for(
-    const loot
-    of lootList
-  ){
-
+  for(const loot of [...game.groundLoot]){
     if(
       !loot.collecting &&
       !loot.collected &&
       game.time>=loot.collectAt
     ){
-
-      startAutoCollect(
-        loot
-      );
+      startAutoCollect(loot);
     }
   }
 }
 
 
-/* ================================================
-   MONSTERS
-================================================ */
+/* MONSTER */
 
 function createMonster(id){
-
   const monster={
-
     id,
-
     x:random(10,90),
-
     y:random(10,68),
 
     hp:CONFIG.SLIME_HP,
-
     maxHp:CONFIG.SLIME_HP,
-
     attack:CONFIG.SLIME_ATTACK,
 
     alive:true,
-
     aggro:false,
 
     respawnAt:0,
-
     nextAttackAt:0,
 
     burningUntil:0,
-
     nextBurnTick:0,
-
     frostUntil:0,
-
     chargeUntil:0,
 
     el:null,
-
     hpFill:null,
-
     statusEl:null
   };
 
+  const el=document.createElement("div");
 
-  const el=
-  document.createElement("div");
-
-
-  el.className=
-  "entity slime";
-
+  el.className="entity slime";
 
   el.innerHTML=`
-
     <div class="statuses"></div>
-
     <div class="mob-hp">
       <div class="mob-hp-fill"></div>
     </div>
-
     🟢
   `;
 
+  worldEl.appendChild(el);
 
-  worldEl.appendChild(
-    el
-  );
+  monster.el=el;
+  monster.hpFill=el.querySelector(".mob-hp-fill");
+  monster.statusEl=el.querySelector(".statuses");
 
-
-  monster.el=
-  el;
-
-
-  monster.hpFill=
-  el.querySelector(
-    ".mob-hp-fill"
-  );
-
-
-  monster.statusEl=
-  el.querySelector(
-    ".statuses"
-  );
-
-
-  game.monsters.push(
-    monster
-  );
+  game.monsters.push(monster);
 }
 
 
-/* ================================================
-   TARGET
-================================================ */
-
 function getTarget(){
-
   let best=null;
+  let bestDistance=Infinity;
 
-  let bestDistance=
-  Infinity;
-
-
-  for(
-    const monster
-    of game.monsters
-  ){
-
+  for(const monster of game.monsters){
     if(!monster.alive){
-
       continue;
     }
 
+    const d=distance(game.player,monster);
 
-    const d=
-    distance(
-      game.player,
-      monster
-    );
-
-
-    if(
-      d<
-      bestDistance
-    ){
-
-      bestDistance=
-      d;
-
-
-      best=
-      monster;
+    if(d<bestDistance){
+      bestDistance=d;
+      best=monster;
     }
   }
-
 
   return best;
 }
 
 
-/* ================================================
-   MOVEMENT
-================================================ */
+/* MOVEMENT */
 
-function movePlayerToward(
-  target,
-  deltaSeconds
-){
+function movePlayerToward(target,deltaSeconds){
+  const player=game.player;
 
-  const player=
-  game.player;
+  const dx=target.x-player.x;
+  const dy=target.y-player.y;
 
-
-  const dx=
-  target.x-
-  player.x;
-
-
-  const dy=
-  target.y-
-  player.y;
-
-
-  const d=
-  Math.sqrt(
-    dx*dx+
-    dy*dy
-  );
-
+  const d=Math.sqrt(dx*dx+dy*dy);
 
   if(d<=.001){
-
     return;
   }
 
-
-  const move=
-  CONFIG.PLAYER_SPEED*
-  deltaSeconds;
-
-
-  const amount=
-  Math.min(
-    move,
+  const amount=Math.min(
+    CONFIG.PLAYER_SPEED*deltaSeconds,
     d
   );
 
+  player.x+=dx/d*amount;
+  player.y+=dy/d*amount;
 
-  player.x+=
-  dx/d*
-  amount;
-
-
-  player.y+=
-  dy/d*
-  amount;
-
-
-  player.x=
-  clamp(
-    player.x,
-    3,
-    97
-  );
-
-
-  player.y=
-  clamp(
-    player.y,
-    4,
-    96
-  );
+  player.x=clamp(player.x,3,97);
+  player.y=clamp(player.y,4,96);
 }
 
+function moveMonsterToward(monster,target,deltaSeconds){
+  const dx=target.x-monster.x;
+  const dy=target.y-monster.y;
 
-function moveMonsterToward(
-  monster,
-  target,
-  deltaSeconds
-){
-
-  const dx=
-  target.x-
-  monster.x;
-
-
-  const dy=
-  target.y-
-  monster.y;
-
-
-  const d=
-  Math.sqrt(
-    dx*dx+
-    dy*dy
-  );
-
+  const d=Math.sqrt(dx*dx+dy*dy);
 
   if(d<=.001){
-
     return;
   }
 
-
-  const move=
-  CONFIG.SLIME_SPEED*
-  deltaSeconds;
-
-
-  const amount=
-  Math.min(
-    move,
+  const amount=Math.min(
+    CONFIG.SLIME_SPEED*deltaSeconds,
     d
   );
 
+  monster.x+=dx/d*amount;
+  monster.y+=dy/d*amount;
 
-  monster.x+=
-  dx/d*
-  amount;
-
-
-  monster.y+=
-  dy/d*
-  amount;
-
-
-  monster.x=
-  clamp(
-    monster.x,
-    3,
-    97
-  );
-
-
-  monster.y=
-  clamp(
-    monster.y,
-    4,
-    82
-  );
+  monster.x=clamp(monster.x,3,97);
+  monster.y=clamp(monster.y,4,82);
 }
 
 
-/* ================================================
-   VISUAL EFFECTS
-================================================ */
+/* GENERAL EFFECTS */
 
-function createEffect(
-  target,
-  icon
-){
+function createEffect(target,icon){
+  const effect=document.createElement("div");
 
-  const effect=
-  document.createElement("div");
+  effect.className="effect";
+  effect.textContent=icon;
+  effect.style.left=target.x+"%";
+  effect.style.top=target.y+"%";
 
+  worldEl.appendChild(effect);
 
-  effect.className=
-  "effect";
-
-
-  effect.textContent=
-  icon;
-
-
-  effect.style.left=
-  target.x+"%";
-
-
-  effect.style.top=
-  target.y+"%";
-
-
-  worldEl.appendChild(
-    effect
-  );
-
-
-  setTimeout(
-    ()=>effect.remove(),
-    600
-  );
+  setTimeout(()=>effect.remove(),600);
 }
 
+function createDamageText(amount){
+  const effect=document.createElement("div");
 
-function createDamageText(
-  amount
-){
+  effect.className="damage-text";
+  effect.textContent=`-${amount}`;
+  effect.style.left=game.player.x+"%";
+  effect.style.top=game.player.y+"%";
 
-  const effect=
-  document.createElement("div");
+  worldEl.appendChild(effect);
 
-
-  effect.className=
-  "damage-text";
-
-
-  effect.textContent=
-  `-${amount}`;
-
-
-  effect.style.left=
-  game.player.x+"%";
-
-
-  effect.style.top=
-  game.player.y+"%";
-
-
-  worldEl.appendChild(
-    effect
-  );
-
-
-  setTimeout(
-    ()=>effect.remove(),
-    750
-  );
+  setTimeout(()=>effect.remove(),750);
 }
 
+function createReactionEffect(monster,icon,text){
+  const effect=document.createElement("div");
 
-function createReactionEffect(
-  monster,
-  icon,
-  text
-){
-
-  const effect=
-  document.createElement("div");
-
-
-  effect.className=
-  "reaction";
-
+  effect.className="reaction";
 
   effect.innerHTML=`
-
-    <span class="reactionIcon">
-      ${icon}
-    </span>
-
+    <span class="reactionIcon">${icon}</span>
     ${text}
   `;
 
+  effect.style.left=monster.x+"%";
+  effect.style.top=monster.y+"%";
 
-  effect.style.left=
-  monster.x+"%";
+  worldEl.appendChild(effect);
 
+  setTimeout(()=>effect.remove(),950);
+}
 
-  effect.style.top=
-  monster.y+"%";
+function createStormEffect(monster){
+  const ring=document.createElement("div");
 
+  ring.className="storm-ring";
+  ring.style.left=monster.x+"%";
+  ring.style.top=monster.y+"%";
 
-  worldEl.appendChild(
-    effect
-  );
+  worldEl.appendChild(ring);
 
+  setTimeout(()=>ring.remove(),700);
+}
 
-  setTimeout(
-    ()=>effect.remove(),
-    950
-  );
+function createOverloadEffect(monster){
+  const ring=document.createElement("div");
+
+  ring.className="overload-ring";
+  ring.style.left=monster.x+"%";
+  ring.style.top=monster.y+"%";
+
+  worldEl.appendChild(ring);
+
+  setTimeout(()=>ring.remove(),600);
+}
+
+function createLightningLine(from,to){
+  const rect=worldEl.getBoundingClientRect();
+
+  const x1=from.x/100*rect.width;
+  const y1=from.y/100*rect.height;
+
+  const x2=to.x/100*rect.width;
+  const y2=to.y/100*rect.height;
+
+  const dx=x2-x1;
+  const dy=y2-y1;
+
+  const length=Math.sqrt(dx*dx+dy*dy);
+  const angle=Math.atan2(dy,dx)*180/Math.PI;
+
+  const line=document.createElement("div");
+
+  line.className="lightning-line";
+
+  line.style.left=x1+"px";
+  line.style.top=y1+"px";
+  line.style.width=length+"px";
+  line.style.transform=`rotate(${angle}deg)`;
+
+  worldEl.appendChild(line);
+
+  setTimeout(()=>line.remove(),300);
 }
 
 
-function createStormEffect(
-  monster
-){
-
-  const ring=
-  document.createElement("div");
-
-
-  ring.className=
-  "storm-ring";
-
-
-  ring.style.left=
-  monster.x+"%";
-
-
-  ring.style.top=
-  monster.y+"%";
-
-
-  worldEl.appendChild(
-    ring
-  );
-
-
-  setTimeout(
-    ()=>ring.remove(),
-    700
-  );
-}
-
-
-function createOverloadEffect(
-  monster
-){
-
-  const ring=
-  document.createElement("div");
-
-
-  ring.className=
-  "overload-ring";
-
-
-  ring.style.left=
-  monster.x+"%";
-
-
-  ring.style.top=
-  monster.y+"%";
-
-
-  worldEl.appendChild(
-    ring
-  );
-
-
-  setTimeout(
-    ()=>ring.remove(),
-    600
-  );
-}
-
-
-function createLightningLine(
-  from,
-  to
-){
-
-  const rect=
-  worldEl.getBoundingClientRect();
-
-
-  const x1=
-  from.x/100*
-  rect.width;
-
-
-  const y1=
-  from.y/100*
-  rect.height;
-
-
-  const x2=
-  to.x/100*
-  rect.width;
-
-
-  const y2=
-  to.y/100*
-  rect.height;
-
-
-  const dx=
-  x2-x1;
-
-
-  const dy=
-  y2-y1;
-
-
-  const length=
-  Math.sqrt(
-    dx*dx+
-    dy*dy
-  );
-
-
-  const angle=
-  Math.atan2(
-    dy,
-    dx
-  )*
-  180/
-  Math.PI;
-
-
-  const line=
-  document.createElement("div");
-
-
-  line.className=
-  "lightning-line";
-
-
-  line.style.left=
-  x1+"px";
-
-
-  line.style.top=
-  y1+"px";
-
-
-  line.style.width=
-  length+"px";
-
-
-  line.style.transform=
-  `rotate(${angle}deg)`;
-
-
-  worldEl.appendChild(
-    line
-  );
-
-
-  setTimeout(
-    ()=>line.remove(),
-    300
-  );
-}
-
-
-/* ================================================
-   PLAYER DAMAGE
-================================================ */
+/* PLAYER DAMAGE */
 
 function damagePlayer(amount){
+  const player=game.player;
 
-  const player=
-  game.player;
-
-
-  if(
-    !player.alive ||
-    isPlayerInSafeZone()
-  ){
-
+  if(!player.alive || isPlayerInSafeZone()){
     return;
   }
 
+  player.hp-=amount;
+  player.hp=Math.max(0,player.hp);
 
-  player.hp-=
-  amount;
+  createDamageText(amount);
+  createEffect(player,"💢");
 
+  addLog(`🟢 Slime 攻擊 Mage -${amount} HP`,"enemyText");
 
-  player.hp=
-  Math.max(
-    0,
-    player.hp
-  );
-
-
-  createDamageText(
-    amount
-  );
-
-
-  createEffect(
-    player,
-    "💢"
-  );
-
-
-  addLog(
-    `🟢 Slime 攻擊 Mage -${amount} HP`,
-    "enemyText"
-  );
-
-
-  if(
-    player.hp<=0
-  ){
-
+  if(player.hp<=0){
     killPlayer();
   }
 }
 
 
-/* ================================================
-   PLAYER DEATH
-================================================ */
-
 function killPlayer(){
+  const player=game.player;
 
-  const player=
-  game.player;
-
-
-  if(
-    !player.alive
-  ){
-
+  if(!player.alive){
     return;
   }
 
-
   player.alive=false;
-
   player.hp=0;
-
   player.targetId=null;
 
+  player.respawnAt=game.time+CONFIG.PLAYER_RESPAWN_MS;
 
-  player.respawnAt=
-  game.time+
-  CONFIG.PLAYER_RESPAWN_MS;
+  player.x=CONFIG.SAFE_X;
+  player.y=CONFIG.SAFE_Y;
 
+  player.nextAttackAt=player.respawnAt;
 
-  player.x=
-  CONFIG.SAFE_X;
-
-
-  player.y=
-  CONFIG.SAFE_Y;
-
-
-  player.nextAttackAt=
-  player.respawnAt;
-
-
-  /*
-     IMPORTANT:
-
-     Equipment is NOT touched.
-  */
-
-
-  for(
-    const monster
-    of game.monsters
-  ){
-
+  for(const monster of game.monsters){
     monster.aggro=false;
-
-
-    monster.nextAttackAt=
-    game.time+500;
+    monster.nextAttackAt=game.time+500;
   }
 
-
-  addLog(
-    "☠️ Mage 被擊倒！",
-    "deathText"
-  );
-
-
-  addLog(
-    "🏠 返回 Safe Zone，3 秒後恢復",
-    "respawnText"
-  );
+  addLog("☠️ Mage 被擊倒！","deathText");
+  addLog("🏠 返回 Safe Zone，3 秒後恢復","respawnText");
 }
 
 
 function updatePlayerRespawn(){
+  const player=game.player;
 
-  const player=
-  game.player;
-
-
-  if(player.alive){
-
+  if(player.alive || game.time<player.respawnAt){
     return;
   }
-
-
-  if(
-    game.time<
-    player.respawnAt
-  ){
-
-    return;
-  }
-
 
   player.alive=true;
 
+  player.hp=player.maxHp;
+  player.mp=player.maxMp;
 
-  player.hp=
-  player.maxHp;
-
-
-  player.mp=
-  player.maxMp;
-
-
-  player.x=
-  CONFIG.SAFE_X;
-
-
-  player.y=
-  CONFIG.SAFE_Y;
-
+  player.x=CONFIG.SAFE_X;
+  player.y=CONFIG.SAFE_Y;
 
   player.targetId=null;
-
-
-  player.nextAttackAt=
-  game.time+500;
-
-
-  /*
-     Recompute equipment stats
-     after respawn for safety.
-  */
+  player.nextAttackAt=game.time+500;
 
   recomputePlayerStats();
 
-
-  addLog(
-    "✨ Mage 恢復完成！",
-    "respawnText"
-  );
-
-
-  addLog(
-    "⚔️ 裝備保留，自動重新出發",
-    "good"
-  );
+  addLog("✨ Mage 恢復完成！","respawnText");
+  addLog("⚔️ 裝備保留，自動重新出發","good");
 }
 
 
-/* ================================================
-   MONSTER AI
-================================================ */
+/* MONSTER AI */
 
-function updateMonsterAI(
-  deltaMs
-){
+function updateMonsterAI(deltaMs){
+  const player=game.player;
+  const deltaSeconds=deltaMs/1000;
 
-  const player=
-  game.player;
-
-
-  const deltaSeconds=
-  deltaMs/1000;
-
-
-  for(
-    const monster
-    of game.monsters
-  ){
-
+  for(const monster of game.monsters){
     if(!monster.alive){
-
       continue;
     }
-
 
     if(!player.alive){
-
       monster.aggro=false;
-
       continue;
     }
 
+    const d=distance(monster,player);
 
-    const d=
-    distance(
-      monster,
-      player
-    );
-
-
-    if(
-      isPlayerInSafeZone()
-    ){
-
+    if(isPlayerInSafeZone()){
       monster.aggro=false;
-
       continue;
     }
-
 
     if(
       !monster.aggro &&
-      d<=
-      CONFIG.SLIME_DETECTION_RANGE
+      d<=CONFIG.SLIME_DETECTION_RANGE
     ){
-
       monster.aggro=true;
-
-
-      monster.nextAttackAt=
-      game.time+500;
+      monster.nextAttackAt=game.time+500;
     }
 
-
-    if(
-      !monster.aggro
-    ){
-
+    if(!monster.aggro){
       continue;
     }
 
-
-    if(
-      d>
-      CONFIG.SLIME_ATTACK_RANGE
-    ){
-
-      moveMonsterToward(
-        monster,
-        player,
-        deltaSeconds
-      );
-
-
+    if(d>CONFIG.SLIME_ATTACK_RANGE){
+      moveMonsterToward(monster,player,deltaSeconds);
       continue;
     }
 
-
-    if(
-      game.time>=
-      monster.nextAttackAt
-    ){
-
+    if(game.time>=monster.nextAttackAt){
       monster.nextAttackAt=
-      game.time+
-      CONFIG.SLIME_ATTACK_COOLDOWN;
-
-
-      /*
-         Frostbite:
-         Slime attack 5 → 3
-      */
+        game.time+CONFIG.SLIME_ATTACK_COOLDOWN;
 
       const attackDamage=
+        monster.frostUntil>game.time
+        ? Math.max(0,monster.attack-2)
+        : monster.attack;
 
-      monster.frostUntil>
-      game.time
+      damagePlayer(attackDamage);
 
-      ?
-
-      Math.max(
-        0,
-        monster.attack-2
-      )
-
-      :
-
-      monster.attack;
-
-
-      damagePlayer(
-        attackDamage
-      );
-
-
-      if(
-        !player.alive
-      ){
-
+      if(!player.alive){
         return;
       }
     }
@@ -3040,301 +1541,161 @@ function updateMonsterAI(
 }
 
 
-/* ================================================
-   MONSTER DAMAGE
-================================================ */
+/* MONSTER DAMAGE */
 
-function damageMonster(
-  monster,
-  amount
-){
-
-  if(
-    !monster ||
-    !monster.alive
-  ){
-
+function damageMonster(monster,amount){
+  if(!monster || !monster.alive){
     return false;
   }
 
-
-  monster.hp-=
-  amount;
-
-
-  monster.hp=
-  Math.max(
-    0,
-    monster.hp
-  );
-
+  monster.hp-=amount;
+  monster.hp=Math.max(0,monster.hp);
 
   if(
     monster.hp>0 &&
     game.player.alive &&
     !isPlayerInSafeZone()
   ){
-
     monster.aggro=true;
   }
 
-
-  if(
-    monster.hp<=0
-  ){
-
-    killMonster(
-      monster
-    );
-
-
+  if(monster.hp<=0){
+    killMonster(monster);
     return true;
   }
-
 
   return false;
 }
 
 
-/* ================================================
-   ELEMENTAL REACTIONS
-================================================ */
+/* REACTIONS */
 
-function triggerShatter(
-  monster
-){
-
+function triggerShatter(monster){
   monster.burningUntil=0;
-
   monster.nextBurnTick=0;
 
-
-  createReactionEffect(
-    monster,
-    "💥",
-    "SHATTER!"
-  );
-
+  createReactionEffect(monster,"💥","SHATTER!");
 
   addLog(
     `💥 SHATTER！額外傷害 -${CONFIG.SHATTER_DAMAGE}`,
     "reactionText"
   );
 
-
-  damageMonster(
-    monster,
-    CONFIG.SHATTER_DAMAGE
-  );
+  damageMonster(monster,CONFIG.SHATTER_DAMAGE);
 }
 
 
-function triggerStorm(
-  monster
-){
-
+function triggerStorm(monster){
   monster.frostUntil=0;
 
-
-  createReactionEffect(
-    monster,
-    "🌩️",
-    "STORM!"
-  );
-
-
-  createStormEffect(
-    monster
-  );
-
+  createReactionEffect(monster,"🌩️","STORM!");
+  createStormEffect(monster);
 
   addLog(
     `🌩️ STORM！範圍傷害 -${CONFIG.STORM_DAMAGE}`,
     "stormText"
   );
 
-
-  const victims=
-  game.monsters.filter(
-
+  const victims=game.monsters.filter(
     candidate=>
-
-    candidate.alive &&
-
-    distance(
-      monster,
-      candidate
-    )
-    <=
-    CONFIG.STORM_RANGE
+      candidate.alive &&
+      distance(monster,candidate)<=CONFIG.STORM_RANGE
   );
 
-
-  for(
-    const victim
-    of victims
-  ){
-
-    createEffect(
-      victim,
-      "⚡"
-    );
-
-
-    damageMonster(
-      victim,
-      CONFIG.STORM_DAMAGE
-    );
+  for(const victim of victims){
+    createEffect(victim,"⚡");
+    damageMonster(victim,CONFIG.STORM_DAMAGE);
   }
 }
 
 
-function triggerOverload(
-  monster
-){
-
+function triggerOverload(monster){
   monster.chargeUntil=0;
 
-
-  createReactionEffect(
-    monster,
-    "💥",
-    "OVERLOAD!"
-  );
-
-
-  createOverloadEffect(
-    monster
-  );
-
+  createReactionEffect(monster,"💥","OVERLOAD!");
+  createOverloadEffect(monster);
 
   addLog(
     `💥 OVERLOAD！範圍傷害 -${CONFIG.OVERLOAD_DAMAGE}`,
     "overloadText"
   );
 
-
-  const victims=
-  game.monsters.filter(
-
+  const victims=game.monsters.filter(
     candidate=>
-
-    candidate.alive &&
-
-    distance(
-      monster,
-      candidate
-    )
-    <=
-    CONFIG.OVERLOAD_RANGE
+      candidate.alive &&
+      distance(monster,candidate)<=CONFIG.OVERLOAD_RANGE
   );
 
-
-  for(
-    const victim
-    of victims
-  ){
-
-    createEffect(
-      victim,
-      "💥"
-    );
-
-
-    damageMonster(
-      victim,
-      CONFIG.OVERLOAD_DAMAGE
-    );
+  for(const victim of victims){
+    createEffect(victim,"💥");
+    damageMonster(victim,CONFIG.OVERLOAD_DAMAGE);
   }
 }
 
 
-function tryReaction(
-  monster,
-  incomingElement
-){
-
-  if(
-    !monster ||
-    !monster.alive
-  ){
-
+function tryReaction(monster,incomingElement){
+  if(!monster || !monster.alive){
     return false;
   }
-
 
   if(
     incomingElement==="ice" &&
     monster.burningUntil>game.time
   ){
-
-    triggerShatter(
-      monster
-    );
-
-
+    triggerShatter(monster);
     return true;
   }
-
 
   if(
     incomingElement==="lightning" &&
     monster.frostUntil>game.time
   ){
-
-    triggerStorm(
-      monster
-    );
-
-
+    triggerStorm(monster);
     return true;
   }
-
 
   if(
     incomingElement==="fire" &&
     monster.chargeUntil>game.time
   ){
-
-    triggerOverload(
-      monster
-    );
-
-
+    triggerOverload(monster);
     return true;
   }
-
 
   return false;
 }
 
 
-/* ================================================
+/* ==================================================
    FIRE
-================================================ */
+================================================== */
 
-function castFire(
-  monster,
-  skill
-){
+function castFire(monster,skill){
 
-  const damage=
-  getSkillDamage(
-    skill
+  const damage=getSkillDamage(skill);
+
+
+  /*
+    V0.7A:
+    Start visual projectile.
+
+    Damage logic below remains immediate
+    and independent from the animation.
+  */
+
+  createFireballVisual(
+    {
+      x:game.player.x,
+      y:game.player.y
+    },
+    {
+      x:monster.x,
+      y:monster.y
+    }
   );
 
 
-  createEffect(
-    monster,
-    "🔥"
-  );
-
-
-  damageMonster(
-    monster,
-    damage
-  );
-
+  damageMonster(monster,damage);
 
   addLog(
     `🔥 Fire → Slime -${damage}`,
@@ -3342,36 +1703,24 @@ function castFire(
   );
 
 
-  if(
-    !monster.alive
-  ){
-
+  if(!monster.alive){
     return;
   }
 
 
-  tryReaction(
-    monster,
-    "fire"
-  );
+  tryReaction(monster,"fire");
 
 
-  if(
-    !monster.alive
-  ){
-
+  if(!monster.alive){
     return;
   }
 
 
   monster.burningUntil=
-  game.time+
-  CONFIG.BURN_DURATION_MS;
-
+    game.time+CONFIG.BURN_DURATION_MS;
 
   monster.nextBurnTick=
-  game.time+
-  CONFIG.BURN_TICK_MS;
+    game.time+CONFIG.BURN_TICK_MS;
 
 
   addLog(
@@ -3381,65 +1730,32 @@ function castFire(
 }
 
 
-/* ================================================
-   ICE
-================================================ */
+/* ICE */
 
-function castIce(
-  monster,
-  skill
-){
+function castIce(monster,skill){
+  const damage=getSkillDamage(skill);
 
-  const damage=
-  getSkillDamage(
-    skill
-  );
+  createEffect(monster,"❄️");
 
-
-  createEffect(
-    monster,
-    "❄️"
-  );
-
-
-  damageMonster(
-    monster,
-    damage
-  );
-
+  damageMonster(monster,damage);
 
   addLog(
     `❄️ Ice → Slime -${damage}`,
     "iceText"
   );
 
-
-  if(
-    !monster.alive
-  ){
-
+  if(!monster.alive){
     return;
   }
 
+  tryReaction(monster,"ice");
 
-  tryReaction(
-    monster,
-    "ice"
-  );
-
-
-  if(
-    !monster.alive
-  ){
-
+  if(!monster.alive){
     return;
   }
-
 
   monster.frostUntil=
-  game.time+
-  CONFIG.FROST_DURATION_MS;
-
+    game.time+CONFIG.FROST_DURATION_MS;
 
   addLog(
     "❄️ Slime 進入 Frostbite",
@@ -3448,479 +1764,230 @@ function castIce(
 }
 
 
-/* ================================================
-   LIGHTNING
-================================================ */
+/* LIGHTNING */
 
-function castLightning(
-  monster,
-  skill
-){
+function castLightning(monster,skill){
+  const damage=getSkillDamage(skill);
 
-  const damage=
-  getSkillDamage(
-    skill
-  );
+  createEffect(monster,"⚡");
 
-
-  createEffect(
-    monster,
-    "⚡"
-  );
-
-
-  damageMonster(
-    monster,
-    damage
-  );
-
+  damageMonster(monster,damage);
 
   addLog(
     `⚡ Lightning → Slime -${damage}`,
     "lightningText"
   );
 
-
-  if(
-    !monster.alive
-  ){
-
+  if(!monster.alive){
     return;
   }
 
+  tryReaction(monster,"lightning");
 
-  tryReaction(
-    monster,
-    "lightning"
-  );
-
-
-  if(
-    !monster.alive
-  ){
-
+  if(!monster.alive){
     return;
   }
-
 
   monster.chargeUntil=
-  game.time+
-  CONFIG.CHARGE_DURATION_MS;
-
+    game.time+CONFIG.CHARGE_DURATION_MS;
 
   addLog(
     "⚡ Slime 進入 Charge",
     "lightningText"
   );
 
-
-  if(
-    Math.random()>
-    CONFIG.CHAIN_CHANCE
-  ){
-
+  if(Math.random()>CONFIG.CHAIN_CHANCE){
     return;
   }
 
-
-  let current=
-  monster;
-
-
-  const hitIds=
-  new Set();
-
-
-  hitIds.add(
-    monster.id
-  );
-
-
+  let current=monster;
+  const hitIds=new Set([monster.id]);
   let jumps=1;
 
-
-  while(
-    jumps<
-    CONFIG.CHAIN_MAX_TARGETS
-  ){
+  while(jumps<CONFIG.CHAIN_MAX_TARGETS){
 
     let next=null;
+    let bestDistance=Infinity;
 
-    let bestDistance=
-    Infinity;
+    for(const candidate of game.monsters){
 
-
-    for(
-      const candidate
-      of game.monsters
-    ){
-
-      if(
-        !candidate.alive
-      ){
-
+      if(!candidate.alive){
         continue;
       }
 
-
-      if(
-        hitIds.has(
-          candidate.id
-        )
-      ){
-
+      if(hitIds.has(candidate.id)){
         continue;
       }
 
-
-      const d=
-      distance(
-        current,
-        candidate
-      );
-
+      const d=distance(current,candidate);
 
       if(
-        d<=
-        CONFIG.CHAIN_RANGE &&
-        d<
-        bestDistance
+        d<=CONFIG.CHAIN_RANGE &&
+        d<bestDistance
       ){
-
-        next=
-        candidate;
-
-
-        bestDistance=
-        d;
+        next=candidate;
+        bestDistance=d;
       }
     }
 
-
     if(!next){
-
       break;
     }
 
-
-    /*
-       Chain derives from actual
-       Lightning damage.
-
-       Staff therefore also affects
-       Chain Lightning naturally.
-    */
-
-    const chainDamage=
-    Math.max(
-
+    const chainDamage=Math.max(
       1,
-
       Math.round(
-
-        damage*
-
-        CONFIG.CHAIN_DAMAGE_MULTIPLIER
-
+        damage*CONFIG.CHAIN_DAMAGE_MULTIPLIER
       )
     );
 
+    createLightningLine(current,next);
+    createEffect(next,"⚡");
 
-    createLightningLine(
-      current,
-      next
-    );
-
-
-    createEffect(
-      next,
-      "⚡"
-    );
-
-
-    damageMonster(
-      next,
-      chainDamage
-    );
-
+    damageMonster(next,chainDamage);
 
     addLog(
       `⚡ Chain → Slime -${chainDamage}`,
       "lightningText"
     );
 
-
-    if(
-      next.alive
-    ){
-
+    if(next.alive){
       next.chargeUntil=
-      game.time+
-      CONFIG.CHARGE_DURATION_MS;
+        game.time+CONFIG.CHARGE_DURATION_MS;
     }
 
-
-    hitIds.add(
-      next.id
-    );
-
-
-    current=
-    next;
-
-
+    hitIds.add(next.id);
+    current=next;
     jumps++;
   }
 }
 
 
-/* ================================================
-   SPELL ROUTER
-================================================ */
+/* SPELL ROUTER */
 
-function castSkill(
-  monster,
-  skill
-){
-
+function castSkill(monster,skill){
   if(
     !monster ||
     !monster.alive ||
     !game.player.alive
   ){
-
     return;
   }
 
-
-  if(
-    skill.id==="fire"
-  ){
-
-    castFire(
-      monster,
-      skill
-    );
-
-  }else if(
-    skill.id==="lightning"
-  ){
-
-    castLightning(
-      monster,
-      skill
-    );
-
-  }else if(
-    skill.id==="ice"
-  ){
-
-    castIce(
-      monster,
-      skill
-    );
+  if(skill.id==="fire"){
+    castFire(monster,skill);
+  }
+  else if(skill.id==="lightning"){
+    castLightning(monster,skill);
+  }
+  else if(skill.id==="ice"){
+    castIce(monster,skill);
   }
 }
 
 
-/* ================================================
-   STATUS
-================================================ */
+/* STATUS */
 
 function updateStatuses(){
+  for(const monster of game.monsters){
 
-  for(
-    const monster
-    of game.monsters
-  ){
-
-    if(
-      !monster.alive
-    ){
-
+    if(!monster.alive){
       continue;
     }
 
+    if(monster.burningUntil>game.time){
 
-    if(
-      monster.burningUntil>
-      game.time
-    ){
+      if(game.time>=monster.nextBurnTick){
 
-      if(
-        game.time>=
-        monster.nextBurnTick
-      ){
+        monster.nextBurnTick+=CONFIG.BURN_TICK_MS;
 
-        monster.nextBurnTick+=
-        CONFIG.BURN_TICK_MS;
-
-
-        createEffect(
-          monster,
-          "🔥"
-        );
-
+        createEffect(monster,"🔥");
 
         const killed=
-        damageMonster(
-
-          monster,
-
-          CONFIG.BURN_DAMAGE
-        );
-
+          damageMonster(monster,CONFIG.BURN_DAMAGE);
 
         addLog(
           `🔥 Burning → Slime -${CONFIG.BURN_DAMAGE}`,
           "burnText"
         );
 
-
         if(killed){
-
           continue;
         }
       }
 
     }else{
-
       monster.burningUntil=0;
-
       monster.nextBurnTick=0;
     }
 
-
-    if(
-      monster.frostUntil<=
-      game.time
-    ){
-
+    if(monster.frostUntil<=game.time){
       monster.frostUntil=0;
     }
 
-
-    if(
-      monster.chargeUntil<=
-      game.time
-    ){
-
+    if(monster.chargeUntil<=game.time){
       monster.chargeUntil=0;
     }
   }
 }
 
 
-/* ================================================
-   MONSTER DEATH
-================================================ */
+/* DEATH / RESPAWN */
 
-function killMonster(
-  monster
-){
-
-  if(
-    !monster.alive
-  ){
-
+function killMonster(monster){
+  if(!monster.alive){
     return;
   }
 
-
   monster.alive=false;
-
   monster.hp=0;
-
   monster.aggro=false;
 
-
   monster.burningUntil=0;
-
   monster.nextBurnTick=0;
-
   monster.frostUntil=0;
-
   monster.chargeUntil=0;
-
 
   monster.nextAttackAt=0;
 
-
   monster.respawnAt=
-  game.time+
-  CONFIG.SLIME_RESPAWN_MS;
-
+    game.time+CONFIG.SLIME_RESPAWN_MS;
 
   game.player.kills++;
-
-
   game.player.exp+=10;
 
-
-  if(
-    game.player.targetId===
-    monster.id
-  ){
-
+  if(game.player.targetId===monster.id){
     game.player.targetId=null;
   }
-
 
   addLog(
     "☠️ Slime 被擊倒！ EXP +10",
     "good"
   );
 
-
-  rollLoot(
-    monster
-  );
-
+  rollLoot(monster);
 
   checkLevelUp();
 }
 
 
-/* ================================================
-   LEVEL
-================================================ */
-
 function checkLevelUp(){
+  const player=game.player;
 
-  const player=
-  game.player;
+  while(player.exp>=player.expNeed){
 
-
-  while(
-    player.exp>=
-    player.expNeed
-  ){
-
-    player.exp-=
-    player.expNeed;
-
+    player.exp-=player.expNeed;
 
     player.level++;
 
-
     player.expNeed=
-    Math.floor(
-      player.expNeed*
-      1.25
-    );
-
+      Math.floor(player.expNeed*1.25);
 
     player.maxHp+=10;
-
-    player.hp=
-    player.maxHp;
-
+    player.hp=player.maxHp;
 
     player.maxMp+=5;
-
-    player.mp=
-    player.maxMp;
-
+    player.mp=player.maxMp;
 
     addLog(
       `✨ Level Up！現在 Lv.${player.level}`,
@@ -3930,692 +1997,355 @@ function checkLevelUp(){
 }
 
 
-/* ================================================
-   MONSTER RESPAWN
-================================================ */
-
 function updateMonsterRespawns(){
-
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     if(
       !monster.alive &&
-      game.time>=
-      monster.respawnAt
+      game.time>=monster.respawnAt
     ){
-
       monster.alive=true;
+      monster.hp=monster.maxHp;
 
-
-      monster.hp=
-      monster.maxHp;
-
-
-      monster.x=
-      random(
-        10,
-        90
-      );
-
-
-      monster.y=
-      random(
-        10,
-        68
-      );
-
+      monster.x=random(10,90);
+      monster.y=random(10,68);
 
       monster.respawnAt=0;
-
-
-      monster.nextAttackAt=
-      game.time+500;
-
-
+      monster.nextAttackAt=game.time+500;
       monster.aggro=false;
 
-
       monster.burningUntil=0;
-
       monster.nextBurnTick=0;
-
       monster.frostUntil=0;
-
       monster.chargeUntil=0;
 
-
-      addLog(
-        "🟢 Slime 重生了"
-      );
+      addLog("🟢 Slime 重生了");
     }
   }
 }
 
 
-/* ================================================
-   PLAYER AI
-================================================ */
+/* PLAYER AI */
 
-function updatePlayerAI(
-  deltaMs
-){
+function updatePlayerAI(deltaMs){
+  const player=game.player;
 
-  const player=
-  game.player;
-
-
-  if(
-    !player.alive
-  ){
-
+  if(!player.alive){
     return;
   }
 
-
-  let target=
-  game.monsters.find(
-
+  let target=game.monsters.find(
     monster=>
-
-    monster.id===
-    player.targetId &&
-
-    monster.alive
-
+      monster.id===player.targetId &&
+      monster.alive
   );
 
-
   if(!target){
-
-    target=
-    getTarget();
-
-
-    player.targetId=
-    target
-    ?
-    target.id
-    :
-    null;
+    target=getTarget();
+    player.targetId=target ? target.id : null;
   }
 
-
   if(!target){
-
     return;
   }
 
+  const skill=SKILLS[player.skillIndex];
+  const d=distance(player,target);
 
-  const skill=
-  SKILLS[
-    player.skillIndex
-  ];
-
-
-  const d=
-  distance(
-    player,
-    target
-  );
-
-
-  if(
-    d>
-    skill.range
-  ){
+  if(d>skill.range){
 
     movePlayerToward(
-
       target,
-
       deltaMs/1000
-
     );
 
-  }else if(
-    game.time>=
-    player.nextAttackAt
-  ){
+  }else if(game.time>=player.nextAttackAt){
 
-    castSkill(
-      target,
-      skill
-    );
-
+    castSkill(target,skill);
 
     player.nextAttackAt=
-    game.time+
-    skill.cooldown;
-
+      game.time+skill.cooldown;
 
     player.skillIndex=
-    (
-      player.skillIndex+1
-    )%
-    SKILLS.length;
+      (player.skillIndex+1)%SKILLS.length;
   }
 }
 
 
-/* ================================================
-   UPDATE
-================================================ */
+/* UPDATE */
 
-function updateGame(
-  deltaMs
-){
-
-  if(
-    !game.running
-  ){
-
+function updateGame(deltaMs){
+  if(!game.running){
     return;
   }
 
-
-  game.time+=
-  deltaMs;
-
+  game.time+=deltaMs;
 
   updateMonsterRespawns();
-
-
   updatePlayerRespawn();
-
-
   updateStatuses();
-
-
   updateAutoLoot();
 
-
-  if(
-    !game.player.alive
-  ){
-
+  if(!game.player.alive){
     return;
   }
 
-
-  updatePlayerAI(
-    deltaMs
-  );
-
-
-  updateMonsterAI(
-    deltaMs
-  );
+  updatePlayerAI(deltaMs);
+  updateMonsterAI(deltaMs);
 }
 
 
-/* ================================================
-   RENDER
-================================================ */
+/* RENDER */
 
 function render(){
+  const player=game.player;
 
-  const player=
-  game.player;
-
-
-  playerEl.style.left=
-  player.x+"%";
-
-
-  playerEl.style.top=
-  player.y+"%";
-
+  playerEl.style.left=player.x+"%";
+  playerEl.style.top=player.y+"%";
 
   playerEl.classList.toggle(
     "dead",
     !player.alive
   );
 
-
   playerEl.textContent=
-  player.alive
-  ?
-  "🧙"
-  :
-  "☠️";
+    player.alive ? "🧙" : "☠️";
 
 
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
-    monster.el.style.left=
-    monster.x+"%";
-
-
-    monster.el.style.top=
-    monster.y+"%";
-
+    monster.el.style.left=monster.x+"%";
+    monster.el.style.top=monster.y+"%";
 
     monster.el.classList.toggle(
       "dead",
       !monster.alive
     );
 
-
     monster.el.classList.toggle(
       "aggro",
-      monster.aggro &&
-      monster.alive
+      monster.aggro && monster.alive
     );
-
 
     monster.el.classList.toggle(
       "target",
-
-      monster.id===
-      player.targetId &&
-
+      monster.id===player.targetId &&
       monster.alive &&
-
       player.alive
     );
 
-
-    const hpPercent=
-    (
-      monster.hp/
-      monster.maxHp
-    )*
-    100;
-
-
     monster.hpFill.style.width=
-    hpPercent+"%";
-
+      (monster.hp/monster.maxHp*100)+"%";
 
     let statusText="";
 
-
-    if(
-      monster.burningUntil>
-      game.time
-    ){
-
+    if(monster.burningUntil>game.time){
       statusText+="🔥";
     }
 
-
-    if(
-      monster.frostUntil>
-      game.time
-    ){
-
+    if(monster.frostUntil>game.time){
       statusText+="❄️";
     }
 
-
-    if(
-      monster.chargeUntil>
-      game.time
-    ){
-
+    if(monster.chargeUntil>game.time){
       statusText+="⚡";
     }
 
-
-    if(
-      monster.aggro &&
-      monster.alive
-    ){
-
+    if(monster.aggro && monster.alive){
       statusText+="❗";
     }
 
-
-    monster.statusEl.textContent=
-    statusText;
+    monster.statusEl.textContent=statusText;
   }
 
 
   hpText.textContent=
-  `HP ${player.hp} / ${player.maxHp}`;
-
+    `HP ${player.hp} / ${player.maxHp}`;
 
   mpText.textContent=
-  `MP ${player.mp} / ${player.maxMp}`;
-
+    `MP ${player.mp} / ${player.maxMp}`;
 
   expText.textContent=
-  `EXP ${player.exp} / ${player.expNeed}`;
-
+    `EXP ${player.exp} / ${player.expNeed}`;
 
   levelText.textContent=
-  player.alive
-  ?
-  `Lv.${player.level} Mage`
-  :
-  `Lv.${player.level} Mage ☠️`;
-
+    player.alive
+    ? `Lv.${player.level} Mage`
+    : `Lv.${player.level} Mage ☠️`;
 
   killText.textContent=
-  `Kills ${player.kills}`;
-
+    `Kills ${player.kills}`;
 
   hpBar.style.width=
-  (
-    player.hp/
-    player.maxHp*
-    100
-  )+"%";
-
+    (player.hp/player.maxHp*100)+"%";
 
   mpBar.style.width=
-  (
-    player.mp/
-    player.maxMp*
-    100
-  )+"%";
-
+    (player.mp/player.maxMp*100)+"%";
 
   expBar.style.width=
-  (
-    player.exp/
-    player.expNeed*
-    100
-  )+"%";
-
+    (player.exp/player.expNeed*100)+"%";
 
   updateInventoryUI();
 }
 
 
-/* ================================================
-   LOOP
-================================================ */
+/* LOOP */
 
-let lastTime=
-performance.now();
-
-
+let lastTime=performance.now();
 let accumulator=0;
-
 
 function mainLoop(now){
 
   const frameDelta=
-  Math.min(
-    now-lastTime,
-    1000
-  );
+    Math.min(now-lastTime,1000);
 
+  lastTime=now;
 
-  lastTime=
-  now;
+  accumulator+=frameDelta;
 
+  while(accumulator>=CONFIG.TICK_MS){
 
-  accumulator+=
-  frameDelta;
+    updateGame(CONFIG.TICK_MS);
 
-
-  while(
-    accumulator>=
-    CONFIG.TICK_MS
-  ){
-
-    updateGame(
-      CONFIG.TICK_MS
-    );
-
-
-    accumulator-=
-    CONFIG.TICK_MS;
+    accumulator-=CONFIG.TICK_MS;
   }
-
 
   render();
 
-
-  requestAnimationFrame(
-    mainLoop
-  );
+  requestAnimationFrame(mainLoop);
 }
 
 
-/* ================================================
-   RESET
-================================================ */
+/* RESET */
 
 function clearGroundLoot(){
-
-  for(
-    const loot
-    of game.groundLoot
-  ){
-
-    if(
-      loot.el
-    ){
-
+  for(const loot of game.groundLoot){
+    if(loot.el){
       loot.el.remove();
     }
   }
 
-
   game.groundLoot=[];
 }
 
+function clearTemporaryVisuals(){
+  worldEl
+    .querySelectorAll(
+      ".fireball,.fireball-impact,.fireball-spark,.effect,.reaction,.storm-ring,.overload-ring,.lightning-line,.damage-text"
+    )
+    .forEach(el=>el.remove());
+}
 
 function resetGame(){
 
   game.time=0;
-
   game.running=true;
-
   game.nextLootId=1;
 
-
   clearGroundLoot();
+  clearTemporaryVisuals();
 
+  const player=game.player;
 
-  const player=
-  game.player;
-
-
-  player.x=
-  CONFIG.SAFE_X;
-
-
-  player.y=
-  CONFIG.SAFE_Y;
-
+  player.x=CONFIG.SAFE_X;
+  player.y=CONFIG.SAFE_Y;
 
   player.hp=100;
-
   player.maxHp=100;
 
-
   player.mp=100;
-
   player.maxMp=100;
 
-
   player.level=1;
-
-
   player.exp=0;
-
   player.expNeed=100;
-
-
   player.kills=0;
 
-
   player.alive=true;
-
   player.respawnAt=0;
 
-
   player.targetId=null;
-
-
   player.skillIndex=0;
-
   player.nextAttackAt=0;
 
-
   player.inventory.gold=0;
-
   player.inventory.potion=0;
-
   player.inventory.staff=0;
-
 
   player.equipment.weapon=null;
 
-
   recomputePlayerStats();
 
-
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     monster.alive=true;
+    monster.hp=monster.maxHp;
 
-
-    monster.hp=
-    monster.maxHp;
-
-
-    monster.x=
-    random(
-      10,
-      90
-    );
-
-
-    monster.y=
-    random(
-      10,
-      68
-    );
-
+    monster.x=random(10,90);
+    monster.y=random(10,68);
 
     monster.respawnAt=0;
-
     monster.nextAttackAt=0;
-
     monster.aggro=false;
 
-
     monster.burningUntil=0;
-
     monster.nextBurnTick=0;
-
     monster.frostUntil=0;
-
     monster.chargeUntil=0;
   }
 
-
   logEl.innerHTML="";
 
+  inventoryPanel.classList.remove("open");
+  inventoryBtn.textContent="🎒 打開背包";
 
-  inventoryPanel.classList.remove(
-    "open"
-  );
+  pauseBtn.textContent="暫停";
 
-
-  inventoryBtn.textContent=
-  "🎒 打開背包";
-
-
-  pauseBtn.textContent=
-  "暫停";
-
-
-  addLog(
-    "🧙 V0.6B 測試開始"
-  );
-
-
-  addLog(
-    "🪄 裝備現在會真正離開背包"
-  );
+  addLog("🧙 V0.7A-1 測試開始");
+  addLog("🔥 Fireball Animation Engine 已啟用");
 }
 
 
-/* ================================================
-   BUTTON EVENTS
-================================================ */
+/* BUTTONS */
 
 staffEquipBtn.addEventListener(
   "click",
-  ()=>{
-
-    equipWeapon(
-      "staff"
-    );
-  }
+  ()=>equipWeapon("staff")
 );
-
 
 unequipBtn.addEventListener(
   "click",
-  ()=>{
-
-    unequipWeapon();
-  }
+  unequipWeapon
 );
-
 
 inventoryBtn.addEventListener(
   "click",
   ()=>{
-
     const open=
-    inventoryPanel.classList.toggle(
-      "open"
-    );
-
+      inventoryPanel.classList.toggle("open");
 
     inventoryBtn.textContent=
-    open
-    ?
-    "🎒 關閉背包"
-    :
-    "🎒 打開背包";
+      open
+      ? "🎒 關閉背包"
+      : "🎒 打開背包";
   }
 );
-
 
 pauseBtn.addEventListener(
   "click",
   ()=>{
-
-    game.running=
-    !game.running;
-
+    game.running=!game.running;
 
     pauseBtn.textContent=
-    game.running
-    ?
-    "暫停"
-    :
-    "繼續";
-
+      game.running ? "暫停" : "繼續";
 
     addLog(
       game.running
-      ?
-      "▶️ 戰鬥繼續"
-      :
-      "⏸️ 戰鬥暫停"
+      ? "▶️ 戰鬥繼續"
+      : "⏸️ 戰鬥暫停"
     );
   }
 );
-
 
 resetBtn.addEventListener(
   "click",
@@ -4623,45 +2353,20 @@ resetBtn.addEventListener(
 );
 
 
-/* ================================================
-   BOOT
-================================================ */
+/* BOOT */
 
-for(
-  let i=0;
-  i<CONFIG.SLIME_COUNT;
-  i++
-){
-
-  createMonster(
-    i
-  );
+for(let i=0;i<CONFIG.SLIME_COUNT;i++){
+  createMonster(i);
 }
-
 
 recomputePlayerStats();
 
+addLog("🧙 Mage Idle V0.7A-1 啟動");
+addLog("🔥 Fireball Animation Engine 已啟用");
+addLog("🎯 Fire 傷害邏輯與動畫已分離");
 
-addLog(
-  "🧙 Mage Idle V0.6B 啟動"
-);
-
-
-addLog(
-  "⚔️ Equipment Foundation 已啟用"
-);
-
-
-addLog(
-  "🔥 下一階段準備進入技能動畫"
-);
-
-
-requestAnimationFrame(
-  mainLoop
-);
+requestAnimationFrame(mainLoop);
 
 </script>
-
 </body>
 </html>
