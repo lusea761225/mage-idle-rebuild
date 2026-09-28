@@ -55,7 +55,7 @@ h1{margin:6px 0 2px;font-size:25px}
 .exp{background:#a371f7}
 
 
-/* RESOURCE SUMMARY */
+/* SUMMARY */
 
 .loot-summary{
   display:grid;
@@ -80,7 +80,7 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 
-/* INVENTORY BUTTON */
+/* INVENTORY */
 
 .inventory-button{
   width:100%;
@@ -88,16 +88,8 @@ h1{margin:6px 0 2px;font-size:25px}
   background:#8957e5
 }
 
-
-/* INVENTORY */
-
-#inventoryPanel{
-  display:none
-}
-
-#inventoryPanel.open{
-  display:block
-}
+#inventoryPanel{display:none}
+#inventoryPanel.open{display:block}
 
 .inventory-title{
   display:flex;
@@ -107,9 +99,7 @@ h1{margin:6px 0 2px;font-size:25px}
   margin-bottom:10px
 }
 
-.inventory-title strong{
-  font-size:17px
-}
+.inventory-title strong{font-size:17px}
 
 .inventory-count{
   color:#8b949e;
@@ -127,30 +117,23 @@ h1{margin:6px 0 2px;font-size:25px}
   grid-template-columns:48px 1fr auto;
   align-items:center;
   gap:10px;
-
   background:#21262d;
   border:1px solid #30363d;
   border-radius:12px;
-
   padding:10px
 }
 
-.inventory-item.empty{
-  opacity:.55
-}
+.inventory-item.empty{opacity:.55}
 
 .item-icon{
   width:46px;
   height:46px;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   background:#161b22;
   border:1px solid #30363d;
   border-radius:10px;
-
   font-size:27px
 }
 
@@ -205,24 +188,17 @@ h1{margin:6px 0 2px;font-size:25px}
   position:absolute;
   left:50%;
   top:88%;
-
   width:105px;
   height:58px;
-
   transform:translate(-50%,-50%);
-
   border:2px dashed rgba(255,255,255,.85);
   border-radius:18px;
-
   background:rgba(80,150,255,.17);
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   font-size:12px;
   font-weight:800;
-
   z-index:1;
   pointer-events:none
 }
@@ -233,9 +209,7 @@ h1{margin:6px 0 2px;font-size:25px}
 #player{
   width:44px;
   height:44px;
-
   border-radius:50%;
-
   background:#9b59ff;
   border:3px solid #d9b8ff;
 
@@ -246,7 +220,6 @@ h1{margin:6px 0 2px;font-size:25px}
   display:flex;
   align-items:center;
   justify-content:center;
-
   font-size:22px;
   z-index:10
 }
@@ -262,18 +235,13 @@ h1{margin:6px 0 2px;font-size:25px}
 .slime{
   width:38px;
   height:32px;
-
   border-radius:50% 50% 42% 42%;
-
   background:#42c96b;
   border:2px solid #1e7d3d;
-
   box-shadow:0 4px 0 rgba(0,0,0,.18);
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   font-size:17px
 }
 
@@ -293,19 +261,13 @@ h1{margin:6px 0 2px;font-size:25px}
   outline-offset:5px
 }
 
-
-/* MONSTER HP */
-
 .mob-hp{
   position:absolute;
   width:42px;
   height:5px;
-
   background:rgba(0,0,0,.55);
-
   top:-11px;
   left:-4px;
-
   border-radius:10px;
   overflow:hidden
 }
@@ -315,32 +277,25 @@ h1{margin:6px 0 2px;font-size:25px}
   background:#ff6b6b
 }
 
-
-/* STATUS */
-
 .statuses{
   position:absolute;
   top:-32px;
   left:50%;
-
   transform:translateX(-50%);
-
   min-width:75px;
-
   text-align:center;
   font-size:15px;
-
   white-space:nowrap;
   pointer-events:none
 }
 
 
-/* GROUND LOOT */
+/* AUTO LOOT */
 
 .ground-loot{
   position:absolute;
   transform:translate(-50%,-50%);
-  z-index:7;
+  z-index:30;
 
   min-width:34px;
   min-height:34px;
@@ -349,39 +304,47 @@ h1{margin:6px 0 2px;font-size:25px}
   align-items:center;
   justify-content:center;
 
-  font-size:24px;
-
+  font-size:25px;
   border-radius:50%;
+  background:rgba(0,0,0,.28);
 
-  background:rgba(0,0,0,.25);
+  pointer-events:none;
 
-  animation:lootPulse 1.2s ease-in-out infinite;
-
-  pointer-events:none
+  transition:
+    left .32s ease-in,
+    top .32s ease-in,
+    transform .32s ease-in,
+    opacity .32s ease-in;
 }
 
-@keyframes lootPulse{
-  0%,100%{
-    transform:translate(-50%,-50%) scale(1)
+.ground-loot.spawn{
+  animation:lootSpawn .38s ease-out
+}
+
+.ground-loot.flying{
+  transform:translate(-50%,-50%) scale(.55);
+  opacity:.25
+}
+
+@keyframes lootSpawn{
+  0%{
+    transform:translate(-50%,-50%) scale(.25);
+    opacity:0
   }
 
-  50%{
-    transform:translate(-50%,-55%) scale(1.12)
+  65%{
+    transform:translate(-50%,-65%) scale(1.25);
+    opacity:1
+  }
+
+  100%{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1
   }
 }
 
-.ground-loot::after{
-  content:"";
-  position:absolute;
-  width:28px;
-  height:8px;
-  bottom:-6px;
-  border-radius:50%;
-  background:rgba(0,0,0,.22)
-}
 
-
-/* EFFECT */
+/* EFFECTS */
 
 .effect{
   position:absolute;
@@ -406,24 +369,15 @@ h1{margin:6px 0 2px;font-size:25px}
   }
 }
 
-
-/* DAMAGE */
-
 .damage-text{
   position:absolute;
   transform:translate(-50%,-50%);
-
   z-index:45;
-
   color:#ff7b72;
-
   font-size:18px;
   font-weight:900;
-
   text-shadow:0 2px 3px #000;
-
   pointer-events:none;
-
   animation:damageFloat .7s ease-out forwards
 }
 
@@ -440,20 +394,16 @@ h1{margin:6px 0 2px;font-size:25px}
 }
 
 
-/* REACTION */
+/* REACTIONS */
 
 .reaction{
   position:absolute;
   transform:translate(-50%,-50%);
-
   z-index:40;
   pointer-events:none;
-
   text-align:center;
-
   font-weight:900;
   font-size:18px;
-
   white-space:nowrap;
 
   text-shadow:
@@ -485,17 +435,11 @@ h1{margin:6px 0 2px;font-size:25px}
   }
 }
 
-
-/* STORM */
-
 .storm-ring{
   position:absolute;
-
   width:120px;
   height:120px;
-
   border-radius:50%;
-
   border:4px solid rgba(255,245,157,.95);
 
   background:
@@ -511,10 +455,8 @@ h1{margin:6px 0 2px;font-size:25px}
     inset 0 0 18px rgba(130,170,255,.8);
 
   transform:translate(-50%,-50%) scale(.25);
-
   z-index:25;
   pointer-events:none;
-
   animation:stormExpand .65s ease-out forwards
 }
 
@@ -530,17 +472,11 @@ h1{margin:6px 0 2px;font-size:25px}
   }
 }
 
-
-/* OVERLOAD */
-
 .overload-ring{
   position:absolute;
-
   width:82px;
   height:82px;
-
   border-radius:50%;
-
   border:5px solid rgba(255,165,80,.95);
 
   background:
@@ -557,10 +493,8 @@ h1{margin:6px 0 2px;font-size:25px}
     inset 0 0 18px rgba(255,220,100,.9);
 
   transform:translate(-50%,-50%) scale(.2);
-
   z-index:30;
   pointer-events:none;
-
   animation:overloadExpand .55s ease-out forwards
 }
 
@@ -576,18 +510,11 @@ h1{margin:6px 0 2px;font-size:25px}
   }
 }
 
-
-/* LIGHTNING */
-
 .lightning-line{
   position:absolute;
-
   height:4px;
-
   background:#fff59d;
-
   transform-origin:left center;
-
   z-index:18;
   pointer-events:none;
 
@@ -635,10 +562,8 @@ h1{margin:6px 0 2px;font-size:25px}
 #log{
   height:190px;
   overflow-y:auto;
-
   font-size:13px;
   line-height:1.55;
-
   color:#c9d1d9
 }
 
@@ -696,12 +621,9 @@ h1{margin:6px 0 2px;font-size:25px}
 button{
   border:0;
   border-radius:12px;
-
   padding:13px;
-
   font-size:15px;
   font-weight:700;
-
   color:white;
   background:#238636
 }
@@ -726,7 +648,7 @@ button.secondary{
 <h1>🧙 Mage Idle</h1>
 
 <div class="version">
-Rebuild V0.5B — Inventory
+Rebuild V0.5B-1 — Auto Loot Fix
 </div>
 
 
@@ -782,10 +704,7 @@ Rebuild V0.5B — Inventory
   </div>
 
 
-  <button
-    id="inventoryBtn"
-    class="inventory-button"
-  >
+  <button id="inventoryBtn" class="inventory-button">
     🎒 打開背包
   </button>
 
@@ -796,14 +715,9 @@ Rebuild V0.5B — Inventory
 
   <div class="inventory-title">
 
-    <strong>
-      🎒 冒險者背包
-    </strong>
+    <strong>🎒 冒險者背包</strong>
 
-    <span
-      id="inventoryCount"
-      class="inventory-count"
-    >
+    <span id="inventoryCount" class="inventory-count">
       0 件物品
     </span>
 
@@ -812,95 +726,50 @@ Rebuild V0.5B — Inventory
 
   <div class="inventory-grid">
 
-    <div
-      id="goldItem"
-      class="inventory-item empty"
-    >
+    <div id="goldItem" class="inventory-item empty">
 
-      <div class="item-icon">
-        🪙
-      </div>
+      <div class="item-icon">🪙</div>
 
       <div>
-
-        <div class="item-name">
-          金幣
-        </div>
-
+        <div class="item-name">金幣</div>
         <div class="item-desc">
           世界通用貨幣。未來可用於商店與強化。
         </div>
-
       </div>
 
-      <div
-        id="goldQty"
-        class="item-qty"
-      >
-        ×0
-      </div>
+      <div id="goldQty" class="item-qty">×0</div>
 
     </div>
 
 
-    <div
-      id="potionItem"
-      class="inventory-item empty"
-    >
+    <div id="potionItem" class="inventory-item empty">
 
-      <div class="item-icon">
-        🧪
-      </div>
+      <div class="item-icon">🧪</div>
 
       <div>
-
-        <div class="item-name">
-          小型生命藥水
-        </div>
-
+        <div class="item-name">小型生命藥水</div>
         <div class="item-desc">
           基礎恢復道具。使用功能尚未開放。
         </div>
-
       </div>
 
-      <div
-        id="potionQty"
-        class="item-qty"
-      >
-        ×0
-      </div>
+      <div id="potionQty" class="item-qty">×0</div>
 
     </div>
 
 
-    <div
-      id="staffItem"
-      class="inventory-item empty"
-    >
+    <div id="staffItem" class="inventory-item empty">
 
-      <div class="item-icon">
-        🪄
-      </div>
+      <div class="item-icon">🪄</div>
 
       <div>
-
-        <div class="item-name">
-          破舊木杖
-        </div>
-
+        <div class="item-name">破舊木杖</div>
         <div class="item-desc">
           普通的舊木杖。裝備功能尚未開放。
         </div>
-
       </div>
 
-      <div
-        id="staffQty"
-        class="item-qty"
-      >
-        ×0
-      </div>
+      <div id="staffQty" class="item-qty">×0</div>
 
     </div>
 
@@ -927,50 +796,30 @@ Rebuild V0.5B — Inventory
   <div class="skills">
 
     <div class="skill">
-
-      <div class="skillIcon">
-        🔥
-      </div>
-
+      <div class="skillIcon">🔥</div>
       Fire
-
       <div class="skillInfo">
         Burning<br>
         ⚡ → 💥 Overload
       </div>
-
     </div>
 
-
     <div class="skill">
-
-      <div class="skillIcon">
-        ⚡
-      </div>
-
+      <div class="skillIcon">⚡</div>
       Lightning
-
       <div class="skillInfo">
         Chain + Charge<br>
         ❄️ → 🌩️ Storm
       </div>
-
     </div>
 
-
     <div class="skill">
-
-      <div class="skillIcon">
-        ❄️
-      </div>
-
+      <div class="skillIcon">❄️</div>
       Ice
-
       <div class="skillInfo">
         Frostbite<br>
         🔥 → 💥 Shatter
       </div>
-
     </div>
 
   </div>
@@ -980,9 +829,7 @@ Rebuild V0.5B — Inventory
 
 <div class="panel">
 
-  <strong>
-    📜 戰鬥紀錄
-  </strong>
+  <strong>📜 戰鬥紀錄</strong>
 
   <div id="log"></div>
 
@@ -992,10 +839,7 @@ Rebuild V0.5B — Inventory
       暫停
     </button>
 
-    <button
-      id="resetBtn"
-      class="secondary"
-    >
+    <button id="resetBtn" class="secondary">
       重置測試
     </button>
 
@@ -1007,18 +851,12 @@ Rebuild V0.5B — Inventory
 <div class="anchor">
 
 🔒 V0.1 Combat Engine<br>
-
 🔒 V0.2 Spell Engine<br>
-
 🔒 V0.3 Elemental Combat<br>
-
 🔒 V0.4A Monster Combat<br>
-
 🔒 V0.4B Monster AI<br>
-
 🔒 V0.5A Loot System<br>
-
-🧪 V0.5B Inventory
+🧪 V0.5B-1 Auto Loot Fix
 
 </div>
 
@@ -1028,18 +866,22 @@ Rebuild V0.5B — Inventory
 <script>
 
 /* =====================================================
-   MAGE IDLE V0.5B
+   V0.5B-1 AUTO LOOT FIX
 
-   NEW:
-   Inventory UI
-   Stackable Items
-   Item Definitions
+   Drop
+      ↓
+   Show on ground
+      ↓
+   Wait 450 ms
+      ↓
+   Fly toward Mage
+      ↓
+   Automatically enter inventory
 
-   V0.5A Loot preserved
+   Player no longer needs to walk
+   over loot.
 ===================================================== */
 
-
-/* CONFIG */
 
 const CONFIG={
 
@@ -1063,7 +905,8 @@ const CONFIG={
   SLIME_ATTACK_COOLDOWN:1000,
   SLIME_RESPAWN_MS:5000,
 
-  PICKUP_RANGE:5,
+  AUTO_LOOT_DELAY:450,
+  AUTO_LOOT_FLY_TIME:320,
 
   BURN_DAMAGE:3,
   BURN_TICK_MS:1000,
@@ -1088,14 +931,13 @@ const CONFIG={
 };
 
 
-/* ITEM DATABASE */
+/* ITEMS */
 
 const ITEMS={
 
   gold:{
     id:"gold",
     name:"金幣",
-    englishName:"Gold",
     icon:"🪙",
     type:"currency"
   },
@@ -1103,7 +945,6 @@ const ITEMS={
   potion:{
     id:"potion",
     name:"小型生命藥水",
-    englishName:"Small HP Potion",
     icon:"🧪",
     type:"consumable"
   },
@@ -1111,7 +952,6 @@ const ITEMS={
   staff:{
     id:"staff",
     name:"破舊木杖",
-    englishName:"Worn Wooden Staff",
     icon:"🪄",
     type:"weapon"
   }
@@ -1119,7 +959,7 @@ const ITEMS={
 };
 
 
-/* LOOT TABLE */
+/* DROP TABLE */
 
 const LOOT_TABLE=[
 
@@ -1207,8 +1047,6 @@ const game={
 
     nextAttackAt:0,
 
-    lootTargetId:null,
-
     inventory:{
       gold:0,
       potion:0,
@@ -1224,90 +1062,46 @@ const game={
 
 /* DOM */
 
-const worldEl=
-  document.getElementById("world");
+const worldEl=document.getElementById("world");
+const playerEl=document.getElementById("player");
 
-const playerEl=
-  document.getElementById("player");
+const hpText=document.getElementById("hpText");
+const mpText=document.getElementById("mpText");
+const expText=document.getElementById("expText");
 
-const hpText=
-  document.getElementById("hpText");
+const hpBar=document.getElementById("hpBar");
+const mpBar=document.getElementById("mpBar");
+const expBar=document.getElementById("expBar");
 
-const mpText=
-  document.getElementById("mpText");
+const levelText=document.getElementById("levelText");
+const killText=document.getElementById("killText");
 
-const expText=
-  document.getElementById("expText");
+const goldText=document.getElementById("goldText");
+const potionText=document.getElementById("potionText");
+const staffText=document.getElementById("staffText");
 
-const hpBar=
-  document.getElementById("hpBar");
+const inventoryBtn=document.getElementById("inventoryBtn");
+const inventoryPanel=document.getElementById("inventoryPanel");
+const inventoryCount=document.getElementById("inventoryCount");
 
-const mpBar=
-  document.getElementById("mpBar");
+const goldItem=document.getElementById("goldItem");
+const potionItem=document.getElementById("potionItem");
+const staffItem=document.getElementById("staffItem");
 
-const expBar=
-  document.getElementById("expBar");
+const goldQty=document.getElementById("goldQty");
+const potionQty=document.getElementById("potionQty");
+const staffQty=document.getElementById("staffQty");
 
-const levelText=
-  document.getElementById("levelText");
+const logEl=document.getElementById("log");
 
-const killText=
-  document.getElementById("killText");
-
-const goldText=
-  document.getElementById("goldText");
-
-const potionText=
-  document.getElementById("potionText");
-
-const staffText=
-  document.getElementById("staffText");
-
-const inventoryBtn=
-  document.getElementById("inventoryBtn");
-
-const inventoryPanel=
-  document.getElementById("inventoryPanel");
-
-const inventoryCount=
-  document.getElementById("inventoryCount");
-
-const goldItem=
-  document.getElementById("goldItem");
-
-const potionItem=
-  document.getElementById("potionItem");
-
-const staffItem=
-  document.getElementById("staffItem");
-
-const goldQty=
-  document.getElementById("goldQty");
-
-const potionQty=
-  document.getElementById("potionQty");
-
-const staffQty=
-  document.getElementById("staffQty");
-
-const logEl=
-  document.getElementById("log");
-
-const pauseBtn=
-  document.getElementById("pauseBtn");
-
-const resetBtn=
-  document.getElementById("resetBtn");
+const pauseBtn=document.getElementById("pauseBtn");
+const resetBtn=document.getElementById("resetBtn");
 
 
-/* UTILITY */
+/* UTIL */
 
 function clamp(value,min,max){
-
-  return Math.max(
-    min,
-    Math.min(max,value)
-  );
+  return Math.max(min,Math.min(max,value));
 }
 
 
@@ -1316,44 +1110,32 @@ function distance(a,b){
   const dx=a.x-b.x;
   const dy=a.y-b.y;
 
-  return Math.sqrt(
-    dx*dx+
-    dy*dy
-  );
+  return Math.sqrt(dx*dx+dy*dy);
 }
 
 
 function random(min,max){
-
-  return min+
-    Math.random()*
-    (max-min);
+  return min+Math.random()*(max-min);
 }
 
 
 function isPlayerInSafeZone(){
 
-  const safe={
-    x:CONFIG.SAFE_X,
-    y:CONFIG.SAFE_Y
-  };
-
   return distance(
     game.player,
-    safe
+    {
+      x:CONFIG.SAFE_X,
+      y:CONFIG.SAFE_Y
+    }
   )<=CONFIG.SAFE_RADIUS;
 }
 
 
 /* LOG */
 
-function addLog(
-  text,
-  className=""
-){
+function addLog(text,className=""){
 
-  const line=
-    document.createElement("div");
+  const line=document.createElement("div");
 
   if(className){
     line.className=className;
@@ -1363,28 +1145,17 @@ function addLog(
 
   logEl.appendChild(line);
 
-  while(
-    logEl.children.length>55
-  ){
-
-    logEl.removeChild(
-      logEl.firstChild
-    );
+  while(logEl.children.length>55){
+    logEl.removeChild(logEl.firstChild);
   }
 
-  logEl.scrollTop=
-    logEl.scrollHeight;
+  logEl.scrollTop=logEl.scrollHeight;
 }
 
 
-/* =====================================================
-   INVENTORY
-===================================================== */
+/* INVENTORY */
 
-function addItem(
-  itemId,
-  amount=1
-){
+function addItem(itemId,amount=1){
 
   if(
     game.player.inventory[itemId]===
@@ -1393,8 +1164,7 @@ function addItem(
     return;
   }
 
-  game.player.inventory[itemId]+=
-    amount;
+  game.player.inventory[itemId]+=amount;
 }
 
 
@@ -1416,7 +1186,6 @@ function updateInventoryUI(){
   const inventory=
     game.player.inventory;
 
-
   goldText.textContent=
     inventory.gold;
 
@@ -1426,7 +1195,6 @@ function updateInventoryUI(){
   staffText.textContent=
     inventory.staff;
 
-
   goldQty.textContent=
     `×${inventory.gold}`;
 
@@ -1435,7 +1203,6 @@ function updateInventoryUI(){
 
   staffQty.textContent=
     `×${inventory.staff}`;
-
 
   goldItem.classList.toggle(
     "empty",
@@ -1452,32 +1219,23 @@ function updateInventoryUI(){
     inventory.staff<=0
   );
 
-
   inventoryCount.textContent=
     `${getInventoryTotal()} 件物品`;
 }
 
 
 /* =====================================================
-   LOOT SYSTEM
+   AUTO LOOT
 ===================================================== */
 
 function rollLoot(monster){
 
-  for(
-    const drop
-    of LOOT_TABLE
-  ){
+  for(const drop of LOOT_TABLE){
 
-    if(
-      Math.random()<
-      drop.chance
-    ){
+    if(Math.random()<drop.chance){
 
       const item=
-        ITEMS[
-          drop.itemId
-        ];
+        ITEMS[drop.itemId];
 
       spawnGroundLoot(
         item,
@@ -1489,39 +1247,37 @@ function rollLoot(monster){
 }
 
 
-function spawnGroundLoot(
-  item,
-  x,
-  y
-){
+function spawnGroundLoot(item,x,y){
 
   const loot={
 
-    uid:
-      game.nextLootId++,
+    uid:game.nextLootId++,
 
-    itemId:
-      item.id,
+    itemId:item.id,
 
-    name:
-      item.name,
+    name:item.name,
 
-    icon:
-      item.icon,
+    icon:item.icon,
 
-    x:
-      clamp(
-        x+random(-2.5,2.5),
-        4,
-        96
-      ),
+    x:clamp(
+      x+random(-2.2,2.2),
+      4,
+      96
+    ),
 
-    y:
-      clamp(
-        y+random(-2.5,2.5),
-        5,
-        82
-      ),
+    y:clamp(
+      y+random(-2.2,2.2),
+      5,
+      82
+    ),
+
+    collectAt:
+      game.time+
+      CONFIG.AUTO_LOOT_DELAY,
+
+    collecting:false,
+
+    collected:false,
 
     el:null
   };
@@ -1531,18 +1287,22 @@ function spawnGroundLoot(
     document.createElement("div");
 
   el.className=
-    "ground-loot";
+    "ground-loot spawn";
 
   el.textContent=
     loot.icon;
+
+  el.style.left=
+    loot.x+"%";
+
+  el.style.top=
+    loot.y+"%";
 
   worldEl.appendChild(el);
 
   loot.el=el;
 
-  game.groundLoot.push(
-    loot
-  );
+  game.groundLoot.push(loot);
 
 
   addLog(
@@ -1552,19 +1312,88 @@ function spawnGroundLoot(
 }
 
 
-function removeGroundLoot(
-  loot
-){
+function startAutoCollect(loot){
+
+  if(
+    !loot ||
+    loot.collecting ||
+    loot.collected
+  ){
+    return;
+  }
+
+  loot.collecting=true;
+
+
+  /*
+    IMPORTANT:
+    use the player's CURRENT position.
+
+    The loot visually flies toward
+    Mage even while Mage is moving.
+  */
+
+  loot.el.classList.remove("spawn");
+  loot.el.classList.add("flying");
+
+  loot.el.style.left=
+    game.player.x+"%";
+
+  loot.el.style.top=
+    game.player.y+"%";
+
+
+  /*
+    Inventory reward is controlled
+    by game state immediately.
+
+    The animation is only visual.
+
+    This means even if Mage dies or
+    moves during the animation,
+    the item can never be lost.
+  */
+
+  loot.collected=true;
+
+  addItem(
+    loot.itemId,
+    1
+  );
+
+
+  addLog(
+    `🎒 自動拾取 ${loot.icon} ${loot.name}`,
+    "lootText"
+  );
+
+
+  const uid=loot.uid;
+
+
+  setTimeout(()=>{
+
+    const current=
+      game.groundLoot.find(
+        item=>item.uid===uid
+      );
+
+    if(!current){
+      return;
+    }
+
+    removeGroundLoot(current);
+
+  },CONFIG.AUTO_LOOT_FLY_TIME);
+}
+
+
+function removeGroundLoot(loot){
 
   const index=
     game.groundLoot.findIndex(
-
-      item=>
-
-        item.uid===
-        loot.uid
+      item=>item.uid===loot.uid
     );
-
 
   if(index>=0){
 
@@ -1574,125 +1403,34 @@ function removeGroundLoot(
     );
   }
 
-
   if(loot.el){
     loot.el.remove();
   }
-
-
-  if(
-    game.player.lootTargetId===
-    loot.uid
-  ){
-
-    game.player.lootTargetId=null;
-  }
 }
 
 
-function pickupLoot(
-  loot
-){
-
-  if(
-    !loot ||
-    !game.player.alive
-  ){
-    return;
-  }
-
-
-  addItem(
-    loot.itemId,
-    1
-  );
-
-
-  createEffect(
-    loot,
-    loot.icon
-  );
-
-
-  addLog(
-    `🎒 撿到 ${loot.icon} ${loot.name}`,
-    "lootText"
-  );
-
-
-  removeGroundLoot(
-    loot
-  );
-}
-
-
-function getNearestLoot(){
-
-  let best=null;
-  let bestDistance=Infinity;
-
-
-  for(
-    const loot
-    of game.groundLoot
-  ){
-
-    const d=
-      distance(
-        game.player,
-        loot
-      );
-
-
-    if(
-      d<
-      bestDistance
-    ){
-
-      bestDistance=d;
-      best=loot;
-    }
-  }
-
-
-  return best;
-}
-
-
-function updateNearbyPickup(){
-
-  if(!game.player.alive){
-    return;
-  }
-
+function updateAutoLoot(){
 
   const lootList=[
     ...game.groundLoot
   ];
 
 
-  for(
-    const loot
-    of lootList
-  ){
+  for(const loot of lootList){
 
     if(
-      distance(
-        game.player,
-        loot
-      )<=
-      CONFIG.PICKUP_RANGE
+      !loot.collecting &&
+      !loot.collected &&
+      game.time>=loot.collectAt
     ){
 
-      pickupLoot(
-        loot
-      );
+      startAutoCollect(loot);
     }
   }
 }
 
 
-/* MONSTER CREATION */
+/* MONSTERS */
 
 function createMonster(id){
 
@@ -1709,11 +1447,9 @@ function createMonster(id){
     attack:CONFIG.SLIME_ATTACK,
 
     alive:true,
-
     aggro:false,
 
     respawnAt:0,
-
     nextAttackAt:0,
 
     burningUntil:0,
@@ -1736,7 +1472,6 @@ function createMonster(id){
     "entity slime";
 
   el.innerHTML=`
-
     <div class="statuses"></div>
 
     <div class="mob-hp">
@@ -1746,24 +1481,17 @@ function createMonster(id){
     🟢
   `;
 
-
   worldEl.appendChild(el);
 
   monster.el=el;
 
   monster.hpFill=
-    el.querySelector(
-      ".mob-hp-fill"
-    );
+    el.querySelector(".mob-hp-fill");
 
   monster.statusEl=
-    el.querySelector(
-      ".statuses"
-    );
+    el.querySelector(".statuses");
 
-  game.monsters.push(
-    monster
-  );
+  game.monsters.push(monster);
 }
 
 
@@ -1774,16 +1502,11 @@ function getTarget(){
   let best=null;
   let bestDistance=Infinity;
 
-
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     if(!monster.alive){
       continue;
     }
-
 
     const d=
       distance(
@@ -1791,89 +1514,53 @@ function getTarget(){
         monster
       );
 
-
-    if(
-      d<
-      bestDistance
-    ){
+    if(d<bestDistance){
 
       bestDistance=d;
       best=monster;
     }
   }
 
-
   return best;
 }
 
 
-/* PLAYER MOVEMENT */
+/* MOVEMENT */
 
 function movePlayerToward(
   target,
   deltaSeconds
 ){
 
-  const player=
-    game.player;
+  const player=game.player;
 
-
-  const dx=
-    target.x-player.x;
-
-  const dy=
-    target.y-player.y;
-
+  const dx=target.x-player.x;
+  const dy=target.y-player.y;
 
   const d=
-    Math.sqrt(
-      dx*dx+
-      dy*dy
-    );
-
+    Math.sqrt(dx*dx+dy*dy);
 
   if(d<=0.001){
     return;
   }
 
-
   const move=
     CONFIG.PLAYER_SPEED*
     deltaSeconds;
 
-
   const amount=
-    Math.min(
-      move,
-      d
-    );
+    Math.min(move,d);
 
-
-  player.x+=
-    dx/d*amount;
-
-  player.y+=
-    dy/d*amount;
-
+  player.x+=dx/d*amount;
+  player.y+=dy/d*amount;
 
   player.x=
-    clamp(
-      player.x,
-      3,
-      97
-    );
-
+    clamp(player.x,3,97);
 
   player.y=
-    clamp(
-      player.y,
-      4,
-      96
-    );
+    clamp(player.y,4,96);
 }
 
-
-/* MONSTER MOVEMENT */
 
 function moveMonsterToward(
   monster,
@@ -1881,76 +1568,44 @@ function moveMonsterToward(
   deltaSeconds
 ){
 
-  const dx=
-    target.x-monster.x;
-
-  const dy=
-    target.y-monster.y;
-
+  const dx=target.x-monster.x;
+  const dy=target.y-monster.y;
 
   const d=
-    Math.sqrt(
-      dx*dx+
-      dy*dy
-    );
-
+    Math.sqrt(dx*dx+dy*dy);
 
   if(d<=0.001){
     return;
   }
 
-
   const move=
     CONFIG.SLIME_SPEED*
     deltaSeconds;
 
-
   const amount=
-    Math.min(
-      move,
-      d
-    );
+    Math.min(move,d);
 
-
-  monster.x+=
-    dx/d*amount;
-
-  monster.y+=
-    dy/d*amount;
-
+  monster.x+=dx/d*amount;
+  monster.y+=dy/d*amount;
 
   monster.x=
-    clamp(
-      monster.x,
-      3,
-      97
-    );
-
+    clamp(monster.x,3,97);
 
   monster.y=
-    clamp(
-      monster.y,
-      4,
-      82
-    );
+    clamp(monster.y,4,82);
 }
 
 
 /* EFFECTS */
 
-function createEffect(
-  target,
-  icon
-){
+function createEffect(target,icon){
 
   const effect=
     document.createElement("div");
 
-  effect.className=
-    "effect";
+  effect.className="effect";
 
-  effect.textContent=
-    icon;
+  effect.textContent=icon;
 
   effect.style.left=
     target.x+"%";
@@ -1958,10 +1613,7 @@ function createEffect(
   effect.style.top=
     target.y+"%";
 
-  worldEl.appendChild(
-    effect
-  );
-
+  worldEl.appendChild(effect);
 
   setTimeout(
     ()=>effect.remove(),
@@ -1970,9 +1622,7 @@ function createEffect(
 }
 
 
-function createDamageText(
-  amount
-){
+function createDamageText(amount){
 
   const effect=
     document.createElement("div");
@@ -1989,10 +1639,7 @@ function createDamageText(
   effect.style.top=
     game.player.y+"%";
 
-  worldEl.appendChild(
-    effect
-  );
-
+  worldEl.appendChild(effect);
 
   setTimeout(
     ()=>effect.remove(),
@@ -2014,14 +1661,11 @@ function createReactionEffect(
     "reaction";
 
   effect.innerHTML=`
-
     <span class="reactionIcon">
       ${icon}
     </span>
-
     ${text}
   `;
-
 
   effect.style.left=
     monster.x+"%";
@@ -2029,11 +1673,7 @@ function createReactionEffect(
   effect.style.top=
     monster.y+"%";
 
-
-  worldEl.appendChild(
-    effect
-  );
-
+  worldEl.appendChild(effect);
 
   setTimeout(
     ()=>effect.remove(),
@@ -2042,9 +1682,7 @@ function createReactionEffect(
 }
 
 
-function createStormEffect(
-  monster
-){
+function createStormEffect(monster){
 
   const ring=
     document.createElement("div");
@@ -2058,10 +1696,7 @@ function createStormEffect(
   ring.style.top=
     monster.y+"%";
 
-  worldEl.appendChild(
-    ring
-  );
-
+  worldEl.appendChild(ring);
 
   setTimeout(
     ()=>ring.remove(),
@@ -2070,9 +1705,7 @@ function createStormEffect(
 }
 
 
-function createOverloadEffect(
-  monster
-){
+function createOverloadEffect(monster){
 
   const ring=
     document.createElement("div");
@@ -2086,10 +1719,7 @@ function createOverloadEffect(
   ring.style.top=
     monster.y+"%";
 
-  worldEl.appendChild(
-    ring
-  );
-
+  worldEl.appendChild(ring);
 
   setTimeout(
     ()=>ring.remove(),
@@ -2098,51 +1728,32 @@ function createOverloadEffect(
 }
 
 
-function createLightningLine(
-  from,
-  to
-){
+function createLightningLine(from,to){
 
   const rect=
     worldEl.getBoundingClientRect();
 
-
   const x1=
-    from.x/100*
-    rect.width;
+    from.x/100*rect.width;
 
   const y1=
-    from.y/100*
-    rect.height;
+    from.y/100*rect.height;
 
   const x2=
-    to.x/100*
-    rect.width;
+    to.x/100*rect.width;
 
   const y2=
-    to.y/100*
-    rect.height;
-
+    to.y/100*rect.height;
 
   const dx=x2-x1;
   const dy=y2-y1;
 
-
   const length=
-    Math.sqrt(
-      dx*dx+
-      dy*dy
-    );
-
+    Math.sqrt(dx*dx+dy*dy);
 
   const angle=
-    Math.atan2(
-      dy,
-      dx
-    )*
-    180/
-    Math.PI;
-
+    Math.atan2(dy,dx)*
+    180/Math.PI;
 
   const line=
     document.createElement("div");
@@ -2162,11 +1773,7 @@ function createLightningLine(
   line.style.transform=
     `rotate(${angle}deg)`;
 
-
-  worldEl.appendChild(
-    line
-  );
-
+  worldEl.appendChild(line);
 
   setTimeout(
     ()=>line.remove(),
@@ -2177,13 +1784,9 @@ function createLightningLine(
 
 /* PLAYER DAMAGE */
 
-function damagePlayer(
-  amount
-){
+function damagePlayer(amount){
 
-  const player=
-    game.player;
-
+  const player=game.player;
 
   if(
     !player.alive ||
@@ -2192,38 +1795,24 @@ function damagePlayer(
     return;
   }
 
-
   player.hp-=amount;
 
-
   player.hp=
-    Math.max(
-      0,
-      player.hp
-    );
+    Math.max(0,player.hp);
 
-
-  createDamageText(
-    amount
-  );
-
+  createDamageText(amount);
 
   createEffect(
     player,
     "💢"
   );
 
-
   addLog(
     `🟢 Slime 攻擊 Mage -${amount} HP`,
     "enemyText"
   );
 
-
-  if(
-    player.hp<=0
-  ){
-
+  if(player.hp<=0){
     killPlayer();
   }
 }
@@ -2233,28 +1822,20 @@ function damagePlayer(
 
 function killPlayer(){
 
-  const player=
-    game.player;
-
+  const player=game.player;
 
   if(!player.alive){
     return;
   }
 
-
   player.alive=false;
-
   player.hp=0;
 
   player.targetId=null;
 
-  player.lootTargetId=null;
-
-
   player.respawnAt=
     game.time+
     CONFIG.PLAYER_RESPAWN_MS;
-
 
   player.x=
     CONFIG.SAFE_X;
@@ -2262,15 +1843,10 @@ function killPlayer(){
   player.y=
     CONFIG.SAFE_Y;
 
-
   player.nextAttackAt=
     player.respawnAt;
 
-
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     monster.aggro=false;
 
@@ -2278,12 +1854,10 @@ function killPlayer(){
       game.time+500;
   }
 
-
   addLog(
     "☠️ Mage 被擊倒！",
     "deathText"
   );
-
 
   addLog(
     "🏠 返回 Safe Zone，3 秒後恢復",
@@ -2292,18 +1866,15 @@ function killPlayer(){
 }
 
 
-/* PLAYER RESPAWN */
+/* RESPAWN */
 
 function updatePlayerRespawn(){
 
-  const player=
-    game.player;
-
+  const player=game.player;
 
   if(player.alive){
     return;
   }
-
 
   if(
     game.time<
@@ -2311,7 +1882,6 @@ function updatePlayerRespawn(){
   ){
     return;
   }
-
 
   player.alive=true;
 
@@ -2321,28 +1891,21 @@ function updatePlayerRespawn(){
   player.mp=
     player.maxMp;
 
-
   player.x=
     CONFIG.SAFE_X;
 
   player.y=
     CONFIG.SAFE_Y;
 
-
   player.targetId=null;
-
-  player.lootTargetId=null;
-
 
   player.nextAttackAt=
     game.time+500;
-
 
   addLog(
     "✨ Mage 恢復完成！",
     "respawnText"
   );
-
 
   addLog(
     "⚔️ 自動重新出發",
@@ -2353,9 +1916,7 @@ function updatePlayerRespawn(){
 
 /* MONSTER AI */
 
-function updateMonsterAI(
-  deltaMs
-){
+function updateMonsterAI(deltaMs){
 
   const player=
     game.player;
@@ -2363,24 +1924,17 @@ function updateMonsterAI(
   const deltaSeconds=
     deltaMs/1000;
 
-
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     if(!monster.alive){
       continue;
     }
 
-
     if(!player.alive){
 
       monster.aggro=false;
-
       continue;
     }
-
 
     const d=
       distance(
@@ -2388,21 +1942,15 @@ function updateMonsterAI(
         player
       );
 
-
-    if(
-      isPlayerInSafeZone()
-    ){
+    if(isPlayerInSafeZone()){
 
       monster.aggro=false;
-
       continue;
     }
 
-
     if(
       !monster.aggro &&
-      d<=
-      CONFIG.SLIME_DETECTION_RANGE
+      d<=CONFIG.SLIME_DETECTION_RANGE
     ){
 
       monster.aggro=true;
@@ -2411,11 +1959,9 @@ function updateMonsterAI(
         game.time+500;
     }
 
-
     if(!monster.aggro){
       continue;
     }
-
 
     if(
       d>
@@ -2431,7 +1977,6 @@ function updateMonsterAI(
       continue;
     }
 
-
     if(
       game.time>=
       monster.nextAttackAt
@@ -2441,11 +1986,27 @@ function updateMonsterAI(
         game.time+
         CONFIG.SLIME_ATTACK_COOLDOWN;
 
+      /*
+        Frostbite finally affects
+        monster attack damage.
+
+        Normal: 5
+        Frostbite: 3
+      */
+
+      const attackDamage=
+        monster.frostUntil>game.time
+        ?
+        Math.max(
+          0,
+          monster.attack-2
+        )
+        :
+        monster.attack;
 
       damagePlayer(
-        monster.attack
+        attackDamage
       );
-
 
       if(!player.alive){
         return;
@@ -2455,12 +2016,9 @@ function updateMonsterAI(
 }
 
 
-/* MONSTER DAMAGE */
+/* DAMAGE MONSTER */
 
-function damageMonster(
-  monster,
-  amount
-){
+function damageMonster(monster,amount){
 
   if(
     !monster ||
@@ -2469,9 +2027,7 @@ function damageMonster(
     return false;
   }
 
-
   monster.hp-=amount;
-
 
   monster.hp=
     Math.max(
@@ -2479,28 +2035,19 @@ function damageMonster(
       monster.hp
     );
 
-
   if(
     monster.hp>0 &&
     game.player.alive &&
     !isPlayerInSafeZone()
   ){
-
     monster.aggro=true;
   }
 
+  if(monster.hp<=0){
 
-  if(
-    monster.hp<=0
-  ){
-
-    killMonster(
-      monster
-    );
-
+    killMonster(monster);
     return true;
   }
-
 
   return false;
 }
@@ -2508,14 +2055,10 @@ function damageMonster(
 
 /* SHATTER */
 
-function triggerShatter(
-  monster
-){
+function triggerShatter(monster){
 
   monster.burningUntil=0;
-
   monster.nextBurnTick=0;
-
 
   createReactionEffect(
     monster,
@@ -2523,12 +2066,10 @@ function triggerShatter(
     "SHATTER!"
   );
 
-
   addLog(
     `💥 SHATTER！額外傷害 -${CONFIG.SHATTER_DAMAGE}`,
     "reactionText"
   );
-
 
   damageMonster(
     monster,
@@ -2539,12 +2080,9 @@ function triggerShatter(
 
 /* STORM */
 
-function triggerStorm(
-  monster
-){
+function triggerStorm(monster){
 
   monster.frostUntil=0;
-
 
   createReactionEffect(
     monster,
@@ -2552,44 +2090,27 @@ function triggerStorm(
     "STORM!"
   );
 
-
-  createStormEffect(
-    monster
-  );
-
+  createStormEffect(monster);
 
   addLog(
     `🌩️ STORM！範圍傷害 -${CONFIG.STORM_DAMAGE}`,
     "stormText"
   );
 
-
   const victims=
     game.monsters.filter(
-
       candidate=>
-
         candidate.alive &&
-
-        distance(
-          monster,
-          candidate
-        )
-        <=
-        CONFIG.STORM_RANGE
+        distance(monster,candidate)
+        <=CONFIG.STORM_RANGE
     );
 
-
-  for(
-    const victim
-    of victims
-  ){
+  for(const victim of victims){
 
     createEffect(
       victim,
       "⚡"
     );
-
 
     damageMonster(
       victim,
@@ -2601,12 +2122,9 @@ function triggerStorm(
 
 /* OVERLOAD */
 
-function triggerOverload(
-  monster
-){
+function triggerOverload(monster){
 
   monster.chargeUntil=0;
-
 
   createReactionEffect(
     monster,
@@ -2614,44 +2132,27 @@ function triggerOverload(
     "OVERLOAD!"
   );
 
-
-  createOverloadEffect(
-    monster
-  );
-
+  createOverloadEffect(monster);
 
   addLog(
     `💥 OVERLOAD！範圍傷害 -${CONFIG.OVERLOAD_DAMAGE}`,
     "overloadText"
   );
 
-
   const victims=
     game.monsters.filter(
-
       candidate=>
-
         candidate.alive &&
-
-        distance(
-          monster,
-          candidate
-        )
-        <=
-        CONFIG.OVERLOAD_RANGE
+        distance(monster,candidate)
+        <=CONFIG.OVERLOAD_RANGE
     );
 
-
-  for(
-    const victim
-    of victims
-  ){
+  for(const victim of victims){
 
     createEffect(
       victim,
       "💥"
     );
-
 
     damageMonster(
       victim,
@@ -2661,7 +2162,7 @@ function triggerOverload(
 }
 
 
-/* REACTION ENGINE */
+/* REACTION */
 
 function tryReaction(
   monster,
@@ -2675,48 +2176,32 @@ function tryReaction(
     return false;
   }
 
-
   if(
     incomingElement==="ice" &&
-    monster.burningUntil>
-    game.time
+    monster.burningUntil>game.time
   ){
 
-    triggerShatter(
-      monster
-    );
-
+    triggerShatter(monster);
     return true;
   }
-
 
   if(
     incomingElement==="lightning" &&
-    monster.frostUntil>
-    game.time
+    monster.frostUntil>game.time
   ){
 
-    triggerStorm(
-      monster
-    );
-
+    triggerStorm(monster);
     return true;
   }
-
 
   if(
     incomingElement==="fire" &&
-    monster.chargeUntil>
-    game.time
+    monster.chargeUntil>game.time
   ){
 
-    triggerOverload(
-      monster
-    );
-
+    triggerOverload(monster);
     return true;
   }
-
 
   return false;
 }
@@ -2724,54 +2209,43 @@ function tryReaction(
 
 /* FIRE */
 
-function castFire(
-  monster,
-  skill
-){
+function castFire(monster,skill){
 
   createEffect(
     monster,
     "🔥"
   );
 
-
   damageMonster(
     monster,
     skill.damage
   );
-
 
   addLog(
     `🔥 Fire → Slime -${skill.damage}`,
     "fireText"
   );
 
-
   if(!monster.alive){
     return;
   }
-
 
   tryReaction(
     monster,
     "fire"
   );
 
-
   if(!monster.alive){
     return;
   }
-
 
   monster.burningUntil=
     game.time+
     CONFIG.BURN_DURATION_MS;
 
-
   monster.nextBurnTick=
     game.time+
     CONFIG.BURN_TICK_MS;
-
 
   addLog(
     "🔥 Slime 進入 Burning",
@@ -2782,49 +2256,39 @@ function castFire(
 
 /* ICE */
 
-function castIce(
-  monster,
-  skill
-){
+function castIce(monster,skill){
 
   createEffect(
     monster,
     "❄️"
   );
 
-
   damageMonster(
     monster,
     skill.damage
   );
-
 
   addLog(
     `❄️ Ice → Slime -${skill.damage}`,
     "iceText"
   );
 
-
   if(!monster.alive){
     return;
   }
-
 
   tryReaction(
     monster,
     "ice"
   );
 
-
   if(!monster.alive){
     return;
   }
 
-
   monster.frostUntil=
     game.time+
     CONFIG.FROST_DURATION_MS;
-
 
   addLog(
     "❄️ Slime 進入 Frostbite",
@@ -2835,55 +2299,44 @@ function castIce(
 
 /* LIGHTNING */
 
-function castLightning(
-  monster,
-  skill
-){
+function castLightning(monster,skill){
 
   createEffect(
     monster,
     "⚡"
   );
 
-
   damageMonster(
     monster,
     skill.damage
   );
-
 
   addLog(
     `⚡ Lightning → Slime -${skill.damage}`,
     "lightningText"
   );
 
-
   if(!monster.alive){
     return;
   }
-
 
   tryReaction(
     monster,
     "lightning"
   );
 
-
   if(!monster.alive){
     return;
   }
-
 
   monster.chargeUntil=
     game.time+
     CONFIG.CHARGE_DURATION_MS;
 
-
   addLog(
     "⚡ Slime 進入 Charge",
     "lightningText"
   );
-
 
   if(
     Math.random()>
@@ -2892,22 +2345,14 @@ function castLightning(
     return;
   }
 
-
-  let current=
-    monster;
-
+  let current=monster;
 
   const hitIds=
     new Set();
 
-
-  hitIds.add(
-    monster.id
-  );
-
+  hitIds.add(monster.id);
 
   let jumps=1;
-
 
   while(
     jumps<
@@ -2915,10 +2360,7 @@ function castLightning(
   ){
 
     let next=null;
-
-    let bestDistance=
-      Infinity;
-
+    let bestDistance=Infinity;
 
     for(
       const candidate
@@ -2929,7 +2371,6 @@ function castLightning(
         continue;
       }
 
-
       if(
         hitIds.has(
           candidate.id
@@ -2938,32 +2379,25 @@ function castLightning(
         continue;
       }
 
-
       const d=
         distance(
           current,
           candidate
         );
 
-
       if(
-        d<=
-        CONFIG.CHAIN_RANGE &&
-        d<
-        bestDistance
+        d<=CONFIG.CHAIN_RANGE &&
+        d<bestDistance
       ){
 
         next=candidate;
-
         bestDistance=d;
       }
     }
 
-
     if(!next){
       break;
     }
-
 
     const chainDamage=
       Math.max(
@@ -2974,30 +2408,25 @@ function castLightning(
         )
       );
 
-
     createLightningLine(
       current,
       next
     );
-
 
     createEffect(
       next,
       "⚡"
     );
 
-
     damageMonster(
       next,
       chainDamage
     );
 
-
     addLog(
       `⚡ Chain → Slime -${chainDamage}`,
       "lightningText"
     );
-
 
     if(next.alive){
 
@@ -3006,11 +2435,7 @@ function castLightning(
         CONFIG.CHARGE_DURATION_MS;
     }
 
-
-    hitIds.add(
-      next.id
-    );
-
+    hitIds.add(next.id);
 
     current=next;
 
@@ -3021,10 +2446,7 @@ function castLightning(
 
 /* SPELL ROUTER */
 
-function castSkill(
-  monster,
-  skill
-){
+function castSkill(monster,skill){
 
   if(
     !monster ||
@@ -3034,10 +2456,7 @@ function castSkill(
     return;
   }
 
-
-  if(
-    skill.id==="fire"
-  ){
+  if(skill.id==="fire"){
 
     castFire(
       monster,
@@ -3069,15 +2488,11 @@ function castSkill(
 
 function updateStatuses(){
 
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     if(!monster.alive){
       continue;
     }
-
 
     if(
       monster.burningUntil>
@@ -3092,12 +2507,10 @@ function updateStatuses(){
         monster.nextBurnTick+=
           CONFIG.BURN_TICK_MS;
 
-
         createEffect(
           monster,
           "🔥"
         );
-
 
         const killed=
           damageMonster(
@@ -3105,12 +2518,10 @@ function updateStatuses(){
             CONFIG.BURN_DAMAGE
           );
 
-
         addLog(
           `🔥 Burning → Slime -${CONFIG.BURN_DAMAGE}`,
           "burnText"
         );
-
 
         if(killed){
           continue;
@@ -3120,25 +2531,20 @@ function updateStatuses(){
     }else{
 
       monster.burningUntil=0;
-
       monster.nextBurnTick=0;
     }
-
 
     if(
       monster.frostUntil<=
       game.time
     ){
-
       monster.frostUntil=0;
     }
-
 
     if(
       monster.chargeUntil<=
       game.time
     ){
-
       monster.chargeUntil=0;
     }
   }
@@ -3147,61 +2553,45 @@ function updateStatuses(){
 
 /* MONSTER DEATH */
 
-function killMonster(
-  monster
-){
+function killMonster(monster){
 
   if(!monster.alive){
     return;
   }
 
-
   monster.alive=false;
-
   monster.hp=0;
 
   monster.aggro=false;
 
   monster.burningUntil=0;
-
   monster.nextBurnTick=0;
 
   monster.frostUntil=0;
-
   monster.chargeUntil=0;
 
   monster.nextAttackAt=0;
-
 
   monster.respawnAt=
     game.time+
     CONFIG.SLIME_RESPAWN_MS;
 
-
   game.player.kills++;
-
   game.player.exp+=10;
-
 
   if(
     game.player.targetId===
     monster.id
   ){
-
     game.player.targetId=null;
   }
-
 
   addLog(
     "☠️ Slime 被擊倒！ EXP +10",
     "good"
   );
 
-
-  rollLoot(
-    monster
-  );
-
+  rollLoot(monster);
 
   checkLevelUp();
 }
@@ -3211,9 +2601,7 @@ function killMonster(
 
 function checkLevelUp(){
 
-  const player=
-    game.player;
-
+  const player=game.player;
 
   while(
     player.exp>=
@@ -3223,28 +2611,18 @@ function checkLevelUp(){
     player.exp-=
       player.expNeed;
 
-
     player.level++;
-
 
     player.expNeed=
       Math.floor(
-        player.expNeed*
-        1.25
+        player.expNeed*1.25
       );
 
-
     player.maxHp+=10;
-
-    player.hp=
-      player.maxHp;
-
+    player.hp=player.maxHp;
 
     player.maxMp+=5;
-
-    player.mp=
-      player.maxMp;
-
+    player.mp=player.maxMp;
 
     addLog(
       `✨ Level Up！現在 Lv.${player.level}`,
@@ -3258,50 +2636,36 @@ function checkLevelUp(){
 
 function updateMonsterRespawns(){
 
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     if(
       !monster.alive &&
-      game.time>=
-      monster.respawnAt
+      game.time>=monster.respawnAt
     ){
 
       monster.alive=true;
 
-
       monster.hp=
         monster.maxHp;
-
 
       monster.x=
         random(10,90);
 
-
       monster.y=
         random(10,68);
 
-
       monster.respawnAt=0;
-
 
       monster.nextAttackAt=
         game.time+500;
 
-
       monster.aggro=false;
 
-
       monster.burningUntil=0;
-
       monster.nextBurnTick=0;
 
       monster.frostUntil=0;
-
       monster.chargeUntil=0;
-
 
       addLog(
         "🟢 Slime 重生了"
@@ -3313,43 +2677,25 @@ function updateMonsterRespawns(){
 
 /* PLAYER AI */
 
-function updatePlayerAI(
-  deltaMs
-){
+function updatePlayerAI(deltaMs){
 
-  const player=
-    game.player;
-
+  const player=game.player;
 
   if(!player.alive){
     return;
   }
 
-
-  updateNearbyPickup();
-
-
-  /*
-    Combat has priority.
-  */
-
   let target=
     game.monsters.find(
-
       monster=>
-
         monster.id===
         player.targetId &&
-
         monster.alive
     );
 
-
   if(!target){
 
-    target=
-      getTarget();
-
+    target=getTarget();
 
     player.targetId=
       target?
@@ -3357,142 +2703,60 @@ function updatePlayerAI(
       null;
   }
 
-
-  if(target){
-
-    player.lootTargetId=null;
-
-
-    const skill=
-      SKILLS[
-        player.skillIndex
-      ];
-
-
-    const d=
-      distance(
-        player,
-        target
-      );
-
-
-    if(
-      d>
-      skill.range
-    ){
-
-      movePlayerToward(
-        target,
-        deltaMs/1000
-      );
-
-    }else if(
-      game.time>=
-      player.nextAttackAt
-    ){
-
-      castSkill(
-        target,
-        skill
-      );
-
-
-      player.nextAttackAt=
-        game.time+
-        skill.cooldown;
-
-
-      player.skillIndex=
-        (
-          player.skillIndex+1
-        )%
-        SKILLS.length;
-    }
-
-
-    updateNearbyPickup();
-
+  if(!target){
     return;
   }
 
+  const skill=
+    SKILLS[
+      player.skillIndex
+    ];
 
-  /*
-    No monsters alive:
-    collect nearest loot.
-  */
-
-  let loot=
-    game.groundLoot.find(
-
-      item=>
-
-        item.uid===
-        player.lootTargetId
-    );
-
-
-  if(!loot){
-
-    loot=
-      getNearestLoot();
-
-
-    player.lootTargetId=
-      loot?
-      loot.uid:
-      null;
-  }
-
-
-  if(!loot){
-    return;
-  }
-
-
-  const lootDistance=
+  const d=
     distance(
       player,
-      loot
+      target
     );
 
+  if(d>skill.range){
 
-  if(
-    lootDistance<=
-    CONFIG.PICKUP_RANGE
+    movePlayerToward(
+      target,
+      deltaMs/1000
+    );
+
+  }else if(
+    game.time>=
+    player.nextAttackAt
   ){
 
-    pickupLoot(
-      loot
+    castSkill(
+      target,
+      skill
     );
 
-    return;
+    player.nextAttackAt=
+      game.time+
+      skill.cooldown;
+
+    player.skillIndex=
+      (
+        player.skillIndex+1
+      )%
+      SKILLS.length;
   }
-
-
-  movePlayerToward(
-    loot,
-    deltaMs/1000
-  );
-
-
-  updateNearbyPickup();
 }
 
 
-/* GAME UPDATE */
+/* UPDATE */
 
-function updateGame(
-  deltaMs
-){
+function updateGame(deltaMs){
 
   if(!game.running){
     return;
   }
 
-
-  game.time+=
-    deltaMs;
-
+  game.time+=deltaMs;
 
   updateMonsterRespawns();
 
@@ -3500,20 +2764,23 @@ function updateGame(
 
   updateStatuses();
 
+  /*
+    Auto loot runs regardless of
+    whether Mage is fighting.
+
+    It also continues while Mage
+    is temporarily dead.
+  */
+
+  updateAutoLoot();
 
   if(!game.player.alive){
     return;
   }
 
+  updatePlayerAI(deltaMs);
 
-  updatePlayerAI(
-    deltaMs
-  );
-
-
-  updateMonsterAI(
-    deltaMs
-  );
+  updateMonsterAI(deltaMs);
 }
 
 
@@ -3521,23 +2788,18 @@ function updateGame(
 
 function render(){
 
-  const player=
-    game.player;
-
+  const player=game.player;
 
   playerEl.style.left=
     player.x+"%";
 
-
   playerEl.style.top=
     player.y+"%";
-
 
   playerEl.classList.toggle(
     "dead",
     !player.alive
   );
-
 
   playerEl.textContent=
     player.alive?
@@ -3545,31 +2807,24 @@ function render(){
     "☠️";
 
 
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     monster.el.style.left=
       monster.x+"%";
 
-
     monster.el.style.top=
       monster.y+"%";
-
 
     monster.el.classList.toggle(
       "dead",
       !monster.alive
     );
 
-
     monster.el.classList.toggle(
       "aggro",
       monster.aggro &&
       monster.alive
     );
-
 
     monster.el.classList.toggle(
       "target",
@@ -3579,21 +2834,16 @@ function render(){
       player.alive
     );
 
-
     const hpPercent=
       (
         monster.hp/
         monster.maxHp
-      )*
-      100;
-
+      )*100;
 
     monster.hpFill.style.width=
       hpPercent+"%";
 
-
     let statusText="";
-
 
     if(
       monster.burningUntil>
@@ -3602,14 +2852,12 @@ function render(){
       statusText+="🔥";
     }
 
-
     if(
       monster.frostUntil>
       game.time
     ){
       statusText+="❄️";
     }
-
 
     if(
       monster.chargeUntil>
@@ -3618,7 +2866,6 @@ function render(){
       statusText+="⚡";
     }
 
-
     if(
       monster.aggro &&
       monster.alive
@@ -3626,47 +2873,29 @@ function render(){
       statusText+="❗";
     }
 
-
     monster.statusEl.textContent=
       statusText;
-  }
-
-
-  for(
-    const loot
-    of game.groundLoot
-  ){
-
-    loot.el.style.left=
-      loot.x+"%";
-
-
-    loot.el.style.top=
-      loot.y+"%";
   }
 
 
   hpText.textContent=
     `HP ${player.hp} / ${player.maxHp}`;
 
-
   mpText.textContent=
     `MP ${player.mp} / ${player.maxMp}`;
-
 
   expText.textContent=
     `EXP ${player.exp} / ${player.expNeed}`;
 
-
   levelText.textContent=
-    player.alive?
-    `Lv.${player.level} Mage`:
+    player.alive
+    ?
+    `Lv.${player.level} Mage`
+    :
     `Lv.${player.level} Mage ☠️`;
-
 
   killText.textContent=
     `Kills ${player.kills}`;
-
 
   hpBar.style.width=
     (
@@ -3675,14 +2904,12 @@ function render(){
       100
     )+"%";
 
-
   mpBar.style.width=
     (
       player.mp/
       player.maxMp*
       100
     )+"%";
-
 
   expBar.style.width=
     (
@@ -3691,12 +2918,11 @@ function render(){
       100
     )+"%";
 
-
   updateInventoryUI();
 }
 
 
-/* MAIN LOOP */
+/* LOOP */
 
 let lastTime=
   performance.now();
@@ -3712,12 +2938,9 @@ function mainLoop(now){
       1000
     );
 
-
   lastTime=now;
 
-  accumulator+=
-    frameDelta;
-
+  accumulator+=frameDelta;
 
   while(
     accumulator>=
@@ -3728,14 +2951,11 @@ function mainLoop(now){
       CONFIG.TICK_MS
     );
 
-
     accumulator-=
       CONFIG.TICK_MS;
   }
 
-
   render();
-
 
   requestAnimationFrame(
     mainLoop
@@ -3757,7 +2977,6 @@ function clearGroundLoot(){
     }
   }
 
-
   game.groundLoot=[];
 }
 
@@ -3765,18 +2984,13 @@ function clearGroundLoot(){
 function resetGame(){
 
   game.time=0;
-
   game.running=true;
-
   game.nextLootId=1;
-
 
   clearGroundLoot();
 
-
   const player=
     game.player;
-
 
   player.x=
     CONFIG.SAFE_X;
@@ -3784,112 +2998,80 @@ function resetGame(){
   player.y=
     CONFIG.SAFE_Y;
 
-
   player.hp=100;
   player.maxHp=100;
-
 
   player.mp=100;
   player.maxMp=100;
 
-
   player.level=1;
-
 
   player.exp=0;
   player.expNeed=100;
 
-
   player.kills=0;
 
-
   player.alive=true;
-
   player.respawnAt=0;
-
 
   player.targetId=null;
 
-  player.lootTargetId=null;
-
-
   player.skillIndex=0;
-
   player.nextAttackAt=0;
 
-
   player.inventory.gold=0;
-
   player.inventory.potion=0;
-
   player.inventory.staff=0;
 
 
-  for(
-    const monster
-    of game.monsters
-  ){
+  for(const monster of game.monsters){
 
     monster.alive=true;
-
 
     monster.hp=
       monster.maxHp;
 
-
     monster.x=
       random(10,90);
-
 
     monster.y=
       random(10,68);
 
-
     monster.respawnAt=0;
-
     monster.nextAttackAt=0;
 
     monster.aggro=false;
 
-
     monster.burningUntil=0;
-
     monster.nextBurnTick=0;
 
     monster.frostUntil=0;
-
     monster.chargeUntil=0;
   }
 
 
   logEl.innerHTML="";
 
-
   inventoryPanel.classList.remove(
     "open"
   );
 
-
   inventoryBtn.textContent=
     "🎒 打開背包";
-
 
   pauseBtn.textContent=
     "暫停";
 
-
   addLog(
-    "🧙 V0.5B 測試開始"
+    "🧙 V0.5B-1 測試開始"
   );
 
-
   addLog(
-    "🎒 Inventory 已啟用"
+    "✨ 掉落物現在會自動飛向 Mage"
   );
 
-
   addLog(
-    "🪄 裝備功能下一階段開放"
+    "🎒 不需要走過去撿取"
   );
 }
 
@@ -3905,10 +3087,11 @@ inventoryBtn.addEventListener(
         "open"
       );
 
-
     inventoryBtn.textContent=
-      open?
-      "🎒 關閉背包":
+      open
+      ?
+      "🎒 關閉背包"
+      :
       "🎒 打開背包";
   }
 );
@@ -3923,16 +3106,18 @@ pauseBtn.addEventListener(
     game.running=
       !game.running;
 
-
     pauseBtn.textContent=
-      game.running?
-      "暫停":
+      game.running
+      ?
+      "暫停"
+      :
       "繼續";
 
-
     addLog(
-      game.running?
-      "▶️ 戰鬥繼續":
+      game.running
+      ?
+      "▶️ 戰鬥繼續"
+      :
       "⏸️ 戰鬥暫停"
     );
   }
@@ -3952,23 +3137,20 @@ for(
   i<CONFIG.SLIME_COUNT;
   i++
 ){
-
   createMonster(i);
 }
 
 
 addLog(
-  "🧙 Mage Idle V0.5B 啟動"
+  "🧙 Mage Idle V0.5B-1 啟動"
 );
 
-
 addLog(
-  "🎒 背包系統已啟用"
+  "🎁 Auto Loot 已啟用"
 );
 
-
 addLog(
-  "🎁 撿到的物品會自動堆疊"
+  "✨ 掉寶會自動吸入背包"
 );
 
 
